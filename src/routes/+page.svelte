@@ -5,13 +5,5 @@
 </script>
 
 {#each data.images as image}
-	<li>
-		<ResponsiveImage {image} alt="Example" sizes="100px" client={data.client} />
-	</li>
+	<ResponsiveImage {image} alt="Example" sizes="100px" client={data.client} />
 {/each}
-
-<style>
-	:global(img) {
-		width: 100px;
-	}
-</style>
