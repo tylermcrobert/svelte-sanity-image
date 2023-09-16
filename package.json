@@ -1,6 +1,6 @@
 {
 	"name": "@tylermcrobert/svelte-sanity-image",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
@@ -28,6 +28,10 @@
 		"tslib": "^2.4.1",
 		"typescript": "^4.9.3",
 		"vite": "^4.0.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tylermcrobert/svelte-sanity-image.git"
 	},
 	"type": "module",
 	"dependencies": {
