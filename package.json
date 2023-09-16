@@ -29,5 +29,9 @@
 		"typescript": "^4.9.3",
 		"vite": "^4.0.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@sanity/client": "^6.4.12",
+		"groq": "^3.16.7"
+	}
 }
