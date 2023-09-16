@@ -5,5 +5,11 @@
 </script>
 
 {#each data.images as image}
-	<ResponsiveImage {image} alt="Example" sizes="100px" client={data.client} />
+	<ResponsiveImage
+		{image}
+		alt="Example"
+		sizes="100px"
+		client={data.client}
+		loading="lazy"
+	/>
 {/each}

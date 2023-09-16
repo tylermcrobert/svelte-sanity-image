@@ -1,31 +1,22 @@
 <script lang="ts">
-	import type {
-		EnforcedAspect,
-		Quality,
-		SanityImage,
-		Sizes
-	} from './utils/types';
+	import type { ResponsiveImageProps } from './utils/types';
 	import { onMount } from 'svelte';
 	import getImageProps from './utils/getImageProps';
-	import type { SanityClient } from '@sanity/client';
+	import type { HTMLImgAttributes } from 'svelte/elements';
 
-	export let image: SanityImage;
-	export let alt: string;
-	export let sizes: Sizes;
-	export let client: SanityClient;
+	type Props = HTMLImgAttributes & ResponsiveImageProps;
+	type $$Props = Props;
 
-	export let enforcedAspect: EnforcedAspect = undefined;
-	export let quality: Quality = undefined;
+	export let image: ResponsiveImageProps['image'];
+	export let client: ResponsiveImageProps['client'];
 
 	let node: HTMLImageElement;
 	let loaded = false;
 
 	$: imgProps = getImageProps({
+		...$$restProps,
 		client,
-		image,
-		quality,
-		enforcedAspect,
-		sizes
+		image
 	});
 
 	onMount(() => (loaded = node.complete && node.naturalHeight !== 0));
@@ -33,7 +24,8 @@
 
 <img
 	{...imgProps}
-	{alt}
+	{...$$restProps}
+	alt={$$restProps.alt}
 	style:opacity={loaded ? '' : '0'}
 	bind:this={node}
 	on:load={() => (loaded = true)}
