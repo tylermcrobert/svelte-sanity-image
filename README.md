@@ -2,13 +2,13 @@
 
 A Svelte component that allows you to easily create responsive images from images stored in Sanity.io. Inspired by [next-sanity-image](https://github.com/lorenzodejong/next-sanity-image).
 
-## Installation
+## 📦 Installation
 
 ```
 npm install @tylermcrobert/svelte-sanity-image
 ```
 
-## Usage
+## 🚀 Usage
 
 Create a GROQ query to fetch a Sanity document containing an image.
 
@@ -45,7 +45,9 @@ Supply the `SanityImage` component with the image from Sanity.
 />
 ```
 
-## Props
+This represents a basic implementation of the component. For a more configurable component, refer to the props below.
+
+## ⚙️ Component Props
 
 | Property         | Type                  | Description                                                                                                                                             |
 | ---------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -55,3 +57,12 @@ Supply the `SanityImage` component with the image from Sanity.
 | `client`         | `SanityClient`        | A configured Sanity client.                                                                                                                             |
 | `enforcedAspect` | `number \| undefined` | Enforces an aspect ratio on the image.                                                                                                                  |
 | `quality`        | `number \| undefined` | Image quality. Defaults to `75`                                                                                                                         |
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
+
+## 📜 License
+
+Copyright ©2023 Tyler McRobert. Available under the [MIT License](https://choosealicense.com/licenses/mit/).
