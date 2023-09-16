@@ -14,7 +14,7 @@ npm install @tylermcrobert/svelte-sanity-image
 
 Start by creating a GROQ query to fetch a Sanity document containing an image.
 
-<h5><code>routes/+page.ts</code></h5>
+<p><code>routes/+page.ts</code></p>
 
 ```typescript
 import client from './sanity-client'; // Your Sanity client configuration
