@@ -7,10 +7,12 @@
 	} from './utils/types';
 	import { onMount } from 'svelte';
 	import getImageProps from './utils/getImageProps';
+	import type { SanityClient } from '@sanity/client';
 
 	export let image: SanityImage;
 	export let alt: string;
 	export let sizes: Sizes;
+	export let client: SanityClient;
 
 	export let enforcedAspect: EnforcedAspect = undefined;
 	export let quality: Quality = undefined;
@@ -19,6 +21,7 @@
 	let loaded = false;
 
 	$: imgProps = getImageProps({
+		client,
 		image,
 		quality,
 		enforcedAspect,

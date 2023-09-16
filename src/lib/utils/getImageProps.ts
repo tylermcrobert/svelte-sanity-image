@@ -1,20 +1,21 @@
-import { urlFor } from '$lib/sanity/client';
 import getImageDimensions from './getImageDimensions';
 import getSrcset from './getSrcset';
 import type { ResponsiveImageConfig, ResponsiveImageProps } from './types';
+import getBuilder from './getBuilder';
 
 export default function getImageProps({
 	image,
 	sizes,
 	quality,
-	enforcedAspect
+	enforcedAspect,
+	client
 }: ResponsiveImageConfig): ResponsiveImageProps {
 	const { aspectRatio } = getImageDimensions(image);
 	const aspect = enforcedAspect || aspectRatio;
 
 	return {
-		src: urlFor(image).url(),
-		srcset: getSrcset(image, { quality, enforcedAspect }),
+		src: getBuilder(image, client).url(),
+		srcset: getSrcset(image, client, { quality, enforcedAspect, client }),
 		sizes,
 		style: `aspect-ratio: ${aspect}`
 	};
