@@ -18,10 +18,10 @@ Create a GROQ query to fetch a Sanity document containing an image.
 import client from './sanity-client'; // Your Sanity client configuration
 
 export async function load() {
-	const imageQuery = `*[_type == 'settings'][0]{ image }`;
-	const image = await client.fetch(imageQuery);
+  const imageQuery = `*[_type == 'settings'][0]{ image }`;
+  const image = await client.fetch(imageQuery);
 
-	return { image };
+  return { image };
 }
 ```
 
@@ -29,19 +29,19 @@ Supply the `SanityImage` component with the image from Sanity.
 
 ```html
 <script>
-	// routes/+page.svelte
+  // routes/+page.svelte
 
-	import SanityImage from '@tylermcrobert/svelte-sanity-image';
-	import client from './sanity-client';
+  import SanityImage from '@tylermcrobert/svelte-sanity-image';
+  import client from './sanity-client';
 
-	export let data;
+  export let data;
 </script>
 
 <SanityImage
-	image="{data.image}"
-	sizes="(max-width: 600px) 480px, 800px"
-	alt="A beautiful dog"
-	{client}
+  image="{data.image}"
+  sizes="(max-width: 600px) 480px, 800px"
+  alt="A beautiful dog"
+  {client}
 />
 ```
 
