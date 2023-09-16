@@ -1,6 +1,7 @@
 {
 	"name": "@tylermcrobert/svelte-sanity-image",
 	"version": "0.0.1",
+	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "svelte-kit sync && svelte-package",
