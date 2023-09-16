@@ -56,9 +56,15 @@ export type ResponsiveImageProps = {
 	enforcedAspect?: number;
 };
 
+type GetImagePropsOptionsKeys =
+	| 'image'
+	| 'quality'
+	| 'enforcedAspect'
+	| 'client';
+
 export type GetImagePropsOptions = Pick<
 	ResponsiveImageProps,
-	'image' | 'quality' | 'enforcedAspect' | 'client'
+	GetImagePropsOptionsKeys
 >;
 
 export type GetImagePropsReturn = {
