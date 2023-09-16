@@ -1,22 +1,14 @@
-<script>
-	import ResponsiveImage from '$lib/ResponsiveImage.svelte';
+<script lang="ts">
+	import ResponsiveImage from '$lib';
 
 	export let data;
 </script>
 
-Images:
-<ul>
-	{#each data.images as image}
-		<li>
-			<ResponsiveImage
-				{image}
-				alt="Example"
-				sizes="100px"
-				client={data.client}
-			/>
-		</li>
-	{/each}
-</ul>
+{#each data.images as image}
+	<li>
+		<ResponsiveImage {image} alt="Example" sizes="100px" client={data.client} />
+	</li>
+{/each}
 
 <style>
 	:global(img) {
