@@ -1,5 +1,7 @@
 # svelte-sanity-image
 
+:warning: Warning: This package is under development and very likely introduce breaking changes.
+
 A Svelte component that allows you to easily create responsive images from images stored in Sanity.io. Inspired by [next-sanity-image](https://github.com/lorenzodejong/next-sanity-image).
 
 ## 📦&ensp;Installation
