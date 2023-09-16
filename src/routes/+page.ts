@@ -15,5 +15,5 @@ export async function load() {
   }
 `);
 
-	return images;
+	return { ...images, client };
 }
