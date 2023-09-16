@@ -1,5 +1,5 @@
-import ResponsiveImage from './ResponsiveImage.svelte';
+import SanityImage from './SanityImage.svelte';
 
 export type { SanityImage } from './utils/types';
 
-export default ResponsiveImage;
+export default SanityImage;

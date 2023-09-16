@@ -5,7 +5,7 @@ import type { SanityImage } from './sanity';
  * Props for the image component
  */
 
-export type ResponsiveImageProps = {
+export type SvelteSanityImageProps = {
 	image: SanityImage;
 	sizes: string;
 	client: SanityClient;
@@ -30,7 +30,7 @@ type GetImagePropsOptionsKeys =
  */
 
 export type GetImagePropsOptions = Pick<
-	ResponsiveImageProps,
+	SvelteSanityImageProps,
 	GetImagePropsOptionsKeys
 >;
 

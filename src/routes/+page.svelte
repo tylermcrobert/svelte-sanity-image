@@ -1,11 +1,11 @@
 <script lang="ts">
-	import ResponsiveImage from '$lib';
+	import SanityImage from '$lib';
 
 	export let data;
 </script>
 
 {#each data.images as image}
-	<ResponsiveImage
+	<SanityImage
 		{image}
 		alt="Example"
 		sizes="100px"
