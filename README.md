@@ -53,14 +53,15 @@ Usage is similar to a standard `<img />` tag, but instead takes a `image` and a 
 
 ## ⚙️&ensp;Component Props
 
-| Property         | Type                  | Description                                                                                                                                             |
-| ---------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `image`          | `SanityImage`         | Accepts either a Sanity image record.                                                                                                                   |
-| `alt`            | `string`              | Descriptive alt text for image accessibility.                                                                                                           |
-| `sizes`          | `string`              | A responsive image size string. Read more about that in the [MDN image reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes). |
-| `client`         | `SanityClient`        | A configured Sanity client.                                                                                                                             |
-| `enforcedAspect` | `number \| undefined` | Enforces an aspect ratio on the image.                                                                                                                  |
-| `quality`        | `number \| undefined` | Image quality. Defaults to `75`                                                                                                                         |
+| Property         | Type           | Description                                                                                                                                             | Required |
+| ---------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `image`          | `SanityImage`  | Accepts either a Sanity image record.                                                                                                                   | Yes      |
+| `alt`            | `string`       | Descriptive alt text for image accessibility.                                                                                                           | Yes      |
+| `sizes`          | `string`       | A responsive image size string. Read more about that in the [MDN image reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes). | Yes      |
+| `client`         | `SanityClient` | A configured Sanity client.                                                                                                                             | Yes      |
+| `enforcedAspect` | `number`       | Enforces an aspect ratio on the image.                                                                                                                  | –        |
+| `quality`        | `number`       | Image quality. Defaults to `75`                                                                                                                         | –        |
+| `onLoad`         | `function`     | Runs on image load and provides an event object                                                                                                         | —        |
 
 ## 🤝&ensp;Contributing
 
