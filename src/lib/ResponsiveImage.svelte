@@ -13,7 +13,7 @@
 	let node: HTMLImageElement;
 	let loaded = false;
 
-	$: imgProps = getImageProps({
+	let imgProps = getImageProps({
 		...$$restProps,
 		client,
 		image
@@ -23,8 +23,8 @@
 </script>
 
 <img
-	{...imgProps}
 	{...$$restProps}
+	{...imgProps}
 	alt={$$restProps.alt}
 	style:opacity={loaded ? '' : '0'}
 	bind:this={node}
