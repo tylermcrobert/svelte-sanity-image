@@ -1,5 +1,10 @@
 <script>
-	import Test from '$lib/Test.svelte';
+	export let data;
 </script>
 
-<Test text="Hello World" />
+Images:
+<ul>
+	{#each data.images as image}
+		<li>image goes here: <code>{image.asset._ref}</code></li>
+	{/each}
+</ul>
