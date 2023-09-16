@@ -1,21 +1,26 @@
-import { urlFor } from '$lib/sanity/client';
+// import { urlFor } from '$lib/sanity/client';
+import type { SanityClient } from '@sanity/client';
 import { DEFAULT_QUALITY, IMG_DEVICE_SIZES, IMG_SCALING } from './constants';
+import getBuilder from './getBuilder';
 import type { EnforcedAspect, Quality, SanityImage } from './types';
 
 type SrcsetOptions = {
 	quality: Quality;
 	enforcedAspect: EnforcedAspect;
+	client: SanityClient;
 };
 
 /**
  * Generates srcset for responsive images.
  * @param image Sanity Image object.
+ * @param client Configured Sanity client.
  * @param options Srcset options
  * @returns Comma-separated srcset string.
  */
 
 export default function getSrcset(
 	image: SanityImage,
+	client: SanityClient,
 	{ quality, enforcedAspect }: SrcsetOptions
 ) {
 	/**
@@ -25,7 +30,7 @@ export default function getSrcset(
 	 */
 
 	function getUrl(width: number) {
-		let builder = urlFor(image)
+		let builder = getBuilder(image, client)
 			.width(width)
 			.auto('format')
 			.quality(quality || DEFAULT_QUALITY);

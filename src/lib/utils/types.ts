@@ -2,6 +2,8 @@
  * Sanity Image
  */
 
+import type { SanityClient } from '@sanity/client';
+
 export type SanityImage = {
 	_type: 'image';
 	asset: Asset;
@@ -52,6 +54,7 @@ export type ResponsiveImageConfig = {
 	enforcedAspect: EnforcedAspect;
 	sizes: Sizes;
 	quality: Quality;
+	client: SanityClient;
 };
 
 export type ResponsiveImageProps = {
