@@ -20,7 +20,7 @@
 	});
 
 	function handleLoad() {
-		if (onLoad) onLoad({ node });
+		if (onLoad) onLoad({ target: node });
 	}
 
 	onMount(() => {
