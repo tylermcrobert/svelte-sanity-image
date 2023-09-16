@@ -34,9 +34,7 @@
 <img
 	{...imgProps}
 	{alt}
-	class="responsive-image"
 	style:opacity={loaded ? '' : '0'}
-	loading="lazy"
 	bind:this={node}
 	on:load={() => (loaded = true)}
 />
