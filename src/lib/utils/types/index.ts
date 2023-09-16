@@ -10,9 +10,14 @@ export type SvelteSanityImageProps = {
 	sizes: string;
 	client: SanityClient;
 	alt: string;
+
 	quality?: number;
 	enforcedAspect?: number;
+	onLoad?: EventCallback;
 };
+
+type EventCallbackPayload = { node: HTMLImageElement };
+type EventCallback = (event: EventCallbackPayload) => void;
 
 /**
  * Keys from props type that are

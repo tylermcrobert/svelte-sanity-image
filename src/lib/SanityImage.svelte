@@ -9,9 +9,9 @@
 
 	export let image: SvelteSanityImageProps['image'];
 	export let client: SvelteSanityImageProps['client'];
+	export let onLoad: SvelteSanityImageProps['onLoad'] = () => undefined;
 
 	let node: HTMLImageElement;
-	let loaded = false;
 
 	let imgProps = getImageProps({
 		...$$restProps,
@@ -19,14 +19,20 @@
 		image
 	});
 
-	onMount(() => (loaded = node.complete && node.naturalHeight !== 0));
+	function handleLoad() {
+		if (onLoad) onLoad({ node });
+	}
+
+	onMount(() => {
+		const isLoaded = node.complete && node.naturalHeight !== 0;
+		if (isLoaded) handleLoad();
+	});
 </script>
 
 <img
 	{...$$restProps}
 	{...imgProps}
 	alt={$$restProps.alt}
-	style:opacity={loaded ? '' : '0'}
 	bind:this={node}
-	on:load={() => (loaded = true)}
+	on:load={handleLoad}
 />
