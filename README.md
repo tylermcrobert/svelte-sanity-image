@@ -10,22 +10,23 @@ npm install @tylermcrobert/svelte-sanity-image
 
 ## 🚀 Usage
 
-Create a GROQ query to fetch a Sanity document containing an image.
+Start by creating a GROQ query to fetch a Sanity document containing an image.
 
-```javascript
+```typescript
 // routes/+page.ts
 
 import client from './sanity-client'; // Your Sanity client configuration
+import type { SanityImage } from '@tylermcrobert/svelte-sanity-image'; // Optional typing
 
 export async function load() {
   const imageQuery = `*[_type == 'settings'][0]{ image }`;
-  const image = await client.fetch(imageQuery);
+  const image: SanityImage = await client.fetch(imageQuery);
 
   return { image };
 }
 ```
 
-Supply the `SanityImage` component with the image from Sanity.
+Next, supply the `SanityImage` component with the image from Sanity.
 
 ```html
 <script>
@@ -38,14 +39,15 @@ Supply the `SanityImage` component with the image from Sanity.
 </script>
 
 <SanityImage
+  {client}
   image="{data.image}"
   sizes="(max-width: 600px) 480px, 800px"
   alt="A beautiful dog"
-  {client}
 />
 ```
 
-This represents a basic implementation of the component. For a more configurable component, refer to the props below.
+This represents a basic implementation of the component.
+Usage is similar to a standard `<img />` tag, but instead takes a `image` and a `client`. For more details on those and other configuration options, refer to the props table.
 
 ## ⚙️ Component Props
 
