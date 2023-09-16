@@ -42,3 +42,9 @@ export type GetImagePropsReturn = {
 	srcset: string;
 	style: string;
 };
+
+/**
+ * Export SanityImage
+ */
+
+export { SanityImage };

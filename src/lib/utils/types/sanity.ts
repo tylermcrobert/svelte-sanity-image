@@ -1,5 +1,9 @@
 // TODO: I don't think these are 100% correct.
 
+/**
+ * Image data returned from Sanity GROQ queries
+ */
+
 export type SanityImage = {
 	_type: 'image';
 	asset: Asset;
