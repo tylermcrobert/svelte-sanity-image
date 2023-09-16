@@ -30,7 +30,7 @@ export async function load() {
 
 Next, supply the `SanityImage` component with the image from Sanity.
 
-```html
+```svelte
 <script>
   // routes/+page.svelte
 
@@ -42,7 +42,7 @@ Next, supply the `SanityImage` component with the image from Sanity.
 
 <SanityImage
   {client}
-  image="{data.image}"
+  image={data.image}
   sizes="(max-width: 600px) 480px, 800px"
   alt="A beautiful dog"
 />
