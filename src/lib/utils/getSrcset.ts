@@ -1,14 +1,11 @@
-// import { urlFor } from '$lib/sanity/client';
-import type { SanityClient } from '@sanity/client';
 import { DEFAULT_QUALITY, IMG_DEVICE_SIZES, IMG_SCALING } from './constants';
 import getBuilder from './getBuilder';
-import type { EnforcedAspect, Quality, SanityImage } from './types';
 
-type SrcsetOptions = {
-	quality: Quality;
-	enforcedAspect: EnforcedAspect;
-	client: SanityClient;
-};
+import type { SanityClient } from '@sanity/client';
+import type { ResponsiveImageProps, SanityImage } from './types';
+
+type SrcsetOptions = Pick<ResponsiveImageProps, ResponsiveImagePropsPickKeys>;
+type ResponsiveImagePropsPickKeys = 'quality' | 'enforcedAspect' | 'client';
 
 /**
  * Generates srcset for responsive images.
@@ -24,12 +21,12 @@ export default function getSrcset(
 	{ quality, enforcedAspect }: SrcsetOptions
 ) {
 	/**
-	 * Get URL
+	 * Gets a url by it's width
 	 * @param width width of srcset size
 	 * @returns
 	 */
 
-	function getUrl(width: number) {
+	function getUrlByWidth(width: number) {
 		let builder = getBuilder(image, client)
 			.width(width)
 			.auto('format')
@@ -43,13 +40,10 @@ export default function getSrcset(
 	}
 
 	/**
-	 * Src Set
-	 *
-	 * Generates string for each device
-	 * size and joins with a comma
+	 * A comma-separated responsive URL string
 	 */
 
-	const srcSet = IMG_DEVICE_SIZES.map((width) => getUrl(width)).join(', ');
+	const srcSet = IMG_DEVICE_SIZES.map(getUrlByWidth).join(', ');
 
 	return srcSet;
 }
