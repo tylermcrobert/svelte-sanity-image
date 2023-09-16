@@ -1,48 +1,8 @@
-/**
- * Sanity Image
- */
-
 import type { SanityClient } from '@sanity/client';
-
-export type SanityImage = {
-	_type: 'image';
-	asset: Asset;
-} & Partial<CroppedImage>;
-
-type Asset = {
-	_ref: string;
-	_type: string;
-};
+import type { SanityImage } from './sanity';
 
 /**
- * Sanity Image Crop
- */
-
-type CroppedImage = {
-	_type: string;
-	crop: Crop;
-	hotspot: Hotspot;
-	asset: Asset;
-};
-
-type Crop = {
-	_type: string;
-	top: number;
-	left: number;
-	bottom: number;
-	right: number;
-};
-
-type Hotspot = {
-	_type: string;
-	height: number;
-	width: number;
-	x: number;
-	y: number;
-};
-
-/**
- *
+ * Props for the image component
  */
 
 export type ResponsiveImageProps = {
@@ -50,11 +10,14 @@ export type ResponsiveImageProps = {
 	sizes: string;
 	client: SanityClient;
 	alt: string;
-
-	// Optional
 	quality?: number;
 	enforcedAspect?: number;
 };
+
+/**
+ * Keys from props type that are
+ * required for getImageProps()
+ */
 
 type GetImagePropsOptionsKeys =
 	| 'image'
@@ -62,11 +25,18 @@ type GetImagePropsOptionsKeys =
 	| 'enforcedAspect'
 	| 'client';
 
+/**
+ * Options for getImageProps()
+ */
+
 export type GetImagePropsOptions = Pick<
 	ResponsiveImageProps,
 	GetImagePropsOptionsKeys
 >;
 
+/**
+ * Object that is returned from getImageProps()
+ */
 export type GetImagePropsReturn = {
 	src: string;
 	srcset: string;
