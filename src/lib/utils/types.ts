@@ -45,21 +45,24 @@ type Hotspot = {
  *
  */
 
-export type EnforcedAspect = number | undefined;
-export type Sizes = string;
-export type Quality = number | undefined;
-
-export type ResponsiveImageConfig = {
+export type ResponsiveImageProps = {
 	image: SanityImage;
-	enforcedAspect: EnforcedAspect;
-	sizes: Sizes;
-	quality: Quality;
+	sizes: string;
 	client: SanityClient;
+	alt: string;
+
+	// Optional
+	quality?: number;
+	enforcedAspect?: number;
 };
 
-export type ResponsiveImageProps = {
+export type GetImagePropsOptions = Pick<
+	ResponsiveImageProps,
+	'image' | 'quality' | 'enforcedAspect' | 'client'
+>;
+
+export type GetImagePropsReturn = {
 	src: string;
 	srcset: string;
 	style: string;
-	sizes: string;
 };
