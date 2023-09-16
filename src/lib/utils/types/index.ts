@@ -16,7 +16,7 @@ export type SvelteSanityImageProps = {
 	onLoad?: EventCallback;
 };
 
-type EventCallbackPayload = { node: HTMLImageElement };
+type EventCallbackPayload = { target: HTMLImageElement };
 type EventCallback = (event: EventCallbackPayload) => void;
 
 /**
