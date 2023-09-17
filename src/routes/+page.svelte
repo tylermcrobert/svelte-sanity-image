@@ -1,7 +1,9 @@
 <script lang="ts">
 	import SanityImage from '$lib';
+	import type { SanityImageSource } from '$lib';
+	import type { SanityClient } from '@sanity/client';
 
-	export let data;
+	export let data: { client: SanityClient; images: SanityImageSource[] };
 </script>
 
 <div class="images">
