@@ -11,7 +11,7 @@
 		<SanityImage
 			{image}
 			alt="Example"
-			loading="lazy"
+			loading={null}
 			sizes="100px"
 			client={data.client}
 		/>
