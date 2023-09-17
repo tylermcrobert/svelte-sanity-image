@@ -1,5 +1,5 @@
 import SanityImage from './SanityImage.svelte';
 
-export type { SanityImage } from './utils/types';
+export type { SanityImageSource } from './utils/types';
 
 export default SanityImage;
