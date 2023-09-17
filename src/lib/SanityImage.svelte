@@ -12,9 +12,10 @@
 	let node: HTMLImageElement;
 
 	let imgProps = getImageProps({
-		...$$restProps,
 		client,
-		image
+		image,
+		quality: props.quality,
+		enforcedAspect: props.enforcedAspect
 	});
 
 	function handleLoad() {
