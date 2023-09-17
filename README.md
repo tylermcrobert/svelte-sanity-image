@@ -59,10 +59,10 @@ Usage is similar to a standard `<img />` tag, but instead takes a `image` and a 
 | `image`          | Object   | Image data returned from sanity API.                                                                                                                    | Yes      |
 | `alt`            | String   | Descriptive alt text for image accessibility.                                                                                                           | Yes      |
 | `sizes`          | String   | A responsive image size string. Read more about that in the [MDN image reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes). | Yes      |
-| `enforcedAspect` | Number   | Enforces an aspect ratio on the image.                                                                                                                  | –        |
 | `quality`        | Number   | Image quality. Defaults to `75`                                                                                                                         | –        |
-| `onLoad`         | Function | Runs on image load and provides an event object                                                                                                         | —        |
 | `autoFormat`     | Boolean  | Uses webp format if browser supports it. Defaults to `true`                                                                                             | —        |
+| `enforcedAspect` | Number   | Enforces an aspect ratio on the image.                                                                                                                  | –        |
+| `onLoad`         | Function | Runs on image load and provides an event object                                                                                                         | —        |
 
 ## 🤝&ensp;Contributing
 
