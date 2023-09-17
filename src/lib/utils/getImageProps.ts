@@ -19,19 +19,9 @@ export default function getImageProps({
 	const { width, height } = getImageDimensions(image);
 	const builder = imageUrlBuilder(client).image(image);
 
-	/**
-	 * Get a srcset string for responsive images.
-	 */
-
 	function getSrcset() {
 		return IMG_DEVICE_SIZES.map(getUrlByWidth).join(', ');
 	}
-
-	/**
-	 * Gets a url by it's width
-	 * @param width width of srcset size
-	 * @returns a return
-	 */
 
 	function getUrlByWidth(width: number) {
 		let urlBuilder = builder
