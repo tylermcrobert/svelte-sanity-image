@@ -3,6 +3,11 @@ import getImageDimensions from './getImageDimensions';
 import { DEFAULT_QUALITY, DEVICE_SIZES } from './constants';
 import type { SvelteSanityImageProps } from './types';
 
+// TODO: Allow passing in custom builder from component props?
+// TODO: Consider how enforcedAspect alters
+//       height and if/when it should affect width instead.
+// TODO: Expose api to disable .auto('format')?
+
 /**
  * Return an object with generated image props
  * @param options
