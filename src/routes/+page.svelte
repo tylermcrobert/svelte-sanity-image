@@ -1,14 +1,13 @@
 <script lang="ts">
+	import { client, type ImagesQuery } from '../sanity';
 	import SanityImage from '$lib';
-	import type { SanityImageSource } from '$lib';
-	import type { SanityClient } from '@sanity/client';
 
-	export let data: { client: SanityClient; images: SanityImageSource[] };
+	export let data: { images: ImagesQuery };
 </script>
 
 <div class="images">
-	{#each data.images as image}
-		<SanityImage {image} client={data.client} alt="Example" sizes="100px" />
+	{#each data.images as { image, alt }}
+		<SanityImage {image} {client} {alt} sizes="100px" />
 	{/each}
 </div>
 
