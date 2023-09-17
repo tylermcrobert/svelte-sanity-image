@@ -14,7 +14,8 @@ export default function getImageProps({
 	return {
 		src: getBuilder(image, client).url(),
 		srcset: getSrcset(image, client, { quality, enforcedAspect, client }),
+
 		width,
-		height
+		height: enforcedAspect ? Math.round(width / enforcedAspect) : height
 	};
 }
