@@ -17,6 +17,7 @@ export default function getImageDimensions(
 ): ImageDimensionsOutput {
 	const { asset, crop } = image as SanityImageObject;
 	const baseDimensions = getDimsFromId(asset._ref);
+
 	if (!crop) return baseDimensions;
 
 	const { width, height } = baseDimensions;
