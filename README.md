@@ -44,7 +44,7 @@ Next, supply the `SanityImage` component with the image from Sanity.
   {client}
   image={data.image}
   sizes="(max-width: 600px) 480px, 800px"
-  alt="A beautiful dog"
+  alt="The Beatles crossing Abbey Road in London."
 />
 ```
 
