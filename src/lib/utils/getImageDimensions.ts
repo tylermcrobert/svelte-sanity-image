@@ -1,4 +1,4 @@
-import type { SanityImageObject } from './types';
+import type { SanityImageObject, SanityImageSource } from './types';
 // Reference: https://github.com/lorenzodejong/next-sanity-image/blob/e1eb37fbcccf8bcf5f083dd0a4e2b945139f5c6b/src/useNextSanityImage.ts
 
 export type ImageDimensionsOutput = {
@@ -12,10 +12,10 @@ export type ImageDimensionsOutput = {
  * the dimensions and  aspect ratio out
  */
 
-export default function getImageDimensions({
-	asset,
-	crop
-}: SanityImageObject): ImageDimensionsOutput {
+export default function getImageDimensions(
+	image: SanityImageSource
+): ImageDimensionsOutput {
+	const { asset, crop } = image as SanityImageObject;
 	const baseDimensions = getDimsFromId(asset._ref);
 	if (!crop) return baseDimensions;
 
