@@ -18,6 +18,7 @@
 	export let onLoad: Props['onLoad'] = undefined;
 	export let enforcedAspect: Props['enforcedAspect'] = undefined;
 	export let autoFormat: Props['autoFormat'] = true;
+	export let loading: Props['loading'] = 'lazy';
 
 	let node: HTMLImageElement;
 
@@ -39,4 +40,11 @@
 	});
 </script>
 
-<img {...imgProps} {alt} {sizes} bind:this={node} on:load={handleLoad} />
+<img
+	{...imgProps}
+	{loading}
+	{alt}
+	{sizes}
+	bind:this={node}
+	on:load={handleLoad}
+/>
