@@ -9,12 +9,12 @@ export default function getImageProps({
 	enforcedAspect,
 	client
 }: GetImagePropsOptions): GetImagePropsReturn {
-	const { aspectRatio } = getImageDimensions(image);
-	const aspect = enforcedAspect || aspectRatio;
+	const { width, height } = getImageDimensions(image);
 
 	return {
 		src: getBuilder(image, client).url(),
 		srcset: getSrcset(image, client, { quality, enforcedAspect, client }),
-		style: `aspect-ratio: ${aspect}`
+		width,
+		height
 	};
 }
