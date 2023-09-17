@@ -14,9 +14,9 @@ npm install @tylermcrobert/svelte-sanity-image
 
 Start by creating a GROQ query to fetch a Sanity document containing an image.
 
-```typescript
-// routes/+page.ts
+<p><code>routes/+page.ts</code></p>
 
+```typescript
 import client from './sanity-client'; // Your Sanity client configuration
 import type { SanityImage } from '@tylermcrobert/svelte-sanity-image'; // Optional typing
 
@@ -30,10 +30,10 @@ export async function load() {
 
 Next, supply the `SanityImage` component with the image from Sanity.
 
-```html
-<script>
-  // routes/+page.svelte
+<p><code>routes/+page.ts</code></p>
 
+```svelte
+<script>
   import SanityImage from '@tylermcrobert/svelte-sanity-image';
   import client from './sanity-client';
 
@@ -42,7 +42,7 @@ Next, supply the `SanityImage` component with the image from Sanity.
 
 <SanityImage
   {client}
-  image="{data.image}"
+  image={data.image}
   sizes="(max-width: 600px) 480px, 800px"
   alt="A beautiful dog"
 />
@@ -53,14 +53,15 @@ Usage is similar to a standard `<img />` tag, but instead takes a `image` and a 
 
 ## ⚙️&ensp;Component Props
 
-| Property         | Type                  | Description                                                                                                                                             |
-| ---------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `image`          | `SanityImage`         | Accepts either a Sanity image record.                                                                                                                   |
-| `alt`            | `string`              | Descriptive alt text for image accessibility.                                                                                                           |
-| `sizes`          | `string`              | A responsive image size string. Read more about that in the [MDN image reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes). |
-| `client`         | `SanityClient`        | A configured Sanity client.                                                                                                                             |
-| `enforcedAspect` | `number \| undefined` | Enforces an aspect ratio on the image.                                                                                                                  |
-| `quality`        | `number \| undefined` | Image quality. Defaults to `75`                                                                                                                         |
+| Property         | Type     | Description                                                                                                                                             | Required |
+| ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `client`         | Object   | A configured Sanity client.                                                                                                                             | Yes      |
+| `image`          | Object   | Image data returned from sanity API.                                                                                                                    | Yes      |
+| `alt`            | String   | Descriptive alt text for image accessibility.                                                                                                           | Yes      |
+| `sizes`          | String   | A responsive image size string. Read more about that in the [MDN image reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes). | Yes      |
+| `enforcedAspect` | Number   | Enforces an aspect ratio on the image.                                                                                                                  | –        |
+| `quality`        | Number   | Image quality. Defaults to `75`                                                                                                                         | –        |
+| `onLoad`         | Function | Runs on image load and provides an event object                                                                                                         | —        |
 
 ## 🤝&ensp;Contributing
 
