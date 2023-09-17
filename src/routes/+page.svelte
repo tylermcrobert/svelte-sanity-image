@@ -8,13 +8,7 @@
 
 <div class="images">
 	{#each data.images as image}
-		<SanityImage
-			{image}
-			alt="Example"
-			loading="lazy"
-			sizes="100px"
-			client={data.client}
-		/>
+		<SanityImage {image} client={data.client} alt="Example" sizes="100px" />
 	{/each}
 </div>
 

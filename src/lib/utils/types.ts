@@ -1,4 +1,5 @@
 import type { SanityClient } from '@sanity/client';
+import type { HTMLImgAttributes } from 'svelte/elements';
 import type {
 	SanityImageSource,
 	SanityImageObject
@@ -17,6 +18,8 @@ export type SvelteSanityImageProps = {
 	quality?: number;
 	enforcedAspect?: number;
 	onLoad?: EventCallback;
+	autoFormat?: boolean;
+	loading?: HTMLImgAttributes['loading'];
 };
 
 type EventCallbackPayload = { target: HTMLImageElement };
