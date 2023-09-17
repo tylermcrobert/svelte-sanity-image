@@ -7,9 +7,7 @@
 	type Props = HTMLImgAttributes & SvelteSanityImageProps;
 	type $$Props = Props;
 
-	export let image: SvelteSanityImageProps['image'];
-	export let client: SvelteSanityImageProps['client'];
-	export let onLoad: SvelteSanityImageProps['onLoad'] = () => undefined;
+	let { image, client, onLoad, ...props } = $$restProps;
 
 	let node: HTMLImageElement;
 
@@ -30,7 +28,7 @@
 </script>
 
 <img
-	{...$$restProps}
+	{...props}
 	{...imgProps}
 	alt={$$restProps.alt}
 	bind:this={node}
