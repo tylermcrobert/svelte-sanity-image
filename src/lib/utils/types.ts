@@ -17,6 +17,7 @@ export type SvelteSanityImageProps = {
 	quality?: number;
 	enforcedAspect?: number;
 	onLoad?: EventCallback;
+	autoFormat?: boolean;
 };
 
 type EventCallbackPayload = { target: HTMLImageElement };

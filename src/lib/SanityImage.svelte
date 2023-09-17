@@ -1,7 +1,9 @@
 <script lang="ts">
-	import type { SvelteSanityImageProps } from './utils/types';
 	import { onMount } from 'svelte';
 	import getImageProps from './utils/getImageProps';
+	import { DEFAULT_QUALITY } from './utils/constants';
+
+	import type { SvelteSanityImageProps } from './utils/types';
 	import type { HTMLImgAttributes } from 'svelte/elements';
 
 	type Props = HTMLImgAttributes & SvelteSanityImageProps;
@@ -12,9 +14,10 @@
 	export let alt: Props['alt'];
 	export let sizes: Props['sizes'];
 
-	export let quality: Props['quality'] = undefined;
+	export let quality: Props['quality'] = DEFAULT_QUALITY;
 	export let onLoad: Props['onLoad'] = undefined;
 	export let enforcedAspect: Props['enforcedAspect'] = undefined;
+	export let autoFormat: Props['autoFormat'] = true;
 
 	let node: HTMLImageElement;
 
@@ -22,7 +25,8 @@
 		client,
 		image,
 		quality,
-		enforcedAspect
+		enforcedAspect,
+		autoFormat
 	});
 
 	function handleLoad() {
