@@ -1,8 +1,7 @@
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
 import { DEFAULT_QUALITY, IMG_DEVICE_SIZES, IMG_SCALING } from './constants';
-
-import type { GetImagePropsReturn, GetImagePropsOptions } from './types';
+import type { SvelteSanityImageProps } from './types';
 
 /**
  * Return an object with generated image props
@@ -43,3 +42,24 @@ export default function getImageProps({
 		height: enforcedAspect ? Math.round(width / enforcedAspect) : height
 	};
 }
+
+/**
+ * Options for getImageProps()
+ */
+
+export type GetImagePropsOptions = {
+	image: SvelteSanityImageProps['image'];
+	quality: SvelteSanityImageProps['quality'];
+	enforcedAspect: SvelteSanityImageProps['enforcedAspect'];
+	client: SvelteSanityImageProps['client'];
+};
+
+/**
+ * Object that is returned from getImageProps()
+ */
+export type GetImagePropsReturn = {
+	src: string;
+	srcset: string;
+	width: number;
+	height: number;
+};
