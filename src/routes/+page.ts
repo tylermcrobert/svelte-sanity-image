@@ -1,19 +1,6 @@
-import { createClient } from '@sanity/client';
-import groq from 'groq';
-
-const client = createClient({
-	projectId: '4kvint4g',
-	dataset: 'production',
-	useCdn: true,
-	apiVersion: '2023-05-19'
-});
+import { client, imagesQuery, type ImagesQuery } from '../sanity';
 
 export async function load() {
-	const images = await client.fetch(groq`
-  *[_type  == 'site'][0]{
-    'images': overview->images,
-  }
-`);
-
-	return { ...images, client };
+	const images: ImagesQuery = await client.fetch(imagesQuery);
+	return { images };
 }
