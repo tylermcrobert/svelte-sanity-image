@@ -23,27 +23,6 @@ type EventCallbackPayload = { target: HTMLImageElement };
 type EventCallback = (event: EventCallbackPayload) => void;
 
 /**
- * Options for getImageProps()
- */
-
-export type GetImagePropsOptions = {
-	image: SvelteSanityImageProps['image'];
-	quality: SvelteSanityImageProps['quality'];
-	enforcedAspect: SvelteSanityImageProps['enforcedAspect'];
-	client: SvelteSanityImageProps['client'];
-};
-
-/**
- * Object that is returned from getImageProps()
- */
-export type GetImagePropsReturn = {
-	src: string;
-	srcset: string;
-	width: number;
-	height: number;
-};
-
-/**
  * Export SanityImage
  */
 
