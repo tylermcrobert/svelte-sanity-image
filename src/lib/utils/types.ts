@@ -1,12 +1,15 @@
 import type { SanityClient } from '@sanity/client';
-import type { SanityImage } from './sanity';
+import type {
+	SanityImageSource,
+	SanityImageObject
+} from '@sanity/image-url/lib/types/types.d.ts';
 
 /**
  * Props for the image component
  */
 
 export type SvelteSanityImageProps = {
-	image: SanityImage;
+	image: SanityImageSource;
 	sizes: string;
 	client: SanityClient;
 	alt: string;
@@ -53,4 +56,4 @@ export type GetImagePropsReturn = {
  * Export SanityImage
  */
 
-export { SanityImage };
+export { SanityImageSource, SanityImageObject };

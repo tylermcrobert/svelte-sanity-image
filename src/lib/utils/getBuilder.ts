@@ -1,7 +1,10 @@
 import type { SanityClient } from '@sanity/client';
-import type { SanityImage } from './types';
+import type { SanityImageSource } from './types';
 import imageUrlBuilder from '@sanity/image-url';
 
-export default function getBuilder(source: SanityImage, client: SanityClient) {
+export default function getBuilder(
+	source: SanityImageSource,
+	client: SanityClient
+) {
 	return imageUrlBuilder(client).image(source);
 }

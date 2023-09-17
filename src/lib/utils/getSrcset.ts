@@ -2,7 +2,7 @@ import { DEFAULT_QUALITY, IMG_DEVICE_SIZES, IMG_SCALING } from './constants';
 import getBuilder from './getBuilder';
 
 import type { SanityClient } from '@sanity/client';
-import type { SvelteSanityImageProps, SanityImage } from './types';
+import type { SvelteSanityImageProps, SanityImageSource } from './types';
 
 type SrcsetOptions = Pick<SvelteSanityImageProps, ResponsiveImagePropsPickKeys>;
 type ResponsiveImagePropsPickKeys = 'quality' | 'enforcedAspect' | 'client';
@@ -16,7 +16,7 @@ type ResponsiveImagePropsPickKeys = 'quality' | 'enforcedAspect' | 'client';
  */
 
 export default function getSrcset(
-	image: SanityImage,
+	image: SanityImageSource,
 	client: SanityClient,
 	{ quality, enforcedAspect }: SrcsetOptions
 ) {
