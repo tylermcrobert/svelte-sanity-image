@@ -1,13 +1,13 @@
+import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
 import { DEFAULT_QUALITY, IMG_DEVICE_SIZES, IMG_SCALING } from './constants';
-import getBuilder from './getBuilder';
 
 import type { GetImagePropsReturn, GetImagePropsOptions } from './types';
 
 /**
- * Return an object with image props
- * @param param0
- * @returns GetImagePropsReturn
+ * Return an object with generated image props
+ * @param options
+ * @returns object with image attrs
  */
 
 export default function getImageProps({
@@ -17,6 +17,7 @@ export default function getImageProps({
 	client
 }: GetImagePropsOptions): GetImagePropsReturn {
 	const { width, height } = getImageDimensions(image);
+	const builder = imageUrlBuilder(client).image(image);
 
 	/**
 	 * Get a srcset string for responsive images.
@@ -33,20 +34,20 @@ export default function getImageProps({
 	 */
 
 	function getUrlByWidth(width: number) {
-		let builder = getBuilder(image, client)
+		let urlBuilder = builder
 			.width(width)
 			.auto('format')
 			.quality(quality || DEFAULT_QUALITY);
 
 		if (enforcedAspect) {
-			builder = builder.height(Math.round(width / enforcedAspect));
+			urlBuilder = builder.height(Math.round(width / enforcedAspect));
 		}
 
-		return `${builder.url()} ${Math.round(width / IMG_SCALING)}w`;
+		return `${urlBuilder.url()} ${Math.round(width / IMG_SCALING)}w`;
 	}
 
 	return {
-		src: getBuilder(image, client).url(),
+		src: builder.url(),
 		srcset: getSrcset(),
 		width,
 		height: enforcedAspect ? Math.round(width / enforcedAspect) : height
