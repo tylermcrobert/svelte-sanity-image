@@ -1,6 +1,6 @@
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
-import { DEFAULT_QUALITY, IMG_DEVICE_SIZES, IMG_SCALING } from './constants';
+import { DEFAULT_QUALITY, DEVICE_SIZES } from './constants';
 import type { SvelteSanityImageProps } from './types';
 
 /**
@@ -19,7 +19,7 @@ export default function getImageProps({
 	const { width, height } = getImageDimensions(image);
 
 	function getSrcset() {
-		return IMG_DEVICE_SIZES.map(getUrlByWidth).join(', ');
+		return DEVICE_SIZES.map(getUrlByWidth).join(', ');
 	}
 
 	function getUrlByWidth(width: number) {
@@ -32,7 +32,7 @@ export default function getImageProps({
 			urlBuilder = urlBuilder.height(Math.round(width / enforcedAspect));
 		}
 
-		return `${urlBuilder.url()} ${Math.round(width / IMG_SCALING)}w`;
+		return `${urlBuilder.url()} ${Math.round(width)}w`;
 	}
 
 	return {
