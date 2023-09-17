@@ -15,28 +15,28 @@ export default function getImageProps({
 	enforcedAspect,
 	client
 }: GetImagePropsOptions): GetImagePropsReturn {
+	const initBuilder = imageUrlBuilder(client).image(image);
 	const { width, height } = getImageDimensions(image);
-	const builder = imageUrlBuilder(client).image(image);
 
 	function getSrcset() {
 		return IMG_DEVICE_SIZES.map(getUrlByWidth).join(', ');
 	}
 
 	function getUrlByWidth(width: number) {
-		let urlBuilder = builder
+		let urlBuilder = initBuilder
 			.width(width)
 			.auto('format')
 			.quality(quality || DEFAULT_QUALITY);
 
 		if (enforcedAspect) {
-			urlBuilder = builder.height(Math.round(width / enforcedAspect));
+			urlBuilder = urlBuilder.height(Math.round(width / enforcedAspect));
 		}
 
 		return `${urlBuilder.url()} ${Math.round(width / IMG_SCALING)}w`;
 	}
 
 	return {
-		src: builder.url(),
+		src: initBuilder.url(),
 		srcset: getSrcset(),
 		width,
 		height: enforcedAspect ? Math.round(width / enforcedAspect) : height
