@@ -45,7 +45,8 @@ export type GetImagePropsOptions = Pick<
 export type GetImagePropsReturn = {
 	src: string;
 	srcset: string;
-	style: string;
+	width: number;
+	height: number;
 };
 
 /**
