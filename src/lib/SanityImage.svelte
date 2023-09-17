@@ -7,15 +7,22 @@
 	type Props = HTMLImgAttributes & SvelteSanityImageProps;
 	type $$Props = Props;
 
-	let { image, client, onLoad, ...props } = $$restProps;
+	export let client: Props['client'];
+	export let image: Props['image'];
+	export let alt: Props['alt'];
+	export let sizes: Props['sizes'];
+
+	export let quality: Props['quality'] = undefined;
+	export let onLoad: Props['onLoad'] = undefined;
+	export let enforcedAspect: Props['enforcedAspect'] = undefined;
 
 	let node: HTMLImageElement;
 
 	let imgProps = getImageProps({
 		client,
 		image,
-		quality: props.quality,
-		enforcedAspect: props.enforcedAspect
+		quality,
+		enforcedAspect
 	});
 
 	function handleLoad() {
@@ -28,10 +35,4 @@
 	});
 </script>
 
-<img
-	{...props}
-	{...imgProps}
-	alt={$$restProps.alt}
-	bind:this={node}
-	on:load={handleLoad}
-/>
+<img {...imgProps} {alt} {sizes} bind:this={node} on:load={handleLoad} />
