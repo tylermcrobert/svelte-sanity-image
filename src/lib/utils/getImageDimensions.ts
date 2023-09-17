@@ -1,11 +1,4 @@
 import type { SanityImageObject, SanityImageSource } from './types';
-// Reference: https://github.com/lorenzodejong/next-sanity-image/blob/e1eb37fbcccf8bcf5f083dd0a4e2b945139f5c6b/src/useNextSanityImage.ts
-
-export type ImageDimensionsOutput = {
-	width: number;
-	height: number;
-	aspectRatio: number;
-};
 
 /**
  * Takes sanity image and pulls
@@ -44,3 +37,15 @@ function getDimsFromId(ref: string): ImageDimensionsOutput {
 
 	return { width, height, aspectRatio: width / height };
 }
+
+/**
+ * Values provided by getImageDimensions()
+ */
+
+export type ImageDimensionsOutput = {
+	width: number;
+	height: number;
+	aspectRatio: number;
+};
+
+// Reference: https://github.com/lorenzodejong/next-sanity-image/blob/e1eb37fbcccf8bcf5f083dd0a4e2b945139f5c6b/src/useNextSanityImage.ts
