@@ -62,6 +62,7 @@ Usage is similar to a standard `<img />` tag, but instead takes a `image` and a 
 | `enforcedAspect` | Number   | Enforces an aspect ratio on the image.                                                                                                                  | –        |
 | `quality`        | Number   | Image quality. Defaults to `75`                                                                                                                         | –        |
 | `onLoad`         | Function | Runs on image load and provides an event object                                                                                                         | —        |
+| `autoFormat`     | Boolean  | Uses webp format if browser supports it. Defaults to `true`                                                                                             | —        |
 
 ## 🤝&ensp;Contributing
 
