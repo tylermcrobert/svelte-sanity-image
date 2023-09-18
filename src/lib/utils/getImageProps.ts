@@ -53,13 +53,14 @@ export default function getImageProps({
  * Options for getImageProps()
  */
 
-export type GetImagePropsOptions = {
-	client: SvelteSanityImageProps['client'];
-	image: SvelteSanityImageProps['image'];
-	quality: SvelteSanityImageProps['quality'];
-	autoFormat: SvelteSanityImageProps['autoFormat'];
-	enforcedAspect: SvelteSanityImageProps['enforcedAspect'];
-};
+type GetImagePropsOptions = Pick<SvelteSanityImageProps, ImagePropKey>;
+
+type ImagePropKey =
+	| 'client'
+	| 'image'
+	| 'quality'
+	| 'autoFormat'
+	| 'enforcedAspect';
 
 /**
  * Object that is returned from getImageProps()
