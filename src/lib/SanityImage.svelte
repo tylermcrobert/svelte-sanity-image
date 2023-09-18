@@ -1,33 +1,20 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import getImageProps from './utils/getImageProps';
-	import { DEFAULT_QUALITY } from './utils/constants';
-
 	import type { SvelteSanityImageProps } from './utils/types';
 	import type { HTMLImgAttributes } from 'svelte/elements';
 
-	type Props = HTMLImgAttributes & SvelteSanityImageProps;
-	type $$Props = Props;
-
-	export let client: Props['client'];
-	export let image: Props['image'];
-	export let alt: Props['alt'];
-	export let sizes: Props['sizes'];
-
-	export let quality: Props['quality'] = DEFAULT_QUALITY;
-	export let onLoad: Props['onLoad'] = undefined;
-	export let enforcedAspect: Props['enforcedAspect'] = undefined;
-	export let autoFormat: Props['autoFormat'] = true;
-	export let loading: Props['loading'] = 'lazy';
+	type $$Props = HTMLImgAttributes & SvelteSanityImageProps;
+	const { alt, onLoad, ...incomingProps } = $$restProps as $$Props;
 
 	let node: HTMLImageElement;
 
-	let imgProps = getImageProps({
-		client,
-		image,
-		quality,
-		enforcedAspect,
-		autoFormat
+	let transformedProps = getImageProps({
+		client: incomingProps.client,
+		image: incomingProps.image,
+		quality: incomingProps.quality,
+		enforcedAspect: incomingProps.enforcedAspect,
+		autoFormat: incomingProps.autoFormat
 	});
 
 	function handleLoad() {
@@ -41,10 +28,9 @@
 </script>
 
 <img
-	{...imgProps}
-	{loading}
 	{alt}
-	{sizes}
+	{...incomingProps}
+	{...transformedProps}
 	bind:this={node}
 	on:load={handleLoad}
 />
