@@ -17,32 +17,24 @@ Start by creating a GROQ query to fetch a Sanity document containing an image.
 <p><code>routes/+page.ts</code></p>
 
 ```typescript
-import client from './sanity-client'; // Your Sanity client configuration
 import type { SanityImage } from '@tylermcrobert/svelte-sanity-image'; // Optional typing
 
 export async function load() {
-  const imageQuery = `*[_type == 'settings'][0]{ image }`;
+  const imageQuery = `*[_type == 'yourDoc'][0].yourImage`;
   const image: SanityImage = await client.fetch(imageQuery);
 
   return { image };
 }
 ```
 
-Next, supply the `SanityImage` component with the image from Sanity.
+Next, supply the `SanityImage` component with the image from Sanity along with your configured sanity client.
 
 <p><code>routes/+page.ts</code></p>
 
 ```svelte
-<script>
-  import SanityImage from '@tylermcrobert/svelte-sanity-image';
-  import client from './sanity-client';
-
-  export let data;
-</script>
-
 <SanityImage
   {client}
-  image={data.image}
+  {image}
   sizes="(max-width: 600px) 480px, 800px"
   alt="The Beatles crossing Abbey Road in London."
 />
