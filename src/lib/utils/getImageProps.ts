@@ -18,7 +18,7 @@ export default function getImageProps({
 	client,
 	quality,
 	autoFormat,
-	enforcedAspect
+	aspect
 }: GetImagePropsOptions): GetImagePropsReturn {
 	const initBuilder = imageUrlBuilder(client).image(image);
 	const { width, height } = getImageDimensions(image);
@@ -32,8 +32,8 @@ export default function getImageProps({
 			.width(width)
 			.quality(quality || DEFAULT_QUALITY);
 
-		if (enforcedAspect) {
-			urlBuilder = urlBuilder.height(Math.round(width / enforcedAspect));
+		if (aspect) {
+			urlBuilder = urlBuilder.height(Math.round(width / aspect));
 		}
 
 		if (autoFormat) {
@@ -47,7 +47,7 @@ export default function getImageProps({
 		src: initBuilder.url(),
 		srcset: getSrcset(),
 		width: Math.round(width),
-		height: enforcedAspect ? Math.round(width / enforcedAspect) : height
+		height: aspect ? Math.round(width / aspect) : height
 	};
 }
 
@@ -56,13 +56,7 @@ export default function getImageProps({
  */
 
 type GetImagePropsOptions = Pick<SvelteSanityImageProps, ImagePropKey>;
-
-type ImagePropKey =
-	| 'client'
-	| 'image'
-	| 'quality'
-	| 'autoFormat'
-	| 'enforcedAspect';
+type ImagePropKey = 'client' | 'image' | 'quality' | 'autoFormat' | 'aspect';
 
 /**
  * Object that is returned from getImageProps()

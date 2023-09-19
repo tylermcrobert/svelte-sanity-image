@@ -13,7 +13,7 @@
 		image,
 		client,
 		quality,
-		enforcedAspect,
+		aspect,
 		autoFormat,
 
 		// The rest are native img attrs
@@ -24,7 +24,7 @@
 		client,
 		image,
 		quality,
-		enforcedAspect,
+		aspect,
 		autoFormat
 	});
 
