@@ -1,6 +1,6 @@
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
-import { DEVICE_SIZES } from './constants';
+import { DEFAULT_QUALITY, DEVICE_SIZES } from './constants';
 import type { SvelteSanityImageProps } from './types';
 
 // TODO: Allow passing in custom builder from component props?
@@ -28,7 +28,9 @@ export default function getImageProps({
 	}
 
 	function getUrlByWidth(width: number) {
-		let urlBuilder = initBuilder.width(width).quality(quality as number);
+		let urlBuilder = initBuilder
+			.width(width)
+			.quality(quality || DEFAULT_QUALITY);
 
 		if (enforcedAspect) {
 			urlBuilder = urlBuilder.height(Math.round(width / enforcedAspect));
@@ -53,13 +55,14 @@ export default function getImageProps({
  * Options for getImageProps()
  */
 
-export type GetImagePropsOptions = {
-	client: SvelteSanityImageProps['client'];
-	image: SvelteSanityImageProps['image'];
-	quality: SvelteSanityImageProps['quality'];
-	autoFormat: SvelteSanityImageProps['autoFormat'];
-	enforcedAspect: SvelteSanityImageProps['enforcedAspect'];
-};
+type GetImagePropsOptions = Pick<SvelteSanityImageProps, ImagePropKey>;
+
+type ImagePropKey =
+	| 'client'
+	| 'image'
+	| 'quality'
+	| 'autoFormat'
+	| 'enforcedAspect';
 
 /**
  * Object that is returned from getImageProps()
