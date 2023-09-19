@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import getImageProps from './utils/getImageProps';
-	import type { SvelteSanityImageProps } from './utils/types';
+	import type { Props } from './utils/types';
 	import type { HTMLImgAttributes } from 'svelte/elements';
 
-	type $$Props = HTMLImgAttributes & SvelteSanityImageProps;
+	type $$Props = HTMLImgAttributes & Props;
 
 	// Pull out attributes
 	const {

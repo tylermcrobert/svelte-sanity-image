@@ -1,7 +1,7 @@
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
 import { DEFAULT_QUALITY, DEVICE_SIZES } from './constants';
-import type { SvelteSanityImageProps } from './types';
+import type { Props } from './types';
 
 // TODO: Allow passing in custom builder from component props?
 // TODO: Consider how enforcedAspect alters
@@ -55,7 +55,7 @@ export default function getImageProps({
  * Options for getImageProps()
  */
 
-type GetImagePropsOptions = Pick<SvelteSanityImageProps, ImagePropKey>;
+type GetImagePropsOptions = Pick<Props, ImagePropKey>;
 type ImagePropKey = 'client' | 'image' | 'quality' | 'autoFormat' | 'aspect';
 
 /**
