@@ -5,17 +5,30 @@
 	import type { HTMLImgAttributes } from 'svelte/elements';
 
 	type $$Props = HTMLImgAttributes & SvelteSanityImageProps;
-	const { alt, onLoad, ...incomingProps } = $$restProps as $$Props;
 
-	let node: HTMLImageElement;
+	// Pull out attributes
+	const {
+		alt,
+		onLoad,
+		image,
+		client,
+		quality,
+		enforcedAspect,
+		autoFormat,
+
+		// The rest are native img attrs
+		...incomingProps
+	} = $$restProps as $$Props;
 
 	let transformedProps = getImageProps({
-		client: incomingProps.client,
-		image: incomingProps.image,
-		quality: incomingProps.quality,
-		enforcedAspect: incomingProps.enforcedAspect,
-		autoFormat: incomingProps.autoFormat
+		client,
+		image,
+		quality,
+		enforcedAspect,
+		autoFormat
 	});
+
+	let node: HTMLImageElement;
 
 	function handleLoad() {
 		if (onLoad) onLoad({ target: node });
