@@ -9,7 +9,7 @@ import type {
  * Props for the image component
  */
 
-export type SvelteSanityImageProps = {
+export type Props = {
 	image: SanityImageSource;
 	sizes: string;
 	client: SanityClient;
