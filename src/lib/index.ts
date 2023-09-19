@@ -1,8 +1,7 @@
-import SanityImage from './SanityImage.svelte';
+import Image from './SvelteSanityImage.svelte';
 import getImageDimensions from './utils/getImageDimensions';
 
 export type { SanityImageSource } from './utils/types';
+export { getImageDimensions, Image };
 
-export { getImageDimensions };
-
-export default SanityImage;
+export default Image;
