@@ -46,7 +46,7 @@ export default function getImageProps({
 	return {
 		src: initBuilder.url(),
 		srcset: getSrcset(),
-		width,
+		width: Math.round(width),
 		height: enforcedAspect ? Math.round(width / enforcedAspect) : height
 	};
 }
