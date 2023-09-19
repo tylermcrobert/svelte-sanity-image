@@ -16,7 +16,7 @@ export type SvelteSanityImageProps = {
 	alt: string;
 
 	quality?: number;
-	enforcedAspect?: number;
+	aspect?: number;
 	onLoad?: EventCallback;
 	autoFormat?: boolean;
 	loading?: HTMLImgAttributes['loading'];
