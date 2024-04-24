@@ -2,9 +2,8 @@
 	import { onMount } from 'svelte';
 	import getImageProps from './utils/getImageProps';
 	import type { Props } from './utils/types';
-	import type { HTMLImgAttributes } from 'svelte/elements';
 
-	type $$Props = HTMLImgAttributes & Props;
+	type $$Props = Props;
 
 	// Pull out attributes
 	const {
