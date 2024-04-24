@@ -19,8 +19,7 @@ export type Props = {
 	aspect?: number;
 	onLoad?: EventCallback;
 	autoFormat?: boolean;
-	loading?: HTMLImgAttributes['loading'];
-};
+} & HTMLImgAttributes;
 
 type EventCallbackPayload = { target: HTMLImageElement };
 type EventCallback = (event: EventCallbackPayload) => void;
