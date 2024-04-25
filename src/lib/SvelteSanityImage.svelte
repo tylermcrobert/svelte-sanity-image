@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import getImageProps from './utils/getImageProps';
-	import type { Props } from './utils/types';
+	import getImageProps from './utils/getImageProps.js';
+	import type { Props } from './utils/types.ts';
 
 	type $$Props = Props;
 

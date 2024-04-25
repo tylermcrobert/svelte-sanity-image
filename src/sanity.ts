@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client';
-import type { SanityImageSource } from '$lib';
+import type { SanityImageSource } from '$lib/utils/types.ts';
 
 export const client = createClient({
 	projectId: '7ehtrhwv',

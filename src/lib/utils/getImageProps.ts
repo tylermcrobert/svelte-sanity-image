@@ -1,7 +1,7 @@
 import imageUrlBuilder from '@sanity/image-url';
-import getImageDimensions from './getImageDimensions';
-import { DEFAULT_QUALITY, DEVICE_SIZES } from './constants';
-import type { Props } from './types';
+import getImageDimensions from './getImageDimensions.js';
+import { DEFAULT_QUALITY, DEVICE_SIZES } from './constants.js';
+import type { Props } from './types.ts';
 
 // TODO: Allow passing in custom builder from component props?
 // TODO: Consider how enforcedAspect alters

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { client, type ImagesQuery } from '../sanity';
-	import Image from '$lib';
+	import { client, type ImagesQuery } from '../sanity.js';
+	import Image from '$lib/SvelteSanityImage.svelte';
 
 	export let data: { images: ImagesQuery };
 </script>

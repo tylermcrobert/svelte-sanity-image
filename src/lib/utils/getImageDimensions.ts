@@ -1,4 +1,4 @@
-import type { SanityImageObject, SanityImageSource } from './types';
+import type { SanityImageObject, SanityImageSource } from './types.ts';
 
 /**
  * Takes sanity image and pulls
