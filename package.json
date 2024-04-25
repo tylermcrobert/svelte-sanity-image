@@ -1,7 +1,6 @@
 {
-	"name": "@tylermcrobert/svelte-sanity-image",
-	"version": "0.2.8",
-	"license": "MIT",
+	"name": "svelte-3",
+	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -10,8 +9,8 @@
 		"prepublishOnly": "npm run package",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
 	},
 	"exports": {
 		".": {
@@ -25,35 +24,29 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^4.0.0"
+		"svelte": "^5.0.0-next.1"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^2.0.0",
-		"@sveltejs/kit": "^1.20.4",
+		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/package": "^2.0.0",
-		"@typescript-eslint/eslint-plugin": "^6.0.0",
-		"@typescript-eslint/parser": "^6.0.0",
-		"eslint": "^8.28.0",
-		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-svelte": "^2.30.0",
-		"prettier": "^2.8.0",
-		"prettier-plugin-svelte": "^2.10.1",
+		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/eslint": "^8.56.0",
+		"@typescript-eslint/eslint-plugin": "^7.0.0",
+		"@typescript-eslint/parser": "^7.0.0",
+		"eslint": "^8.56.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-svelte": "^2.36.0-next.4",
+		"prettier": "^3.1.1",
+		"prettier-plugin-svelte": "^3.1.2",
 		"publint": "^0.1.9",
-		"svelte": "^4.0.5",
-		"svelte-check": "^3.4.3",
+		"svelte": "^5.0.0-next.1",
+		"svelte-check": "^3.6.0",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
-		"vite": "^4.4.2"
+		"vite": "^5.0.11"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/tylermcrobert/svelte-sanity-image.git"
-	},
-	"type": "module",
-	"dependencies": {
-		"@sanity/client": "^6.4.12",
-		"@sanity/image-url": "^1.0.2"
-	}
+	"type": "module"
 }
