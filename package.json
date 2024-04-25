@@ -27,6 +27,7 @@
 		"svelte": "^5.0.0-next.1"
 	},
 	"devDependencies": {
+		"@sanity/client": "^6.15.20",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/package": "^2.0.0",
@@ -48,5 +49,8 @@
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@sanity/image-url": "^1.0.2"
+	}
 }

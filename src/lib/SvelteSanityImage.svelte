@@ -3,10 +3,8 @@
 	import getImageProps from './utils/getImageProps.js';
 	import type { Props } from './utils/types.ts';
 
-	type $$Props = Props;
-
 	// Pull out attributes
-	const {
+	let {
 		alt,
 		onLoad,
 		image,
@@ -17,7 +15,7 @@
 
 		// The rest are native img attrs
 		...incomingProps
-	} = $$restProps as $$Props;
+	}: Props = $props();
 
 	let transformedProps = getImageProps({
 		client,
