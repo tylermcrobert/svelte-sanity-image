@@ -1,6 +1,7 @@
 {
-	"name": "svelte-3",
+	"name": "@tylermcrobert/svelte-sanity-image",
 	"version": "0.3.0-next.1",
+	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
