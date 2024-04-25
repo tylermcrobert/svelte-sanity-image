@@ -12,9 +12,7 @@
 		quality,
 		aspect,
 		autoFormat,
-
-		// The rest are native img attrs
-		...incomingProps
+		...props
 	}: Props = $props();
 
 	let transformedProps = getImageProps({
@@ -39,8 +37,8 @@
 
 <img
 	{alt}
-	{...incomingProps}
+	{...props}
 	{...transformedProps}
 	bind:this={node}
-	on:load={handleLoad}
+	onload={handleLoad}
 />

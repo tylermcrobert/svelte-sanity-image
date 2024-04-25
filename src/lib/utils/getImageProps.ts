@@ -23,10 +23,6 @@ export default function getImageProps({
 	const initBuilder = imageUrlBuilder(client).image(image);
 	const { width, height } = getImageDimensions(image);
 
-	function getSrcset() {
-		return DEVICE_SIZES.map(getUrlByWidth).join(', ');
-	}
-
 	function getUrlByWidth(width: number) {
 		let urlBuilder = initBuilder
 			.width(width)
@@ -45,7 +41,7 @@ export default function getImageProps({
 
 	return {
 		src: initBuilder.url(),
-		srcset: getSrcset(),
+		srcset: DEVICE_SIZES.map(getUrlByWidth).join(', '),
 		width: Math.round(width),
 		height: aspect ? Math.round(width / aspect) : height
 	};

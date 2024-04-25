@@ -21,11 +21,10 @@ export type Props = {
 	autoFormat?: boolean;
 } & HTMLImgAttributes;
 
-type EventCallbackPayload = { target: HTMLImageElement };
-type EventCallback = (event: EventCallbackPayload) => void;
+type EventCallback = (event: { target: HTMLImageElement }) => void;
 
 /**
  * Export SanityImage
  */
 
-export { SanityImageSource, SanityImageObject };
+export type { SanityImageSource, SanityImageObject };
