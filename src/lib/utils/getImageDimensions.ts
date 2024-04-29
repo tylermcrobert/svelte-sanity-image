@@ -1,6 +1,16 @@
 import type { SanityImageObject } from './types';
 
 /**
+ * Output of getImageDimensions()
+ */
+
+export type ImageDimensionsOutput = {
+	width: number;
+	height: number;
+	aspectRatio: number;
+};
+
+/**
  * Takes sanity image and pulls
  * the dimensions and  aspect ratio out
  */
@@ -8,12 +18,17 @@ import type { SanityImageObject } from './types';
 export default function getImageDimensions(
 	image: SanityImageObject
 ): ImageDimensionsOutput {
+	if (!image || !image.asset || !image.asset._ref) {
+		throw new Error('Invalid image object provided');
+	}
+
 	const { asset, crop } = image;
-	const baseDimensions = getDimsFromId(asset._ref);
+	const baseDimensions = getDimsFromRefString(asset._ref);
 
 	if (!crop) return baseDimensions;
 
 	const { width, height } = baseDimensions;
+
 	const croppedWidth = width * (1 - (crop.left + crop.right));
 	const croppedHeight = height * (1 - (crop.top + crop.bottom));
 
@@ -26,26 +41,29 @@ export default function getImageDimensions(
 
 /**
  * Takes the asset _ref and
- * extracts the dimensions from it
+ * extracts the initial dimensions from it
  */
 
-function getDimsFromId(ref: string): ImageDimensionsOutput {
+export function getDimsFromRefString(ref: string): ImageDimensionsOutput {
 	const dimensionsStr = ref.split('-')[2];
+
+	if (!dimensionsStr) {
+		throw new Error(`Invalid asset _ref provided: "${ref}"`);
+	}
+
 	const [width, height] = dimensionsStr
 		.split('x')
 		.map((num: string) => parseInt(num, 10));
 
-	return { width, height, aspectRatio: width / height };
+	if (isNaN(height) || isNaN(width) || !height || !width) {
+		throw new Error(`Invalid dimensions in _ref string: "${ref}"`);
+	}
+
+	return {
+		width,
+		height,
+		aspectRatio: width / height
+	};
 }
-
-/**
- * Values provided by getImageDimensions()
- */
-
-export type ImageDimensionsOutput = {
-	width: number;
-	height: number;
-	aspectRatio: number;
-};
 
 // Reference: https://github.com/lorenzodejong/next-sanity-image/blob/e1eb37fbcccf8bcf5f083dd0a4e2b945139f5c6b/src/useNextSanityImage.ts
