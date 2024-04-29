@@ -1,4 +1,4 @@
-import type { SanityImageObject, SanityImageSource } from './types';
+import type { SanityImageObject } from './types';
 
 /**
  * Takes sanity image and pulls
@@ -6,9 +6,9 @@ import type { SanityImageObject, SanityImageSource } from './types';
  */
 
 export default function getImageDimensions(
-	image: SanityImageSource
+	image: SanityImageObject
 ): ImageDimensionsOutput {
-	const { asset, crop } = image as SanityImageObject;
+	const { asset, crop } = image;
 	const baseDimensions = getDimsFromId(asset._ref);
 
 	if (!crop) return baseDimensions;
