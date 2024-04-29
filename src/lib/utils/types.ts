@@ -1,16 +1,13 @@
 import type { SanityClient } from '@sanity/client';
 import type { HTMLImgAttributes } from 'svelte/elements';
-import type {
-	SanityImageSource,
-	SanityImageObject
-} from '@sanity/image-url/lib/types/types.d.ts';
+import type { SanityImageObject } from '@sanity/image-url/lib/types/types.d.ts';
 
 /**
  * Props for the image component
  */
 
 export type Props = {
-	image: SanityImageSource;
+	image: SanityImageObject;
 	sizes: string;
 	client: SanityClient;
 	alt: string;
@@ -27,4 +24,4 @@ type EventCallback = (event: { target: HTMLImageElement }) => void;
  * Export SanityImage
  */
 
-export type { SanityImageSource, SanityImageObject };
+export { SanityImageObject };
