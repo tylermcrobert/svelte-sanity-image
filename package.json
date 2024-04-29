@@ -11,7 +11,9 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"test": "vitest",
+		"pnpm publish": "npm run prepublishOnly && npm publish"
 	},
 	"exports": {
 		".": {
@@ -28,7 +30,7 @@
 		"svelte": "^5.0.0-next.1"
 	},
 	"devDependencies": {
-		"@sanity/client": "^6.15.20",
+		"@sanity/client": "^6.4.12",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/package": "^2.0.0",
@@ -46,7 +48,8 @@
 		"svelte-check": "^3.6.0",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
-		"vite": "^5.0.11"
+		"vite": "^5.0.11",
+		"vitest": "^1.5.2"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
