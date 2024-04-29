@@ -1,58 +1,67 @@
-# create-svelte
+# svelte-sanity-image
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+:warning: Warning: This package is under development and very likely introduce breaking changes.
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
+A Svelte component that allows you to easily create responsive images from images stored in Sanity.io. Inspired by [next-sanity-image](https://github.com/lorenzodejong/next-sanity-image).
 
-## Creating a project
+## 📦&ensp;Installation
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+```
+npm install @tylermcrobert/svelte-sanity-image
 ```
 
-## Developing
+## 🚀&ensp;Usage
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Start by creating a GROQ query to fetch a Sanity document containing an image.
 
-```bash
-npm run dev
+<p><code>routes/+page.ts</code></p>
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```typescript
+import type { SanityImage } from '@tylermcrobert/svelte-sanity-image'; // Optional typing
+
+export async function load() {
+  const imageQuery = `*[_type == 'yourDoc'][0].yourImage`;
+  const image: SanityImage = await client.fetch(imageQuery);
+
+  return { image };
+}
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+Next, supply the `SanityImage` component with the image from Sanity along with your configured sanity client.
 
-## Building
+<p><code>routes/+page.ts</code></p>
 
-To build your library:
-
-```bash
-npm run package
+```svelte
+<SanityImage
+  {client}
+  {image}
+  sizes="(max-width: 600px) 480px, 800px"
+  alt="The Beatles crossing Abbey Road in London."
+/>
 ```
 
-To create a production version of your showcase app:
+This represents a basic implementation of the component.
+Usage is similar to a standard `<img />` tag, but instead takes a `image` and a `client`. For more details on those and other configuration options, refer to the props table.
 
-```bash
-npm run build
-```
+## ⚙️&ensp;Component Props
 
-You can preview the production build with `npm run preview`.
+| Property     | Type           | Description                                                                                                                                             | Required |
+| ------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `client`     | Object         | A configured Sanity client.                                                                                                                             | Yes      |
+| `image`      | Object         | Image data returned from sanity API.                                                                                                                    | Yes      |
+| `alt`        | String         | Descriptive alt text for image accessibility.                                                                                                           | Yes      |
+| `sizes`      | String         | A responsive image size string. Read more about that in the [MDN image reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes). | Yes      |
+| `quality`    | Number         | Image quality. Defaults to `75`                                                                                                                         | –        |
+| `loading`    | String \| null | Set the browser’s native lazy loading attribute. Available options are `"lazy"`, `"eager"`, or `null`. Defaults to `"lazy"`.                            | —        |
+| `autoFormat` | Boolean        | Uses webp format if browser supports it. Defaults to `true`                                                                                             | —        |
+| `aspect`     | Number         | Enforces an aspect ratio on the image.                                                                                                                  | –        |
+| `onLoad`     | Function       | Runs on image load and provides an event object                                                                                                         | —        |
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## 🤝&ensp;Contributing
 
-## Publishing
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
 
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
+## 📜&ensp;License
 
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
-```
+Copyright ©2023 Tyler McRobert. Available under the [MIT License](https://choosealicense.com/licenses/mit/).
