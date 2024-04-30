@@ -29,6 +29,7 @@ export type Props = {
 	aspect?: number;
 	onLoad?: EventCallback;
 	autoFormat?: boolean;
+	srcsetSizes?: number[];
 } & HTMLImgAttributes;
 
 type EventCallbackPayload = { target: HTMLImageElement };
