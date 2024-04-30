@@ -20,31 +20,29 @@ export default function getImageProps({
 	autoFormat,
 	aspect
 }: GetImagePropsOptions): GetImagePropsReturn {
-	const initBuilder = imageUrlBuilder(client).image(image);
+	let urlBuilder = imageUrlBuilder(client).image(image);
 	const { width, height } = getImageDimensions(image);
 
-	function getSrcset() {
-		return DEVICE_SIZES.map(getUrlByWidth).join(', ');
+	if (autoFormat) {
+		urlBuilder = urlBuilder.auto('format');
 	}
 
 	function getUrlByWidth(width: number) {
-		let urlBuilder = initBuilder
-			.width(width)
-			.quality(quality || DEFAULT_QUALITY);
+		urlBuilder = urlBuilder.width(width).quality(quality || DEFAULT_QUALITY);
 
 		if (aspect) {
 			urlBuilder = urlBuilder.height(Math.round(width / aspect));
 		}
 
-		if (autoFormat) {
-			urlBuilder = urlBuilder.auto('format');
-		}
-
 		return `${urlBuilder.url()} ${Math.round(width)}w`;
 	}
 
+	function getSrcset() {
+		return DEVICE_SIZES.map(getUrlByWidth).join(', ');
+	}
+
 	return {
-		src: initBuilder.url(),
+		src: urlBuilder.url(),
 		srcset: getSrcset(),
 		width: Math.round(width),
 		height: aspect ? Math.round(width / aspect) : height
