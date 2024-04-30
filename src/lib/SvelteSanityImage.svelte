@@ -44,9 +44,9 @@
 
 <img
 	{alt}
+	{loading}
 	{...incomingProps}
 	{...transformedProps}
-	{loading}
 	bind:this={node}
 	on:load={handleLoad}
 />
