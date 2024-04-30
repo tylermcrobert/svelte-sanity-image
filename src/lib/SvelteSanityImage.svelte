@@ -13,7 +13,9 @@
 		client,
 		quality,
 		aspect,
-		autoFormat,
+		srcsetSizes,
+		autoFormat = true,
+		loading = 'lazy',
 
 		// The rest are native img attrs
 		...incomingProps
@@ -24,7 +26,8 @@
 		image,
 		quality,
 		aspect,
-		autoFormat
+		autoFormat,
+		srcsetSizes
 	});
 
 	let node: HTMLImageElement;
@@ -41,6 +44,7 @@
 
 <img
 	{alt}
+	{loading}
 	{...incomingProps}
 	{...transformedProps}
 	bind:this={node}

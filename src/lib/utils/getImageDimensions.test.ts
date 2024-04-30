@@ -1,17 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest';
 import getImageDimensions, { getDimsFromRefString } from './getImageDimensions';
-
-const DEFAULT_REF =
-	'image-d8d83c64bb2144283a2644afd2390f2b5e439041-8025x5350-jpg';
-
-const DEFAULT_IMAGE = {
-	_type: 'image',
-	asset: {
-		_ref: DEFAULT_REF,
-		_type: 'reference'
-	}
-};
+import { DEFAULT_IMAGE, DEFAULT_REF } from '$lib/tests/constants';
 
 describe('getDimsFromId', () => {
 	it('Extracts the correct dimensions from the asset _ref', () => {

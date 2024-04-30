@@ -1,6 +1,6 @@
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
-import { DEFAULT_QUALITY, DEVICE_SIZES } from './constants';
+import { DEFAULT_SRCSET_SIZES } from './constants';
 import type { Props } from './types';
 
 // TODO: Allow passing in custom builder from component props?
@@ -8,9 +8,10 @@ import type { Props } from './types';
 //       height and if/when it should affect width instead.
 
 /**
- * Return an object with generated image props
- * @param options
- * @returns object with image attrs
+ * Retrieves the image properties based on the provided options.
+ *
+ * @param options - The options for retrieving the image properties. Corresponds to the props of the SvelteSanityImage component.
+ * @returns The image properties including the source URL, source set, width, and height.
  */
 
 export default function getImageProps({
@@ -18,33 +19,55 @@ export default function getImageProps({
 	client,
 	quality,
 	autoFormat,
-	aspect
+	aspect,
+	srcsetSizes
 }: GetImagePropsOptions): GetImagePropsReturn {
-	const initBuilder = imageUrlBuilder(client).image(image);
+	let urlBuilder = imageUrlBuilder(client).image(image);
 	const { width, height } = getImageDimensions(image);
 
-	function getSrcset() {
-		return DEVICE_SIZES.map(getUrlByWidth).join(', ');
+	/**
+	 * Set urlBuilder attributes first.
+	 */
+
+	if (autoFormat) {
+		urlBuilder = urlBuilder.auto('format');
 	}
 
-	function getUrlByWidth(width: number) {
-		let urlBuilder = initBuilder
-			.width(width)
-			.quality(quality || DEFAULT_QUALITY);
+	if (quality) {
+		urlBuilder = urlBuilder.quality(quality);
+	}
 
-		if (aspect) {
-			urlBuilder = urlBuilder.height(Math.round(width / aspect));
+	/**
+	 * Returns the srcset string for the image based on the available device sizes.
+	 * @returns The srcset string.
+	 */
+
+	function getSrcset() {
+		/**
+		 * Get an image URL with a specific width.
+		 * @param width - The desired width of the image.
+		 * @returns The URL and width descriptor for the image.
+		 */
+
+		function getUrlByWidth(width: number) {
+			urlBuilder = urlBuilder.width(width);
+
+			/**
+			 * If the aspect ratio is defined, the height will be calculated accordingly.
+			 */
+
+			if (aspect) {
+				urlBuilder = urlBuilder.height(Math.round(width / aspect));
+			}
+
+			return `${urlBuilder.url()} ${Math.round(width)}w`;
 		}
 
-		if (autoFormat) {
-			urlBuilder = urlBuilder.auto('format');
-		}
-
-		return `${urlBuilder.url()} ${Math.round(width)}w`;
+		return (srcsetSizes || DEFAULT_SRCSET_SIZES).map(getUrlByWidth).join(', ');
 	}
 
 	return {
-		src: initBuilder.url(),
+		src: urlBuilder.url(),
 		srcset: getSrcset(),
 		width: Math.round(width),
 		height: aspect ? Math.round(width / aspect) : height
@@ -55,8 +78,10 @@ export default function getImageProps({
  * Options for getImageProps()
  */
 
-type GetImagePropsOptions = Pick<Props, ImagePropKey>;
-type ImagePropKey = 'client' | 'image' | 'quality' | 'autoFormat' | 'aspect';
+type GetImagePropsOptions = Pick<
+	Props,
+	'client' | 'image' | 'quality' | 'autoFormat' | 'aspect' | 'srcsetSizes'
+>;
 
 /**
  * Object that is returned from getImageProps()

@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client';
-import type { SanityImageSource } from '$lib';
+import type { SanityImageObject } from '$lib';
 
 export const client = createClient({
 	projectId: '7ehtrhwv',
@@ -10,4 +10,4 @@ export const client = createClient({
 
 export const imagesQuery = `*[_type == 'post'][0].images`;
 
-export type ImagesQuery = { image: SanityImageSource; alt: string }[];
+export type ImagesQuery = { image: SanityImageObject; alt: string }[];

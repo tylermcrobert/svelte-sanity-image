@@ -1,2 +1,3 @@
-export const DEVICE_SIZES = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
-export const DEFAULT_QUALITY = 75;
+export const DEFAULT_SRCSET_SIZES = [
+	640, 750, 828, 1080, 1200, 1920, 2048, 3840
+];
