@@ -21,6 +21,10 @@
 		...incomingProps
 	} = $$restProps as $$Props;
 
+	let node: HTMLImageElement;
+
+	$: isPriority = incomingProps.fetchpriority === 'high';
+
 	let transformedProps = getImageProps({
 		client,
 		image,
@@ -29,8 +33,6 @@
 		autoFormat,
 		srcsetSizes
 	});
-
-	let node: HTMLImageElement;
 
 	function handleLoad() {
 		if (onLoad) onLoad({ target: node });
@@ -42,11 +44,23 @@
 	});
 </script>
 
+<svelte:head>
+	{#if isPriority}
+		<link
+			rel="preload"
+			as="image"
+			imagesrcset={transformedProps.srcset}
+			imagesizes={incomingProps.sizes}
+			fetchpriority="high"
+		/>
+	{/if}
+</svelte:head>
+
 <img
-	{alt}
-	{loading}
 	{...incomingProps}
 	{...transformedProps}
+	{alt}
+	loading={isPriority ? 'eager' : loading}
 	bind:this={node}
 	on:load={handleLoad}
 />
