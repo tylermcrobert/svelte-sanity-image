@@ -1,4 +1,5 @@
-import type { SanityImageObject } from './types';
+import type { SanityImageSource } from '@sanity/image-url/lib/types/types.d.ts';
+import { getRefId } from './getRefId';
 
 /**
  * Output of getImageDimensions()
@@ -16,14 +17,16 @@ export type ImageDimensionsOutput = {
  */
 
 export default function getImageDimensions(
-	image: SanityImageObject
+	image: SanityImageSource
 ): ImageDimensionsOutput {
-	if (!image || !image.asset || !image.asset._ref) {
+	const refId = getRefId(image);
+
+	if (!refId) {
 		throw new Error('Invalid image object provided');
 	}
 
-	const { asset, crop } = image;
-	const baseDimensions = getDimsFromRefString(asset._ref);
+	const baseDimensions = getDimsFromRefString(refId);
+	const crop = image.crop;
 
 	if (!crop) return baseDimensions;
 
