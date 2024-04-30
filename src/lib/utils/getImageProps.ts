@@ -1,6 +1,6 @@
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
-import { DEFAULT_QUALITY, DEVICE_SIZES } from './constants';
+import { DEVICE_SIZES } from './constants';
 import type { Props } from './types';
 
 // TODO: Allow passing in custom builder from component props?
@@ -32,7 +32,9 @@ export default function getImageProps({
 		urlBuilder = urlBuilder.auto('format');
 	}
 
-	urlBuilder = urlBuilder.quality(quality || DEFAULT_QUALITY);
+	if (quality) {
+		urlBuilder = urlBuilder.quality(quality);
+	}
 
 	/**
 	 * Returns the srcset string for the image based on the available device sizes.
