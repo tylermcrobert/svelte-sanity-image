@@ -3,7 +3,8 @@ import type {
 	SanityImageObject,
 	SanityClientLike,
 	SanityModernClientLike,
-	SanityProjectDetails
+	SanityProjectDetails,
+	SanityImageSource
 } from '@sanity/image-url/lib/types/types.d.ts';
 
 /**
@@ -35,8 +36,4 @@ export type Props = {
 type EventCallbackPayload = { target: HTMLImageElement };
 type EventCallback = (event: EventCallbackPayload) => void;
 
-/**
- * Export SanityImage
- */
-
-export type { SanityImageObject };
+export type { SanityImageObject, SanityImageSource };
