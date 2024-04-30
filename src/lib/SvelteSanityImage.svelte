@@ -13,8 +13,9 @@
 		client,
 		quality,
 		aspect,
-		autoFormat,
 		srcsetSizes,
+		autoFormat = true,
+		loading = 'lazy',
 
 		// The rest are native img attrs
 		...incomingProps
@@ -45,6 +46,7 @@
 	{alt}
 	{...incomingProps}
 	{...transformedProps}
+	{loading}
 	bind:this={node}
 	on:load={handleLoad}
 />

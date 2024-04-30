@@ -17,11 +17,11 @@ Start by creating a GROQ query to fetch a Sanity document containing an image.
 <p><code>routes/+page.ts</code></p>
 
 ```typescript
-import type { SanityImage } from '@tylermcrobert/svelte-sanity-image'; // Optional typing
+import type { SanityImageObject } from '@tylermcrobert/svelte-sanity-image'; // Optional typing
 
 export async function load() {
   const imageQuery = `*[_type == 'yourDoc'][0].yourImage`;
-  const image: SanityImage = await client.fetch(imageQuery);
+  const image: SanityImageObject = await client.fetch(imageQuery);
 
   return { image };
 }
@@ -45,17 +45,17 @@ Usage is similar to a standard `<img />` tag, but instead takes a `image` and a 
 
 ## ⚙️&ensp;Component Props
 
-| Property     | Type           | Description                                                                                                                                             | Required |
-| ------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `client`     | Object         | A configured Sanity client.                                                                                                                             | Yes      |
-| `image`      | Object         | Image data returned from sanity API.                                                                                                                    | Yes      |
-| `alt`        | String         | Descriptive alt text for image accessibility.                                                                                                           | Yes      |
-| `sizes`      | String         | A responsive image size string. Read more about that in the [MDN image reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes). | Yes      |
-| `quality`    | Number         | Image quality. Defaults to `75`                                                                                                                         | –        |
-| `loading`    | String \| null | Set the browser’s native lazy loading attribute. Available options are `"lazy"`, `"eager"`, or `null`. Defaults to `"lazy"`.                            | —        |
-| `autoFormat` | Boolean        | Uses webp format if browser supports it. Defaults to `true`                                                                                             | —        |
-| `aspect`     | Number         | Enforces an aspect ratio on the image.                                                                                                                  | –        |
-| `onLoad`     | Function       | Runs on image load and provides an event object                                                                                                         | —        |
+| Property     | Type           | Description                                                                                                                                                         | Required |
+| ------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `client`     | Object         | A configured Sanity client.                                                                                                                                         | Yes      |
+| `image`      | Object         | Image data returned from sanity API.                                                                                                                                | Yes      |
+| `alt`        | String         | Descriptive alt text for image accessibility.                                                                                                                       | Yes      |
+| `sizes`      | String         | A responsive image size string. Read more about that in the [MDN image reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes).             | Yes      |
+| `quality`    | Number         | Quality 0-100. Specify the compression quality (where applicable). Defaults are 75 for JPG and WebP per [Sanity's defaults](https://www.sanity.io/docs/image-urls). | –        |
+| `loading`    | String \| null | Set the browser’s native lazy loading attribute. Available options are `"lazy"`, `"eager"`, or `null`. Defaults to `"lazy"`.                                        | –        |
+| `autoFormat` | Boolean        | Uses webp format if browser supports it. Defaults to `true`                                                                                                         | –        |
+| `aspect`     | Number         | Enforces an aspect ratio on the image.                                                                                                                              | –        |
+| `onLoad`     | Function       | Runs on image load and provides an event object                                                                                                                     | –        |
 
 ## 🤝&ensp;Contributing
 
