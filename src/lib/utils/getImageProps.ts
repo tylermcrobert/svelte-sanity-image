@@ -1,6 +1,6 @@
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
-import { DEVICE_SIZES } from './constants';
+import { DEFAULT_SRCSET_SIZES } from './constants';
 import type { Props } from './types';
 
 // TODO: Allow passing in custom builder from component props?
@@ -19,7 +19,8 @@ export default function getImageProps({
 	client,
 	quality,
 	autoFormat,
-	aspect
+	aspect,
+	srcsetSizes
 }: GetImagePropsOptions): GetImagePropsReturn {
 	let urlBuilder = imageUrlBuilder(client).image(image);
 	const { width, height } = getImageDimensions(image);
@@ -62,7 +63,7 @@ export default function getImageProps({
 			return `${urlBuilder.url()} ${Math.round(width)}w`;
 		}
 
-		return DEVICE_SIZES.map(getUrlByWidth).join(', ');
+		return (srcsetSizes || DEFAULT_SRCSET_SIZES).map(getUrlByWidth).join(', ');
 	}
 
 	return {
@@ -77,8 +78,10 @@ export default function getImageProps({
  * Options for getImageProps()
  */
 
-type GetImagePropsOptions = Pick<Props, ImagePropKey>;
-type ImagePropKey = 'client' | 'image' | 'quality' | 'autoFormat' | 'aspect';
+type GetImagePropsOptions = Pick<
+	Props,
+	'client' | 'image' | 'quality' | 'autoFormat' | 'aspect' | 'srcsetSizes'
+>;
 
 /**
  * Object that is returned from getImageProps()
