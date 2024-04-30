@@ -1,6 +1,5 @@
 import type { HTMLImgAttributes } from 'svelte/elements';
 import type {
-	SanityImageObject,
 	SanityClientLike,
 	SanityModernClientLike,
 	SanityProjectDetails,
@@ -21,7 +20,7 @@ export type SanityClientOrProjectDetails =
  */
 
 export type Props = {
-	image: SanityImageObject;
+	image: SanityImageSource;
 	sizes: string;
 	client: SanityClientOrProjectDetails;
 	alt: string;
@@ -36,4 +35,4 @@ export type Props = {
 type EventCallbackPayload = { target: HTMLImageElement };
 type EventCallback = (event: EventCallbackPayload) => void;
 
-export type { SanityImageObject, SanityImageSource };
+export type { SanityImageSource };
