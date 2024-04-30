@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { client, type ImagesQuery } from '../sanity';
+	import { client } from '../sanity';
 	import Image from '$lib';
 
-	export let data: { images: ImagesQuery };
+	export let data;
 </script>
 
 <div class="images">
