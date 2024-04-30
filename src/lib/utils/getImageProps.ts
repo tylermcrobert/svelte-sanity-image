@@ -8,9 +8,10 @@ import type { Props } from './types';
 //       height and if/when it should affect width instead.
 
 /**
- * Return an object with generated image props
- * @param options
- * @returns object with image attrs
+ * Retrieves the image properties based on the provided options.
+ *
+ * @param options - The options for retrieving the image properties. Corresponds to the props of the SvelteSanityImage component.
+ * @returns The image properties including the source URL, source set, width, and height.
  */
 
 export default function getImageProps({
@@ -23,21 +24,42 @@ export default function getImageProps({
 	let urlBuilder = imageUrlBuilder(client).image(image);
 	const { width, height } = getImageDimensions(image);
 
+	/**
+	 * Set urlBuilder attributes first.
+	 */
+
 	if (autoFormat) {
 		urlBuilder = urlBuilder.auto('format');
 	}
 
-	function getUrlByWidth(width: number) {
-		urlBuilder = urlBuilder.width(width).quality(quality || DEFAULT_QUALITY);
+	urlBuilder = urlBuilder.quality(quality || DEFAULT_QUALITY);
 
-		if (aspect) {
-			urlBuilder = urlBuilder.height(Math.round(width / aspect));
-		}
-
-		return `${urlBuilder.url()} ${Math.round(width)}w`;
-	}
+	/**
+	 * Returns the srcset string for the image based on the available device sizes.
+	 * @returns The srcset string.
+	 */
 
 	function getSrcset() {
+		/**
+		 * Get an image URL with a specific width.
+		 * @param width - The desired width of the image.
+		 * @returns The URL and width descriptor for the image.
+		 */
+
+		function getUrlByWidth(width: number) {
+			urlBuilder = urlBuilder.width(width);
+
+			/**
+			 * If the aspect ratio is defined, the height will be calculated accordingly.
+			 */
+
+			if (aspect) {
+				urlBuilder = urlBuilder.height(Math.round(width / aspect));
+			}
+
+			return `${urlBuilder.url()} ${Math.round(width)}w`;
+		}
+
 		return DEVICE_SIZES.map(getUrlByWidth).join(', ');
 	}
 
