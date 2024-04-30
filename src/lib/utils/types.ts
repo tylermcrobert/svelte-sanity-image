@@ -25,4 +25,4 @@ type EventCallback = (event: EventCallbackPayload) => void;
  * Export SanityImage
  */
 
-export { SanityImageObject };
+export type { SanityImageObject };
