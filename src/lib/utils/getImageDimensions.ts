@@ -7,10 +7,6 @@ import type {
 	SanityAsset
 } from '@sanity/image-url/lib/types/types.d.ts';
 
-/**
- * Output of getImageDimensions()
- */
-
 export type ImageDimensionsOutput = {
 	width: number;
 	height: number;
@@ -49,8 +45,7 @@ export function getReferenceId(image: SanityImageSource): string | undefined {
 }
 
 /**
- * Takes the asset _ref and
- * extracts the initial dimensions from it
+ * Takes the asset _ref and extracts the initial dimensions from it
  */
 
 export function getDimsFromRefString(ref: string): ImageDimensionsOutput {
@@ -72,8 +67,7 @@ export function getDimsFromRefString(ref: string): ImageDimensionsOutput {
 }
 
 /**
- * Takes sanity image and pulls
- * the dimensions and aspect ratio out
+ * Takes sanity image and pulls the dimensions and aspect ratio out
  */
 
 export default function getImageDimensions(
