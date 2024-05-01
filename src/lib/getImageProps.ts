@@ -94,7 +94,11 @@ export function getImageProps({
 			urlBuilder = urlBuilder.auto('format');
 		}
 
-		if (quality) {
+		/**
+		 * Default quality is 75 in Sanity internally so no need to set it if
+		 * the value is 75
+		 */
+		if (quality && quality !== 75) {
 			urlBuilder = urlBuilder.quality(quality);
 		}
 
