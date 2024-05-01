@@ -91,9 +91,11 @@ export default function getImageDimensions(
 	}
 
 	const baseDims = getDimsFromRefString(refId);
-	const crop = image.crop;
+	const crop = (image as SanityImageObject).crop;
 
-	if (!crop) return baseDims;
+	if (!crop) {
+		return baseDims;
+	}
 
 	const croppedWidth = baseDims.width * (1 - (crop.left + crop.right));
 	const croppedHeight = baseDims.height * (1 - (crop.top + crop.bottom));
