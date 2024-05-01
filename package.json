@@ -30,6 +30,7 @@
 		"svelte": "^4.0.0"
 	},
 	"devDependencies": {
+		"@sanity/client": "^6.15.20",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/package": "^2.3.1",
@@ -57,7 +58,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@sanity/client": "^6.15.20",
 		"@sanity/image-url": "^1.0.2"
 	}
 }
