@@ -4,6 +4,8 @@ A Svelte component that allows you to easily create responsive images from image
 
 :warning: This package is under active development and could introduce breaking changes.
 
+See the demo [here](https://svelte-sanity-image.netlify.app/)
+
 ### Features of this package:
 
 - Creates a set of responsive image sizes.
