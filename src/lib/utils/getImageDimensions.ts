@@ -1,5 +1,4 @@
 // https://github.com/lorenzodejong/next-sanity-image/blob/main/src/useNextSanityImage.ts#L33
-
 import type {
 	SanityImageSource,
 	SanityImageObject,
@@ -55,11 +54,9 @@ export function getDimsFromRefString(ref: string): ImageDimensionsOutput {
 		throw new Error(`Invalid asset _ref provided: "${ref}"`);
 	}
 
-	const [width, height] = dimensionsStr
-		.split('x')
-		.map((num: string) => parseInt(num, 10));
+	const [width, height] = dimensionsStr.split('x').map(Number);
 
-	if (isNaN(height) || isNaN(width) || !height || !width) {
+	if (!width || !height || isNaN(width) || isNaN(height)) {
 		throw new Error(`Invalid dimensions in _ref string: "${ref}"`);
 	}
 
