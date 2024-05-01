@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest';
 import { getReferenceId } from '../utils/getImageDimensions';
-import { DEFAULT_REF_ID } from './constants';
+import { BASE_URL, DEFAULT_REF_ID } from './constants';
 
 describe('getReferenceId', () => {
 	it('Returns the correct reference ID for a string image', () => {
-		const image = 'image.jpg';
+		const image = BASE_URL;
 		expect(getReferenceId(image)).toEqual(image);
 	});
 
