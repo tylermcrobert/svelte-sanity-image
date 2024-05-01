@@ -83,8 +83,8 @@ export default function getImageDimensions(
 	const croppedHeight = baseDims.height * (1 - (crop.top + crop.bottom));
 
 	return {
-		width: Math.round(croppedWidth),
-		height: Math.round(croppedHeight),
+		width: croppedWidth,
+		height: croppedHeight,
 		aspectRatio: croppedWidth / croppedHeight
 	};
 }
