@@ -6,17 +6,13 @@ import getImageDimensions from './getImageDimensions';
 import { DEFAULT_IMAGE_SIZES } from './constants';
 import type { SvelteSanityImageProps } from './types';
 
-type GetImagePropsOptions = Pick<
-	SvelteSanityImageProps,
-	'client' | 'image' | 'quality' | 'autoFormat' | 'aspect' | 'srcsetSizes'
->;
-
-export type GetImagePropsReturn = {
-	src: string;
-	srcset: string;
-	width: number;
-	height: number;
-};
+type PropsToInclude =
+	| 'client'
+	| 'image'
+	| 'quality'
+	| 'autoFormat'
+	| 'aspect'
+	| 'srcsetSizes';
 
 /**
  * Retrieves the image properties based on the provided options.
@@ -31,7 +27,12 @@ export default function getImageProps({
 	autoFormat,
 	aspect,
 	srcsetSizes
-}: GetImagePropsOptions): GetImagePropsReturn {
+}: Pick<SvelteSanityImageProps, PropsToInclude>): {
+	src: string;
+	srcset: string;
+	width: number;
+	height: number;
+} {
 	let urlBuilder = imageUrlBuilder(client).image(image);
 
 	const initialDims = getImageDimensions(image);
