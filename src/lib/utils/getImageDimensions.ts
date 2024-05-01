@@ -73,7 +73,7 @@ export function getDimsFromRefString(ref: string): ImageDimensionsOutput {
 
 /**
  * Takes sanity image and pulls
- * the dimensions and  aspect ratio out
+ * the dimensions and aspect ratio out
  */
 
 export default function getImageDimensions(
