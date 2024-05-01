@@ -52,6 +52,31 @@ export function getReferenceId(image: SanityImageSource): string | undefined {
 }
 
 /**
+ * Takes the asset _ref and
+ * extracts the initial dimensions from it
+ */
+
+export function getDimsFromRefString(ref: string): ImageDimensionsOutput {
+	const dimensionsStr = ref.split('-')[2] as string | undefined;
+
+	if (!dimensionsStr) {
+		throw new Error(`Invalid asset _ref provided: "${ref}"`);
+	}
+
+	const [width, height] = dimensionsStr
+		.split('x')
+		.map((num: string) => parseInt(num, 10));
+
+	if (isNaN(height) || isNaN(width) || !height || !width) {
+		throw new Error(`Invalid dimensions in _ref string: "${ref}"`);
+	}
+
+	return { width, height, aspectRatio: width / height };
+}
+
+// Reference: https://github.com/lorenzodejong/next-sanity-image/blob/e1eb37fbcccf8bcf5f083dd0a4e2b945139f5c6b/src/useNextSanityImage.ts
+
+/**
  * Takes sanity image and pulls
  * the dimensions and  aspect ratio out
  */
@@ -79,28 +104,3 @@ export default function getImageDimensions(
 		aspectRatio: croppedWidth / croppedHeight
 	};
 }
-
-/**
- * Takes the asset _ref and
- * extracts the initial dimensions from it
- */
-
-export function getDimsFromRefString(ref: string): ImageDimensionsOutput {
-	const dimensionsStr = ref.split('-')[2] as string | undefined;
-
-	if (!dimensionsStr) {
-		throw new Error(`Invalid asset _ref provided: "${ref}"`);
-	}
-
-	const [width, height] = dimensionsStr
-		.split('x')
-		.map((num: string) => parseInt(num, 10));
-
-	if (isNaN(height) || isNaN(width) || !height || !width) {
-		throw new Error(`Invalid dimensions in _ref string: "${ref}"`);
-	}
-
-	return { width, height, aspectRatio: width / height };
-}
-
-// Reference: https://github.com/lorenzodejong/next-sanity-image/blob/e1eb37fbcccf8bcf5f083dd0a4e2b945139f5c6b/src/useNextSanityImage.ts
