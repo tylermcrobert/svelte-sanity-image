@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest';
-import getImageDimensions, { getDimsFromRefString } from './getImageDimensions';
+import getImageDimensions, {
+	getDimsFromRefString
+} from '../utils/getImageDimensions';
 import { DEFAULT_IMAGE, DEFAULT_REF } from '$lib/tests/constants';
 
 describe('getDimsFromId', () => {
