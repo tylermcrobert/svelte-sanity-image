@@ -19,7 +19,7 @@ export type SanityClientOrProjectDetails =
  * Props for the image component
  */
 
-export type Props = {
+export type SvelteSanityImageProps = {
 	image: SanityImageSource;
 	sizes: string;
 	client: SanityClientOrProjectDetails;
@@ -34,5 +34,3 @@ export type Props = {
 
 type EventCallbackPayload = { target: HTMLImageElement };
 type EventCallback = (event: EventCallbackPayload) => void;
-
-export type { SanityImageSource };
