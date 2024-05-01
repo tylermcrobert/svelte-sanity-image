@@ -5,7 +5,9 @@
 
 	type $$Props = SvelteSanityImageProps;
 
-	// Pull out attributes
+	/**
+	 * Pull out attributes that are specific to this component
+	 */
 	const {
 		alt,
 		onLoad,
@@ -17,7 +19,9 @@
 		autoFormat = true,
 		loading = 'lazy',
 
-		// The rest are native img attrs
+		/**
+		 * The rest are native img attrs
+		 */
 		...incomingProps
 	} = $$restProps as $$Props;
 
@@ -25,7 +29,10 @@
 
 	$: isPriority = incomingProps.fetchpriority === 'high';
 
-	let transformedProps = getImageProps({
+	/**
+	 * Generates transformed image properties based on the provided parameters.
+	 */
+	$: transformedProps = getImageProps({
 		client,
 		image,
 		quality,
