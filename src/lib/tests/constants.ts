@@ -1,5 +1,7 @@
 export const DEFAULT_REF =
 	'image-d8d83c64bb2144283a2644afd2390f2b5e439041-8025x5350-jpg';
+export const DEFAULT_ID =
+	'image-d8d83c64bb2144283a2644afd2390f2b5e439041-8025x5350-jpg';
 
 export const DEFAULT_IMAGE = {
 	_type: 'image',

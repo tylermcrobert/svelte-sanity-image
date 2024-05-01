@@ -69,7 +69,7 @@ export default function getImageProps({
 
 	try {
 		if (!image) {
-			throw new Error('No image object provided');
+			throw new Error('No input "image" provided');
 		}
 
 		const initialDims = getImageDimensions(image);
