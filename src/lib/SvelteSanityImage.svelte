@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import getImageProps from './utils/getImageProps.js';
-	import type { Props } from './utils/types.ts';
+	import type { SvelteSanityImageProps } from './utils/types.ts';
 
 	// Pull out attributes
 	let {
@@ -11,34 +11,60 @@
 		client,
 		quality,
 		aspect,
-		autoFormat,
+		srcsetSizes,
+		autoFormat = true,
+		loading = 'lazy',
 		...props
-	}: Props = $props();
+	}: SvelteSanityImageProps = $props();
 
-	let transformedProps = getImageProps({
-		client,
-		image,
-		quality,
-		aspect,
-		autoFormat
-	});
+	let node = $state<HTMLImageElement>();
+	let isPriority = $derived(props.fetchpriority === 'high');
 
-	let node: HTMLImageElement;
+	/**
+	 * Generates transformed image properties based on the provided parameters.
+	 */
+	let transformedProps = $derived(
+		getImageProps({
+			client,
+			image,
+			quality,
+			aspect,
+			autoFormat,
+			srcsetSizes
+		})
+	);
 
-	function handleLoad() {
+	function handleLoad(node: HTMLImageElement) {
 		if (onLoad) onLoad({ target: node });
 	}
 
 	onMount(() => {
-		const isLoaded = node.complete && node.naturalHeight !== 0;
-		if (isLoaded) handleLoad();
+		if (node) {
+			const isLoaded = node.complete && node.naturalHeight !== 0;
+			if (isLoaded) handleLoad(node);
+		} else {
+			console.error('Image node not found');
+		}
 	});
 </script>
+
+<svelte:head>
+	{#if isPriority}
+		<link
+			rel="preload"
+			as="image"
+			imagesrcset={transformedProps.srcset}
+			imagesizes={props.sizes}
+			fetchpriority="high"
+		/>
+	{/if}
+</svelte:head>
 
 <img
 	{alt}
 	{...props}
 	{...transformedProps}
+	loading={isPriority ? 'eager' : loading}
 	bind:this={node}
-	onload={handleLoad}
+	onload={(e) => handleLoad(e.currentTarget as HTMLImageElement)}
 />
