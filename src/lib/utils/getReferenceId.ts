@@ -19,7 +19,7 @@ import type {
 // 	};
 // }
 
-export function getRefId(image: SanityImageSource): string | undefined {
+export function getReferenceId(image: SanityImageSource): string | undefined {
 	if (typeof image === 'string') {
 		return image;
 	}

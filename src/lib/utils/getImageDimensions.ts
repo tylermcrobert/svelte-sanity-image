@@ -1,5 +1,5 @@
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types.d.ts';
-import { getRefId } from './getRefId';
+import { getReferenceId } from './getReferenceId';
 
 /**
  * Output of getImageDimensions()
@@ -19,7 +19,7 @@ export type ImageDimensionsOutput = {
 export default function getImageDimensions(
 	image: SanityImageSource
 ): ImageDimensionsOutput {
-	const refId = getRefId(image);
+	const refId = getReferenceId(image);
 
 	if (!refId) {
 		throw new Error('Invalid image object provided');
