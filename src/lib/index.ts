@@ -1,7 +1,13 @@
 import Image from './SvelteSanityImage.svelte';
+
 export type * from '@sanity/image-url/lib/types/types.d.ts';
-export type * from './types';
-export * from './getImageProps';
-export * from './getImageDimensions';
+
+export type { SvelteSanityImageProps } from './types';
+export { getImageProps } from './getImageProps';
+export {
+	getReferenceId,
+	getDimsFromRefString,
+	getImageDimensions
+} from './getImageDimensions';
 
 export default Image;

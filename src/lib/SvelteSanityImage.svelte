@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import getImageProps from './getImageProps';
+	import { getImageProps } from './getImageProps';
 	import type { SvelteSanityImageProps } from './types';
 
 	type $$Props = SvelteSanityImageProps;

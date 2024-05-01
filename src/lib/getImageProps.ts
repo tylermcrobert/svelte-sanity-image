@@ -2,7 +2,7 @@
 // TODO: Check to make sure getSrcSet isn't unnescessarily upscaling images when handling aspect
 
 import imageUrlBuilder from '@sanity/image-url';
-import getImageDimensions from './getImageDimensions';
+import { getImageDimensions } from './getImageDimensions';
 import { DEFAULT_IMAGE_SIZES } from './constants';
 import type { SvelteSanityImageProps } from './types';
 
@@ -34,7 +34,7 @@ type EmptyImageProps = {
  * @param options - The options for retrieving the image properties. Corresponds to the props of the SvelteSanityImage component.
  * @returns The image properties including the source URL, source set, width, and height.
  */
-export default function getImageProps({
+export function getImageProps({
 	image,
 	client,
 	quality,
