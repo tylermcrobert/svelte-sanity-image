@@ -1,4 +1,5 @@
 // TODO: Allow passing in custom builder from component props?
+// TODO: Check to make sure getSrcSet isn't unnescessarily upscaling images when handling aspect
 
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
@@ -32,11 +33,47 @@ export default function getImageProps({
 	srcsetSizes
 }: GetImagePropsOptions): GetImagePropsReturn {
 	let urlBuilder = imageUrlBuilder(client).image(image);
-	const { width, height } = getImageDimensions(image);
+
+	const initialDims = getImageDimensions(image);
+	const { height: initHeight, width: initWidth } = initialDims;
 
 	/**
-	 * Set urlBuilder attributes first.
+	 * If the aspect ratio is defined, the height will be calculated accordingly.
+	 * If not, these values will be the same as the initial dimensions.
 	 */
+	const { outputWidth, outputHeight } = (() => {
+		if (!aspect) {
+			return { outputWidth: initWidth, outputHeight: initHeight };
+		}
+
+		const outputWidth = Math.round(Math.min(initWidth, initHeight * aspect));
+		const outputHeight = Math.round(outputWidth / aspect);
+
+		return { outputWidth, outputHeight };
+	})();
+
+	/**
+	 * Returns the srcset string for the image based on the available device sizes.
+	 * @returns The srcset string.
+	 */
+	function getSrcset() {
+		return (srcsetSizes || DEFAULT_IMAGE_SIZES)
+			.map((w) => {
+				urlBuilder = urlBuilder.width(w);
+
+				/**
+				 * If the aspect ratio is defined, the height will be calculated accordingly. We don't modify
+				 * the width because it's being tracked to the specific srcset.
+				 */
+				if (aspect) {
+					const newHeight = Math.round(w / aspect);
+					urlBuilder = urlBuilder.height(newHeight);
+				}
+
+				return `${urlBuilder.url()} ${Math.round(w)}w`;
+			})
+			.join(', ');
+	}
 
 	if (autoFormat) {
 		urlBuilder = urlBuilder.auto('format');
@@ -46,41 +83,14 @@ export default function getImageProps({
 		urlBuilder = urlBuilder.quality(quality);
 	}
 
-	/**
-	 * Returns the srcset string for the image based on the available device sizes.
-	 * @returns The srcset string.
-	 */
-
-	function getSrcset() {
-		/**
-		 * Get an image URL with a specific width.
-		 * @param width - The desired width of the image.
-		 * @returns The URL and width descriptor for the image.
-		 */
-
-		function getUrlByWidth(width: number) {
-			urlBuilder = urlBuilder.width(width);
-
-			/**
-			 * If the aspect ratio is defined, the height will be calculated accordingly.
-			 */
-
-			if (aspect) {
-				urlBuilder = urlBuilder.height(Math.round(width / aspect));
-			}
-
-			return `${urlBuilder.url()} ${Math.round(width)}w`;
-		}
-
-		return (srcsetSizes || DEFAULT_IMAGE_SIZES)
-			.map((w) => getUrlByWidth(w))
-			.join(', ');
+	if (aspect) {
+		urlBuilder = urlBuilder.height(outputHeight).width(outputHeight);
 	}
 
 	return {
 		src: urlBuilder.url(),
 		srcset: getSrcset(),
-		width: Math.round(width),
-		height: aspect ? Math.round(width / aspect) : height
+		width: outputWidth,
+		height: outputHeight
 	};
 }
