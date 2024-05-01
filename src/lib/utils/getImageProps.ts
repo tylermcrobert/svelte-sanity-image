@@ -1,6 +1,6 @@
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
-import { DEFAULT_SRCSET_SIZES } from './constants';
+import { DEFAULT_IMAGE_SIZES } from './constants';
 import type { SvelteSanityImageProps } from './types';
 
 // TODO: Allow passing in custom builder from component props?
@@ -63,7 +63,7 @@ export default function getImageProps({
 			return `${urlBuilder.url()} ${Math.round(width)}w`;
 		}
 
-		return (srcsetSizes || DEFAULT_SRCSET_SIZES)
+		return (srcsetSizes || DEFAULT_IMAGE_SIZES)
 			.map((w) => getUrlByWidth(w))
 			.join(', ');
 	}
