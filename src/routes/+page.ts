@@ -1,5 +1,4 @@
-import type { SanityImageSource } from '$lib';
-import type { SanityAsset } from '@sanity/image-url/lib/types/types';
+import type { SanityImageSource, SanityAsset } from '$lib';
 import { client } from '../sanity';
 
 const imagesQuery = `*[_type == 'post'][0]{
