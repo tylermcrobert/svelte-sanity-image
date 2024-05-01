@@ -10,15 +10,6 @@ export type ImageDimensionsOutput = {
 	aspectRatio: number;
 };
 
-// TODO: Add tests
-// TODO: catch this:
-
-// interface SanityImageWithAssetStub {
-// 	asset: {
-// 		url: string;
-// 	};
-// }
-
 /**
  * Extracts the reference ID from a Sanity image source.
  * @param image - The Sanity image source.
