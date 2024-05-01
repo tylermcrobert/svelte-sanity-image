@@ -35,24 +35,6 @@ export default function getImageProps({
 } {
 	let urlBuilder = imageUrlBuilder(client).image(image);
 
-	const initialDims = getImageDimensions(image);
-	const { height: initHeight, width: initWidth } = initialDims;
-
-	/**
-	 * If the aspect ratio is defined, the height will be calculated accordingly.
-	 * If not, these values will be the same as the initial dimensions.
-	 */
-	const { outputWidth, outputHeight } = (() => {
-		if (!aspect) {
-			return { outputWidth: initWidth, outputHeight: initHeight };
-		}
-
-		const outputWidth = Math.round(Math.min(initWidth, initHeight * aspect));
-		const outputHeight = Math.round(outputWidth / aspect);
-
-		return { outputWidth, outputHeight };
-	})();
-
 	/**
 	 * Returns the srcset string for the image based on the available device sizes.
 	 * @returns The srcset string.
@@ -76,22 +58,50 @@ export default function getImageProps({
 			.join(', ');
 	}
 
-	if (autoFormat) {
-		urlBuilder = urlBuilder.auto('format');
-	}
+	try {
+		const initialDims = getImageDimensions(image);
+		const { height: initHeight, width: initWidth } = initialDims;
 
-	if (quality) {
-		urlBuilder = urlBuilder.quality(quality);
-	}
+		/**
+		 * If the aspect ratio is defined, the height will be calculated accordingly.
+		 * If not, these values will be the same as the initial dimensions.
+		 */
+		const { outputWidth, outputHeight } = (() => {
+			if (!aspect) {
+				return { outputWidth: initWidth, outputHeight: initHeight };
+			}
 
-	if (aspect) {
-		urlBuilder = urlBuilder.height(outputHeight).width(outputHeight);
-	}
+			const outputWidth = Math.round(Math.min(initWidth, initHeight * aspect));
+			const outputHeight = Math.round(outputWidth / aspect);
 
-	return {
-		src: urlBuilder.url(),
-		srcset: getSrcset(),
-		width: outputWidth,
-		height: outputHeight
-	};
+			return { outputWidth, outputHeight };
+		})();
+
+		if (autoFormat) {
+			urlBuilder = urlBuilder.auto('format');
+		}
+
+		if (quality) {
+			urlBuilder = urlBuilder.quality(quality);
+		}
+
+		if (aspect) {
+			urlBuilder = urlBuilder.height(outputHeight).width(outputHeight);
+		}
+
+		return {
+			src: urlBuilder.url(),
+			srcset: getSrcset(),
+			width: outputWidth,
+			height: outputHeight
+		};
+	} catch (e) {
+		console.error('Error in getImageProps', e);
+		return {
+			src: '',
+			srcset: '',
+			width: 0,
+			height: 0
+		};
+	}
 }
