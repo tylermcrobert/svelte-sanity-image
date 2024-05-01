@@ -1,3 +1,5 @@
+// https://github.com/lorenzodejong/next-sanity-image/blob/main/src/useNextSanityImage.ts#L33
+
 import type {
 	SanityImageSource,
 	SanityImageObject,
@@ -21,12 +23,7 @@ export type ImageDimensionsOutput = {
  * @returns The reference ID of the image, or undefined if not found.
  */
 
-// TODO:
-// Add tests
-
-// REFERENCE
-// https://github.com/lorenzodejong/next-sanity-image/blob/3b11583385d69a3e195aa142c974d2e014d492c6/src/useNextSanityImage.ts#L33
-
+// TODO: Add tests
 // TODO: catch this:
 
 // interface SanityImageWithAssetStub {
@@ -73,8 +70,6 @@ export function getDimsFromRefString(ref: string): ImageDimensionsOutput {
 
 	return { width, height, aspectRatio: width / height };
 }
-
-// Reference: https://github.com/lorenzodejong/next-sanity-image/blob/e1eb37fbcccf8bcf5f083dd0a4e2b945139f5c6b/src/useNextSanityImage.ts
 
 /**
  * Takes sanity image and pulls
