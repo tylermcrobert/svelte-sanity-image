@@ -3,6 +3,8 @@
 	import Image from '$lib';
 
 	export let data;
+
+	console.log(data);
 </script>
 
 <hr />
@@ -10,7 +12,7 @@
 <h2>Raw:</h2>
 <div class="images">
 	{#each data.raw as { image, alt }}
-		<Image {image} {client} {alt} sizes="100px" />
+		<Image image={{ image: '' }} {client} {alt} sizes="100px" />
 	{/each}
 </div>
 
