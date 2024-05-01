@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest';
 import { getReferenceId } from '../utils/getImageDimensions';
-import { DEFAULT_ID, DEFAULT_REF } from './constants';
+import { DEFAULT_REF_ID } from './constants';
 
 describe('getReferenceId', () => {
 	it('Returns the correct reference ID for a string image', () => {
@@ -12,7 +12,7 @@ describe('getReferenceId', () => {
 	it('Returns the correct _id for an image with asset property', () => {
 		const image = {
 			asset: {
-				_id: DEFAULT_ID
+				_id: DEFAULT_REF_ID
 			}
 		};
 		expect(getReferenceId(image)).toEqual(image.asset._id);
@@ -21,7 +21,7 @@ describe('getReferenceId', () => {
 	it('Returns the correct _ref for an image with asset property', () => {
 		const image = {
 			asset: {
-				_ref: DEFAULT_REF
+				_ref: DEFAULT_REF_ID
 			}
 		};
 		expect(getReferenceId(image)).toEqual(image.asset._ref);
@@ -29,7 +29,7 @@ describe('getReferenceId', () => {
 
 	it('Returns the correct reference ID for an image with _ref property', () => {
 		const image = {
-			_ref: DEFAULT_REF
+			_ref: DEFAULT_REF_ID
 		};
 		expect(getReferenceId(image)).toEqual(image._ref);
 	});
