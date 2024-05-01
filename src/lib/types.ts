@@ -10,10 +10,12 @@ import type {
  * Sanity client or project details
  */
 
-export type SanityClientOrProjectDetails =
+type SanityClientOrProjectDetails =
 	| SanityClientLike
 	| SanityProjectDetails
 	| SanityModernClientLike;
+
+type EventCallback = (event: { target: HTMLImageElement }) => void;
 
 /**
  * Props for the image component
@@ -31,6 +33,3 @@ export type SvelteSanityImageProps = {
 	autoFormat?: boolean;
 	srcsetSizes?: number[];
 } & HTMLImgAttributes;
-
-type EventCallbackPayload = { target: HTMLImageElement };
-type EventCallback = (event: EventCallbackPayload) => void;

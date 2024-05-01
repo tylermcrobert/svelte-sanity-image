@@ -67,7 +67,7 @@ export function getDimsFromRefString(ref: string): ImageDimensionsOutput {
  * @returns The image dimensions and aspect ratio.
  * @throws Error if the image object is invalid.
  */
-export default function getImageDimensions(
+export function getImageDimensions(
 	image: SanityImageSource
 ): ImageDimensionsOutput {
 	const refId = getReferenceId(image);
