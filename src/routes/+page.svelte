@@ -1,12 +1,33 @@
 <script lang="ts">
-	import { client, type ImagesQuery } from '../sanity';
+	import { client } from '../sanity';
 	import Image from '$lib';
 
-	export let data: { images: ImagesQuery };
+	export let data;
 </script>
 
+<hr />
+
+<div>Raw:</div>
 <div class="images">
-	{#each data.images as { image, alt }}
+	{#each data.raw as { image, alt }}
+		<Image {image} {client} {alt} sizes="100px" />
+	{/each}
+</div>
+
+<hr />
+
+<div>Refs:</div>
+<div class="images">
+	{#each data.refs as { image, alt }}
+		<Image {image} {client} {alt} sizes="100px" />
+	{/each}
+</div>
+
+<hr />
+
+<div>Expanded:</div>
+<div class="images">
+	{#each data.extended as { image, alt }}
 		<Image {image} {client} {alt} sizes="100px" />
 	{/each}
 </div>

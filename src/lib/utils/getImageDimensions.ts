@@ -1,8 +1,11 @@
-import type { SanityImageObject } from './types';
+// https://github.com/lorenzodejong/next-sanity-image/blob/main/src/useNextSanityImage.ts#L33
 
-/**
- * Output of getImageDimensions()
- */
+import type {
+	SanityImageSource,
+	SanityImageObject,
+	SanityReference,
+	SanityAsset
+} from '@sanity/image-url/lib/types/types.d.ts';
 
 export type ImageDimensionsOutput = {
 	width: number;
@@ -11,41 +14,42 @@ export type ImageDimensionsOutput = {
 };
 
 /**
- * Takes sanity image and pulls
- * the dimensions and  aspect ratio out
+ * Retrieves the reference ID of a Sanity image.
+ * @param image - The Sanity image source.
+ * @returns The reference ID of the image, or undefined if not found.
  */
 
-export default function getImageDimensions(
-	image: SanityImageObject
-): ImageDimensionsOutput {
-	if (!image || !image.asset || !image.asset._ref) {
-		throw new Error('Invalid image object provided');
+// TODO: Add tests
+// TODO: catch this:
+
+// interface SanityImageWithAssetStub {
+// 	asset: {
+// 		url: string;
+// 	};
+// }
+
+export function getReferenceId(image: SanityImageSource): string | undefined {
+	if (typeof image === 'string') {
+		return image;
 	}
 
-	const { asset, crop } = image;
-	const baseDimensions = getDimsFromRefString(asset._ref);
+	const obj = image as SanityImageObject;
+	const ref = image as SanityReference;
+	const img = image as SanityAsset;
 
-	if (!crop) return baseDimensions;
+	if (obj.asset) {
+		return obj.asset._ref || (obj.asset as SanityAsset)._id;
+	}
 
-	const { width, height } = baseDimensions;
-
-	const croppedWidth = width * (1 - (crop.left + crop.right));
-	const croppedHeight = height * (1 - (crop.top + crop.bottom));
-
-	return {
-		width: croppedWidth,
-		height: croppedHeight,
-		aspectRatio: croppedWidth / croppedHeight
-	};
+	return ref._ref || img._id || undefined;
 }
 
 /**
- * Takes the asset _ref and
- * extracts the initial dimensions from it
+ * Takes the asset _ref and extracts the initial dimensions from it
  */
 
 export function getDimsFromRefString(ref: string): ImageDimensionsOutput {
-	const dimensionsStr = ref.split('-')[2];
+	const dimensionsStr = ref.split('-')[2] as string | undefined;
 
 	if (!dimensionsStr) {
 		throw new Error(`Invalid asset _ref provided: "${ref}"`);
@@ -59,11 +63,35 @@ export function getDimsFromRefString(ref: string): ImageDimensionsOutput {
 		throw new Error(`Invalid dimensions in _ref string: "${ref}"`);
 	}
 
-	return {
-		width,
-		height,
-		aspectRatio: width / height
-	};
+	return { width, height, aspectRatio: width / height };
 }
 
-// Reference: https://github.com/lorenzodejong/next-sanity-image/blob/e1eb37fbcccf8bcf5f083dd0a4e2b945139f5c6b/src/useNextSanityImage.ts
+/**
+ * Takes sanity image and pulls the dimensions and aspect ratio out
+ */
+
+export default function getImageDimensions(
+	image: SanityImageSource
+): ImageDimensionsOutput {
+	const refId = getReferenceId(image);
+
+	if (!refId) {
+		throw new Error('Invalid image object provided');
+	}
+
+	const baseDims = getDimsFromRefString(refId);
+	const crop = (image as SanityImageObject).crop;
+
+	if (!crop) {
+		return baseDims;
+	}
+
+	const croppedWidth = baseDims.width * (1 - (crop.left + crop.right));
+	const croppedHeight = baseDims.height * (1 - (crop.top + crop.bottom));
+
+	return {
+		width: croppedWidth,
+		height: croppedHeight,
+		aspectRatio: croppedWidth / croppedHeight
+	};
+}

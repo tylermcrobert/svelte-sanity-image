@@ -1,11 +1,22 @@
+// TODO: Allow passing in custom builder from component props?
+// TODO: Consider how enforcedAspect alters height and if/when it should affect width instead.
+
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
-import { DEFAULT_SRCSET_SIZES } from './constants';
-import type { Props } from './types';
+import { DEFAULT_IMAGE_SIZES } from './constants';
+import type { SvelteSanityImageProps } from './types';
 
-// TODO: Allow passing in custom builder from component props?
-// TODO: Consider how enforcedAspect alters
-//       height and if/when it should affect width instead.
+type GetImagePropsOptions = Pick<
+	SvelteSanityImageProps,
+	'client' | 'image' | 'quality' | 'autoFormat' | 'aspect' | 'srcsetSizes'
+>;
+
+export type GetImagePropsReturn = {
+	src: string;
+	srcset: string;
+	width: number;
+	height: number;
+};
 
 /**
  * Retrieves the image properties based on the provided options.
@@ -13,7 +24,6 @@ import type { Props } from './types';
  * @param options - The options for retrieving the image properties. Corresponds to the props of the SvelteSanityImage component.
  * @returns The image properties including the source URL, source set, width, and height.
  */
-
 export default function getImageProps({
 	image,
 	client,
@@ -63,7 +73,9 @@ export default function getImageProps({
 			return `${urlBuilder.url()} ${Math.round(width)}w`;
 		}
 
-		return (srcsetSizes || DEFAULT_SRCSET_SIZES).map(getUrlByWidth).join(', ');
+		return (srcsetSizes || DEFAULT_IMAGE_SIZES)
+			.map((w) => getUrlByWidth(w))
+			.join(', ');
 	}
 
 	return {
@@ -73,22 +85,3 @@ export default function getImageProps({
 		height: aspect ? Math.round(width / aspect) : height
 	};
 }
-
-/**
- * Options for getImageProps()
- */
-
-type GetImagePropsOptions = Pick<
-	Props,
-	'client' | 'image' | 'quality' | 'autoFormat' | 'aspect' | 'srcsetSizes'
->;
-
-/**
- * Object that is returned from getImageProps()
- */
-export type GetImagePropsReturn = {
-	src: string;
-	srcset: string;
-	width: number;
-	height: number;
-};
