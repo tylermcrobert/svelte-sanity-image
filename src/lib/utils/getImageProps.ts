@@ -99,7 +99,7 @@ export default function getImageProps({
 		}
 
 		if (aspect) {
-			urlBuilder = urlBuilder.height(outputHeight).width(outputHeight);
+			urlBuilder = urlBuilder.height(outputHeight).width(outputWidth);
 		}
 
 		return {
