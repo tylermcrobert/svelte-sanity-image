@@ -1,5 +1,4 @@
 // TODO: Allow passing in custom builder from component props?
-// TODO: Consider how enforcedAspect alters height and if/when it should affect width instead.
 
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
