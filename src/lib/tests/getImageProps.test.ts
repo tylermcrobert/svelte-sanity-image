@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import getImageProps from '../utils/getImageProps';
+import getImageProps from '../getImageProps';
 import { client } from '../../sanity';
 import { BASE_URL, DEFAULT_IMAGE } from '$lib/tests/constants';
 
