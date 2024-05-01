@@ -1,8 +1,7 @@
 import Image from './SvelteSanityImage.svelte';
-import getImageDimensions from './utils/getImageDimensions';
-import imageUrlBuilder from '@sanity/image-url';
-
-export type { SanityImageSource, Props } from './utils/types';
-export { getImageDimensions, Image, imageUrlBuilder };
+export type * from '@sanity/image-url/lib/types/types.d.ts';
+export type * from './utils/types';
+export * from './utils/getImageProps';
+export * from './utils/getImageDimensions';
 
 export default Image;

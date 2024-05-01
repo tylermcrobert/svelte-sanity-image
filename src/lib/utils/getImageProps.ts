@@ -1,7 +1,7 @@
 import imageUrlBuilder from '@sanity/image-url';
 import getImageDimensions from './getImageDimensions';
 import { DEFAULT_SRCSET_SIZES } from './constants';
-import type { Props } from './types';
+import type { SvelteSanityImageProps } from './types';
 
 // TODO: Allow passing in custom builder from component props?
 // TODO: Consider how enforcedAspect alters
@@ -63,7 +63,9 @@ export default function getImageProps({
 			return `${urlBuilder.url()} ${Math.round(width)}w`;
 		}
 
-		return (srcsetSizes || DEFAULT_SRCSET_SIZES).map(getUrlByWidth).join(', ');
+		return (srcsetSizes || DEFAULT_SRCSET_SIZES)
+			.map((w) => getUrlByWidth(w))
+			.join(', ');
 	}
 
 	return {
@@ -79,7 +81,7 @@ export default function getImageProps({
  */
 
 type GetImagePropsOptions = Pick<
-	Props,
+	SvelteSanityImageProps,
 	'client' | 'image' | 'quality' | 'autoFormat' | 'aspect' | 'srcsetSizes'
 >;
 
