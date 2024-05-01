@@ -58,7 +58,7 @@ Usage is similar to a standard `<img />` tag, but instead takes a `image` and a 
 ## ⚙️&ensp;Component Props
 
 | Property     | Type           | Description                                                                                                                                                         | Required |
-| ------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --- |
+| ------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | `client`     | Object         | A configured Sanity client.                                                                                                                                         | Yes      |
 | `image`      | Object         | Image data returned from sanity API.                                                                                                                                | Yes      |
 | `alt`        | String \| null | Descriptive alt text for image accessibility.                                                                                                                       | Yes      |
@@ -67,7 +67,7 @@ Usage is similar to a standard `<img />` tag, but instead takes a `image` and a 
 | `loading`    | String \| null | Set the browser’s native lazy loading attribute. Available options are `"lazy"`, `"eager"`, or `null`. Defaults to `"lazy"`.                                        | –        |
 | `autoFormat` | Boolean        | Uses webp format if browser supports it. Defaults to `true`                                                                                                         | –        |
 | `aspect`     | Number         | Enforces an aspect ratio on the image.                                                                                                                              | –        |
-| `onLoad`     | Function       | Runs on image load and provides an event object                                                                                                                     |          | –   |
+| `onLoad`     | Function       | Runs on image load and provides an event object                                                                                                                     |          |
 
 ## 🧰&ensp;Utilities
 
