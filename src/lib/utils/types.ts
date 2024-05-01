@@ -23,7 +23,7 @@ export type SvelteSanityImageProps = {
 	image: SanityImageSource;
 	sizes: string;
 	client: SanityClientOrProjectDetails;
-	alt: string;
+	alt: string | null;
 
 	quality?: number;
 	aspect?: number;
