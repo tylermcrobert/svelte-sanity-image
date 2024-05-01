@@ -14,6 +14,20 @@ type PropsToInclude =
 	| 'aspect'
 	| 'srcsetSizes';
 
+type ImageProps = {
+	src: string;
+	srcset: string;
+	width: number;
+	height: number;
+};
+
+type EmptyImageProps = {
+	src: undefined;
+	srcset: undefined;
+	width: undefined;
+	height: undefined;
+};
+
 /**
  * Retrieves the image properties based on the provided options.
  *
@@ -27,12 +41,7 @@ export default function getImageProps({
 	autoFormat,
 	aspect,
 	srcsetSizes
-}: Pick<SvelteSanityImageProps, PropsToInclude>): {
-	src: string;
-	srcset: string;
-	width: number;
-	height: number;
-} {
+}: Pick<SvelteSanityImageProps, PropsToInclude>): ImageProps | EmptyImageProps {
 	let urlBuilder = imageUrlBuilder(client).image(image);
 
 	/**
@@ -96,12 +105,13 @@ export default function getImageProps({
 			height: outputHeight
 		};
 	} catch (e) {
-		console.error('Error in getImageProps', e);
+		console.error('Error building image props:', e);
+
 		return {
-			src: '',
-			srcset: '',
-			width: 0,
-			height: 0
+			src: undefined,
+			srcset: undefined,
+			width: undefined,
+			height: undefined
 		};
 	}
 }
