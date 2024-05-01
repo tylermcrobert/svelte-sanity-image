@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest';
 import { getDimsFromRefString } from '../utils/getImageDimensions';
-import { DEFAULT_REF } from '$lib/tests/constants';
+import { DEFAULT_REF_ID } from '$lib/tests/constants';
 
 describe('getDimsFromId', () => {
 	it('Extracts the correct dimensions from the asset _ref', () => {
-		expect(getDimsFromRefString(DEFAULT_REF)).toEqual({
+		expect(getDimsFromRefString(DEFAULT_REF_ID)).toEqual({
 			width: 8025,
 			height: 5350,
 			aspectRatio: 1.5
