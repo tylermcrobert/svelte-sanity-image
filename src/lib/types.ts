@@ -26,7 +26,6 @@ export type SvelteSanityImageProps = {
 	sizes: string;
 	client: SanityClientOrProjectDetails;
 	alt: string | null;
-
 	quality?: number;
 	aspect?: number;
 	onLoad?: EventCallback;

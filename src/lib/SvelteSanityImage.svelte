@@ -1,36 +1,29 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { getImageProps } from './getImageProps';
-	import type { SvelteSanityImageProps } from './types';
+	import type { SvelteSanityImageProps as Props } from './types';
 
-	type $$Props = SvelteSanityImageProps;
+	type $$Props = Props;
 
-	/**
-	 * Pull out attributes that are specific to this component
-	 */
-	let {
-		alt,
-		onLoad,
-		image,
-		client,
-		quality,
-		aspect,
-		srcsetSizes,
-		autoFormat = true,
-		loading = 'lazy',
-
-		/**
-		 * The rest are native img attrs
-		 */
-		...incomingProps
-	} = $$restProps as $$Props;
+	export let image: Props['image'];
+	export let alt: Props['alt'];
+	export let client: Props['client'];
+	export let sizes: Props['sizes'];
+	export let quality: Props['quality'] = undefined;
+	export let aspect: Props['aspect'] = undefined;
+	export let autoFormat: Props['autoFormat'] = true;
+	export let srcsetSizes: Props['srcsetSizes'] = undefined;
+	export let onLoad: Props['onLoad'] = undefined;
+	export let loading: Props['loading'] = 'lazy';
+	export let fetchpriority: Props['fetchpriority'] = undefined;
 
 	let node: HTMLImageElement;
 
-	$: isPriority = incomingProps.fetchpriority === 'high';
+	$: isPriority = fetchpriority === 'high';
 
 	/**
-	 * Generates transformed image properties based on the provided parameters.
+	 * Generates transformed image properties
+	 * based on the provided parameters.
 	 */
 	$: transformedProps = getImageProps({
 		client,
@@ -57,16 +50,18 @@
 			rel="preload"
 			as="image"
 			imagesrcset={transformedProps.srcset}
-			imagesizes={incomingProps.sizes}
+			imagesizes={sizes}
 			fetchpriority="high"
 		/>
 	{/if}
 </svelte:head>
 
 <img
-	{...incomingProps}
+	{...$$restProps}
 	{...transformedProps}
 	{alt}
+	{sizes}
+	{fetchpriority}
 	loading={isPriority ? 'eager' : loading}
 	bind:this={node}
 	on:load={handleLoad}
