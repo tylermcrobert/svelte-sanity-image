@@ -8,7 +8,7 @@
 	/**
 	 * Pull out attributes that are specific to this component
 	 */
-	const {
+	let {
 		alt,
 		onLoad,
 		image,
