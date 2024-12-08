@@ -3,18 +3,17 @@
 	import type { SvelteSanityImageProps } from './types.js';
 	import { getImageProps } from './getImageProps.js';
 
-	type Props = SvelteSanityImageProps & HTMLImgAttributes;
+	type Props = SvelteSanityImageProps &
+		Omit<HTMLImgAttributes, 'src' | 'srcset' | 'width' | 'height'>;
 
 	let { image, client, aspect, srcsetSizes, ...props }: Props = $props();
 
-	let imageProps = $derived(
-		getImageProps({
-			client,
-			image,
+	let responsiveProps = $derived(
+		getImageProps(image, client, {
 			aspect,
 			srcsetSizes
 		})
 	);
 </script>
 
-<img {...imageProps} />
+<img {...props} {...responsiveProps} />

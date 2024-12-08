@@ -4,9 +4,11 @@
 import imageUrlBuilder from '@sanity/image-url';
 import { getImageDimensions } from './getImageDimensions.js';
 import { DEFAULT_IMAGE_SIZES } from './constants.js';
-import type { SvelteSanityImageProps } from './types.js';
-
-type PropsToInclude = 'client' | 'image' | 'aspect' | 'srcsetSizes';
+import type {
+	SanityClientOrProjectDetails,
+	SanityImageSource,
+	SvelteSanityImageProps
+} from './types.js';
 
 type ImageProps = {
 	src: string;
@@ -28,12 +30,11 @@ type EmptyImageProps = {
  * @param options - The options for retrieving the image properties. Corresponds to the props of the SvelteSanityImage component.
  * @returns The image properties including the source URL, source set, width, and height.
  */
-export function getImageProps({
-	image,
-	client,
-	aspect,
-	srcsetSizes
-}: Pick<SvelteSanityImageProps, PropsToInclude>): ImageProps | EmptyImageProps {
+export function getImageProps(
+	image: SanityImageSource,
+	client: SanityClientOrProjectDetails,
+	{ aspect, srcsetSizes }: Pick<SvelteSanityImageProps, 'aspect' | 'srcsetSizes'>
+): ImageProps | EmptyImageProps {
 	let urlBuilder = imageUrlBuilder(client).image(image);
 
 	/**
