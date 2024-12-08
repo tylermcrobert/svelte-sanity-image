@@ -9,7 +9,9 @@ import type {
  * Sanity client or project details
  */
 
-type SanityClientOrProjectDetails =
+export { type SanityImageSource };
+
+export type SanityClientOrProjectDetails =
 	| SanityClientLike
 	| SanityProjectDetails
 	| SanityModernClientLike;
