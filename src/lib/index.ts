@@ -1,1 +1,3 @@
-// Reexport your entry components here
+import SvelteSanityImage from './SvelteSanityImage.svelte';
+
+export default SvelteSanityImage;
