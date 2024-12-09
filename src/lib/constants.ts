@@ -10,12 +10,12 @@
 export const DEFAULT_IMAGE_SIZES = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
 
 export const VALID_BUILDER_OPTIONS = new Set([
-	// 'blur',
+	'blur',
 	// 'bg',
 	// 'dpr',
 	'width',
 	'height',
-	'quality'
+	'quality',
 	// 'focalPoint',
 	// 'maxWidth',
 	// 'maxHeight',
@@ -23,7 +23,7 @@ export const VALID_BUILDER_OPTIONS = new Set([
 	// 'minHeight',
 	// 'sharpen',
 	// 'rect',
-	// 'format',
+	'format'
 	// 'invert',
 	// 'orientation',
 	// 'quality',
