@@ -14,7 +14,7 @@ describe('getImageProps', () => {
 		// TODO
 	});
 
-	it('tthrows an error when the image is not provided', () => {
+	it('trows an error when the image is not provided', () => {
 		// TODO
 	});
 
