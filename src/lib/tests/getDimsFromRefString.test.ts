@@ -5,8 +5,8 @@ import { DEFAULT_REF_ID } from './constants.js';
 describe('getDimsFromId', () => {
 	it('Extracts the correct dimensions from the asset _ref', () => {
 		expect(getDimsFromRefString(DEFAULT_REF_ID)).toEqual({
-			width: 8025,
-			height: 5350,
+			width: 1200,
+			height: 800,
 			aspectRatio: 1.5
 		});
 	});
