@@ -35,19 +35,17 @@ export function getImageProps(
 	{
 		width: userSetWidth,
 		height: userSetHeight,
-		aspect,
+		aspect: requestedAspect,
 		srcsetSizes,
 		...options
 	}: GetImagePropsOptions = {}
 ): ImageProps | EmptyImageProps {
 	try {
 		if (!image) {
-			// Todo: add test
 			throw new Error('No input "image" provided');
 		}
 
 		if (!client) {
-			// TODO: add test
 			throw new Error('Sanity client not provided.');
 		}
 
@@ -59,7 +57,6 @@ export function getImageProps(
 		 * If the aspect ratio is defined, the height will be calculated accordingly.
 		 * If not, these values will be the same as the initial dimensions.
 		 */
-
 		const { outputWidth, outputHeight } = (() => {
 			/**
 			 * 1.1 if user's height and width are set, return the user defined width + height
@@ -74,27 +71,46 @@ export function getImageProps(
 			/**
 			 * 1.2 If not, start building from original,
 			 */
-
 			const { width: assetSourceWidth, height: assetSourceHeight } = getImageDimensions(image);
 
 			/**
-			 * 1.3 if aspect is set, return based on that.
+			 * A. calculate height based on user set width
 			 */
-			if (aspect) {
-				//TODO: change based on fit/crop/etc?
-				const outputWidth = Math.round(Math.min(assetSourceHeight, assetSourceHeight * aspect));
-				const outputHeight = Math.round(outputWidth / aspect);
-
+			if (userSetWidth) {
 				return {
-					outputWidth,
-					outputHeight
+					outputWidth: userSetWidth,
+					outputHeight: Math.round(userSetWidth / (assetSourceWidth / assetSourceHeight))
 				};
 			}
 
 			/**
+			 * B. calculate height based on user set width
+			 */
+			if (userSetHeight) {
+				return {
+					outputWidth: Math.round(userSetHeight * (assetSourceWidth / assetSourceHeight)),
+					outputHeight: userSetHeight
+				};
+			}
+
+			/**
+			 * 1.3 if aspect is set, return based on that.
+			 */
+			// TODO: handle requestedaspect
+			// if (requestedAspect) {
+			// 	//TODO: change based on fit/crop/etc?
+			// 	const outputWidth = Math.round(Math.min(assetSourceHeight, assetSourceHeight * requestedAspect));
+			// 	const outputHeight = Math.round(outputWidth / requestedAspect);
+
+			// 	return {
+			// 		outputWidth,
+			// 		outputHeight
+			// 	};
+			// }
+
+			/**
 			 * 1.4, if not, return the dimensions identical to the source image.
 			 */
-
 			return {
 				outputWidth: assetSourceWidth,
 				outputHeight: assetSourceHeight
@@ -104,7 +120,6 @@ export function getImageProps(
 		/**
 		 * 2. Update the image builder's width and height with the calculated values above.
 		 */
-
 		urlBuilder = urlBuilder.height(outputHeight).width(outputWidth); // todo: only when nescessary
 
 		/**
@@ -131,23 +146,24 @@ export function getImageProps(
 			/**
 			 * 3.3 Build srcset
 			 */
-
 			const srcset = validSizes
-				.map((srcSetWidth) => {
-					// if (userSetHeight && userSetWidth) {
-					// 	return `${urlBuilder
-					// 		.width(srcSetWidth)
-					// 		.height(srcSetWidth / userSetHeight)
-					// 		.url()} ${Math.round(srcSetWidth)}w`;
-					// }
+				.map((breakpoint) => {
+					const inherentAspect = outputWidth / outputHeight;
+					const aspect = requestedAspect || inherentAspect;
 
-					return `${urlBuilder.width(srcSetWidth).url()} ${Math.round(srcSetWidth)}w`;
+					return `${urlBuilder
+						.height(Math.round(breakpoint / aspect))
+						.width(breakpoint)
+						.url()} ${breakpoint}w`;
 				})
 				.join(', ');
 
 			return srcset;
 		})();
 
+		/**
+		 * 4. Return values
+		 */
 		return {
 			src: urlBuilder.url(),
 			srcset,
