@@ -13,17 +13,12 @@ import type {
 
 type ImageProps = {
 	src: string;
-	srcset: string;
 	width: number;
 	height: number;
+	srcset: string | undefined;
 };
 
-type EmptyImageProps = {
-	src: undefined;
-	srcset: undefined;
-	width: undefined;
-	height: undefined;
-};
+type EmptyImageProps = Record<keyof ImageProps, undefined>;
 
 type GetImagePropsOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetSizes'> &
 	Partial<ValidBuilderOptions>;
@@ -53,19 +48,30 @@ export function getImageProps(
 		const userSetWidth = options.width;
 		const urlBuilder = imageUrlBuilder(client).image(image).withOptions(options);
 
+		/**
+		 * Get "srcset"
+		 * @returns the "srcset" prop based on the current options
+		 */
 		function getSrcset() {
-			return (
-				(srcsetSizes || DEFAULT_IMAGE_SIZES)
-					// Filter out sizes that are larger than the image itself
-					.filter((srcSetWidth) => (userSetWidth ? srcSetWidth < userSetWidth : true))
-					// Get a url where the image's width is overrided to match the srcset width.
-					.map((srcSetWidth) => {
-						return `${urlBuilder.width(srcSetWidth).url()} ${Math.round(srcSetWidth)}w`;
-					})
-					.join(', ')
-			);
+			const srcset = (srcsetSizes || DEFAULT_IMAGE_SIZES)
+				// Filter out sizes that are larger than the image itself
+				.filter((srcSetWidth) => (userSetWidth ? srcSetWidth < userSetWidth : true))
+				// Get a url where the image's width is overrided to match the srcset width.
+				.map((srcSetWidth) => {
+					return `${urlBuilder.width(srcSetWidth).url()} ${Math.round(srcSetWidth)}w`;
+				})
+				.join(', ');
+
+			if (srcset !== '') {
+				return srcset;
+			}
+
+			return undefined;
 		}
 
+		/**
+		 * Return the image + width+height
+		 */
 		if (options.width && options.height) {
 			return {
 				src: urlBuilder.url(),
