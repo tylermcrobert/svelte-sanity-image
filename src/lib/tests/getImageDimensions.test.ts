@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest';
 import { getImageDimensions } from '../getImageDimensions.js';
-import { DEFAULT_IMAGE } from './constants.js';
+import { DEFAULT_IMAGE } from '../../constants.js';
 
 describe('getImageDimensions', () => {
 	it('Gets the correct image dimensions', () => {
 		expect(getImageDimensions(DEFAULT_IMAGE)).toEqual({
 			aspectRatio: 1.5,
-			height: 800,
-			width: 1200
+			height: 1600,
+			width: 2400
 		});
 	});
 

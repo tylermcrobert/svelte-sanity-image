@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest';
 import { getReferenceId } from '../getImageDimensions.js';
-import { BASE_URL, DEFAULT_REF_ID } from './constants.js';
+import { BASE_URL, DEFAULT_REF_ID } from '../../constants.js';
 
 describe('getReferenceId', () => {
 	it('Returns the correct reference ID for a string image', () => {
