@@ -7,11 +7,11 @@
 
 <div class="wrapper">
 	{#each data.images as { image, alt }}
-		<SvelteSanityImage {client} {image} {alt} height={500} width={500} sizes="100vw" />
+		<SvelteSanityImage {client} {image} {alt} sizes="25vw" format="jpg" />
 	{/each}
 </div>
 
-<!-- <style>
+<style>
 	.wrapper {
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
@@ -22,4 +22,4 @@
 		width: 100%;
 		height: auto;
 	}
-</style> -->
+</style>
