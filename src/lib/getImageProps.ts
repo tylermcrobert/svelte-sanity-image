@@ -58,9 +58,7 @@ export function getImageProps(
 		 * If not, these values will be the same as the initial dimensions.
 		 */
 		const { outputWidth, outputHeight } = (() => {
-			/**
-			 * 1.1 if user's height and width are set, return the user defined width + height
-			 */
+			/** If user set width + height, just return those  */
 			if (userSetWidth && userSetHeight) {
 				return {
 					outputWidth: userSetWidth,
@@ -68,27 +66,25 @@ export function getImageProps(
 				};
 			}
 
-			/**
-			 * 1.2 If not, start building from original,
-			 */
-			const { width: assetSourceWidth, height: assetSourceHeight } = getImageDimensions(image);
+			/** Get original image dimension  */
+			const {
+				width: assetSourceWidth,
+				height: assetSourceHeight,
+				aspectRatio
+			} = getImageDimensions(image);
 
-			/**
-			 * A. calculate height based on user set width
-			 */
+			/** If user set width, return with calculated height */
 			if (userSetWidth) {
 				return {
 					outputWidth: userSetWidth,
-					outputHeight: Math.round(userSetWidth / (assetSourceWidth / assetSourceHeight))
+					outputHeight: Math.round(userSetWidth / aspectRatio)
 				};
 			}
 
-			/**
-			 * B. calculate height based on user set width
-			 */
+			/** If user set height, return with calculated width */
 			if (userSetHeight) {
 				return {
-					outputWidth: Math.round(userSetHeight * (assetSourceWidth / assetSourceHeight)),
+					outputWidth: Math.round(userSetHeight * aspectRatio),
 					outputHeight: userSetHeight
 				};
 			}
@@ -108,9 +104,7 @@ export function getImageProps(
 			// 	};
 			// }
 
-			/**
-			 * 1.4, if not, return the dimensions identical to the source image.
-			 */
+			/** If no user set widths, heights, or aspect ratios defined, return original asset size */
 			return {
 				outputWidth: assetSourceWidth,
 				outputHeight: assetSourceHeight
@@ -128,23 +122,17 @@ export function getImageProps(
 		const srcset = (() => {
 			const sizes = srcsetSizes || DEFAULT_IMAGE_SIZES;
 
-			/**
-			 * 3.1 if any of the srcsets are
-			 */
+			/**  if any of the srcsets are  */
 			const validSizes = sizes.filter((srcSetWidth) =>
 				userSetWidth ? srcSetWidth < userSetWidth : true
 			);
 
-			/**
-			 * 3.2 if the image width will always be smaller than the smallest size, don't render an srcset at all
-			 */
+			/** if the image width will always be smaller than the smallest size, don't render an srcset at all */
 			if (!validSizes.length) {
 				return undefined;
 			}
 
-			/**
-			 * 3.3 Build srcset
-			 */
+			/** 3.3 Build srcset */
 			const srcset = validSizes
 				.map((breakpoint) => {
 					const inherentAspect = outputWidth / outputHeight;
