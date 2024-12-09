@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest';
 import { getDimsFromRefString } from '../getImageDimensions.js';
 import { DEFAULT_REF_ID } from './constants.js';

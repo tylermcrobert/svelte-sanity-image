@@ -40,13 +40,40 @@ export function getImageProps(
 	{ aspect, srcsetSizes, ...options }: GetImagePropsOptions = {}
 ): ImageProps | EmptyImageProps {
 	try {
+		if (!image) {
+			// Todo: add test
+			throw new Error('No input "image" provided');
+		}
+
+		if (!client) {
+			// TODO: add test
+			throw new Error('Sanity client not provided.');
+		}
+
+		const userSetWidth = options.width;
 		const urlBuilder = imageUrlBuilder(client).image(image).withOptions(options);
 
-		console.log(aspect, srcsetSizes);
+		function getSrcset() {
+			return (
+				(srcsetSizes || DEFAULT_IMAGE_SIZES)
+					// Filter out sizes that are larger than the image itself
+					.filter((srcSetWidth) => (userSetWidth ? srcSetWidth < userSetWidth : true))
+					// Get a url where the image's width is overrided to match the srcset width.
+					.map((srcSetWidth) => {
+						return `${urlBuilder.width(srcSetWidth).url()} ${Math.round(srcSetWidth)}w`;
+					})
+					.join(', ')
+			);
+		}
 
-		// if (!image) {
-		// 	throw new Error('No input "image" provided');
-		// }
+		if (options.width && options.height) {
+			return {
+				src: urlBuilder.url(),
+				width: options.width,
+				height: options.height,
+				srcset: getSrcset()
+			};
+		}
 
 		// const initialDims = getImageDimensions(image);
 		// const { height: initHeight, width: initWidth } = initialDims;
@@ -94,8 +121,8 @@ export function getImageProps(
 		// }
 
 		return {
-			src: urlBuilder.url()
-			// srcset: getSrcset(),
+			src: urlBuilder.url(),
+			srcset: getSrcset()
 			// width: outputWidth,
 			// height: outputHeight
 		};
