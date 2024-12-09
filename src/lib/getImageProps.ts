@@ -26,7 +26,7 @@ type EmptyImageProps = {
 };
 
 type GetImagePropsOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetSizes'> &
-	ValidBuilderOptions;
+	Partial<ValidBuilderOptions>;
 
 /**
  * Retrieves the image properties based on the provided options.
@@ -37,11 +37,13 @@ type GetImagePropsOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetSizes
 export function getImageProps(
 	image: SanityImageSource,
 	client: SanityClientOrProjectDetails,
-	{ aspect, srcsetSizes, ...options }: GetImagePropsOptions
+	{ aspect, srcsetSizes, ...options }: GetImagePropsOptions = {}
 ): ImageProps | EmptyImageProps {
-	let urlBuilder = imageUrlBuilder(client).image(image).withOptions(options);
-
 	try {
+		const urlBuilder = imageUrlBuilder(client).image(image).withOptions(options);
+
+		console.log(aspect, srcsetSizes);
+
 		// if (!image) {
 		// 	throw new Error('No input "image" provided');
 		// }

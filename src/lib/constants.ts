@@ -14,7 +14,8 @@ export const VALID_BUILDER_OPTIONS = new Set([
 	// 'bg',
 	// 'dpr',
 	'width',
-	'height'
+	'height',
+	'quality'
 	// 'focalPoint',
 	// 'maxWidth',
 	// 'maxHeight',
