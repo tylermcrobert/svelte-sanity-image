@@ -10,6 +10,14 @@ function flattenStr(str: string) {
 describe('getImageProps', () => {
 	const image = DEFAULT_IMAGE;
 
+	it('throws an error when the client is not provided', () => {
+		// TODO
+	});
+
+	it('tthrows an error when the image is not provided', () => {
+		// TODO
+	});
+
 	it('should return the correct image properties with base implementation', () => {
 		const props = getImageProps(image, client);
 
@@ -50,5 +58,13 @@ describe('getImageProps', () => {
 
 		expect(props.width).toBe(8025);
 		expect(props.height).toBe(5350);
+	});
+
+	it('should build an image correctly with a defined aspect', () => {
+		// TODO
+	});
+
+	it('throws an error when width, height, and aspect are all defined.', () => {
+		// TODO
 	});
 });
