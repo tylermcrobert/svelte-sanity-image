@@ -37,29 +37,6 @@ export function getImageProps(
 ): ImageProps | EmptyImageProps {
 	let urlBuilder = imageUrlBuilder(client).image(image);
 
-	/**
-	 * Returns the srcset string for the image based on the available device sizes.
-	 * @returns The srcset string.
-	 */
-	function getSrcset() {
-		return (srcsetSizes || DEFAULT_IMAGE_SIZES)
-			.map((w) => {
-				urlBuilder = urlBuilder.width(w);
-
-				/**
-				 * If the aspect ratio is defined, the height will be calculated accordingly. We don't modify
-				 * the width because it's being tracked to the specific srcset.
-				 */
-				if (aspect) {
-					const newHeight = Math.round(w / aspect);
-					urlBuilder = urlBuilder.height(newHeight);
-				}
-
-				return `${urlBuilder.url()} ${Math.round(w)}w`;
-			})
-			.join(', ');
-	}
-
 	try {
 		if (!image) {
 			throw new Error('No input "image" provided');
@@ -87,6 +64,29 @@ export function getImageProps(
 
 		if (aspect) {
 			urlBuilder = urlBuilder.height(outputHeight).width(outputWidth);
+		}
+
+		/**
+		 * Returns the srcset string for the image based on the available device sizes.
+		 * @returns The srcset string.
+		 */
+		function getSrcset() {
+			return (srcsetSizes || DEFAULT_IMAGE_SIZES)
+				.map((w) => {
+					urlBuilder = urlBuilder.width(w);
+
+					/**
+					 * If the aspect ratio is defined, the height will be calculated accordingly. We don't modify
+					 * the width because it's being tracked to the specific srcset.
+					 */
+					if (aspect) {
+						const newHeight = Math.round(w / aspect);
+						urlBuilder = urlBuilder.height(newHeight);
+					}
+
+					return `${urlBuilder.url()} ${Math.round(w)}w`;
+				})
+				.join(', ');
 		}
 
 		return {
