@@ -49,7 +49,7 @@ export function getImageProps(
 			throw new Error('Sanity client not provided.');
 		}
 
-		const urlBuilder = imageUrlBuilder(client)
+		let urlBuilder = imageUrlBuilder(client)
 			.image(image)
 			.withOptions({
 				width: userSetWidth,
@@ -98,17 +98,19 @@ export function getImageProps(
 			/**
 			 * 1.3 if aspect is set, return based on that.
 			 */
-			// TODO: handle requestedaspect
-			// if (requestedAspect) {
-			// 	//TODO: change based on fit/crop/etc?
-			// 	const outputWidth = Math.round(Math.min(assetSourceHeight, assetSourceHeight * requestedAspect));
-			// 	const outputHeight = Math.round(outputWidth / requestedAspect);
 
-			// 	return {
-			// 		outputWidth,
-			// 		outputHeight
-			// 	};
-			// }
+			if (requestedAspect) {
+				//TODO: change based on fit/crop/etc?
+				const outputWidth = Math.round(
+					Math.min(assetSourceHeight, assetSourceHeight * requestedAspect)
+				);
+				const outputHeight = Math.round(outputWidth / requestedAspect);
+
+				return {
+					outputWidth,
+					outputHeight
+				};
+			}
 
 			/** If no user set widths, heights, or aspect ratios defined, return original asset size */
 			return {
@@ -116,6 +118,10 @@ export function getImageProps(
 				outputHeight: assetSourceHeight
 			};
 		})();
+
+		if (requestedAspect) {
+			urlBuilder = urlBuilder.width(outputWidth).height(outputHeight);
+		}
 
 		/**
 		 * 2. Srcset sizes
@@ -144,6 +150,11 @@ export function getImageProps(
 							.height(Math.round(breakpoint / aspect))
 							.width(breakpoint)
 							.url()} ${breakpoint}w`;
+					}
+
+					if (aspect) {
+						const newHeight = Math.round(breakpoint / aspect);
+						return `${urlBuilder.height(newHeight).width(breakpoint).url()} ${breakpoint}w`;
 					}
 
 					return `${urlBuilder.width(breakpoint).url()} ${breakpoint}w`;
