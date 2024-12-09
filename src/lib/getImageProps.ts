@@ -7,7 +7,8 @@ import { DEFAULT_IMAGE_SIZES } from './constants.js';
 import type {
 	SanityClientOrProjectDetails,
 	SanityImageSource,
-	SvelteSanityImageProps
+	SvelteSanityImageProps,
+	ValidBuilderOptions
 } from './types.js';
 
 type ImageProps = {
@@ -24,6 +25,9 @@ type EmptyImageProps = {
 	height: undefined;
 };
 
+type GetImagePropsOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetSizes'> &
+	ValidBuilderOptions;
+
 /**
  * Retrieves the image properties based on the provided options.
  *
@@ -33,67 +37,65 @@ type EmptyImageProps = {
 export function getImageProps(
 	image: SanityImageSource,
 	client: SanityClientOrProjectDetails,
-	{ aspect, srcsetSizes }: Pick<SvelteSanityImageProps, 'aspect' | 'srcsetSizes'>
+	{ aspect, srcsetSizes, ...options }: GetImagePropsOptions
 ): ImageProps | EmptyImageProps {
-	let urlBuilder = imageUrlBuilder(client).image(image);
+	let urlBuilder = imageUrlBuilder(client).image(image).withOptions(options);
 
 	try {
-		if (!image) {
-			throw new Error('No input "image" provided');
-		}
+		// if (!image) {
+		// 	throw new Error('No input "image" provided');
+		// }
 
-		const initialDims = getImageDimensions(image);
-		const { height: initHeight, width: initWidth } = initialDims;
+		// const initialDims = getImageDimensions(image);
+		// const { height: initHeight, width: initWidth } = initialDims;
 
-		/**
-		 * If the aspect ratio is defined, the height will be calculated accordingly.
-		 * If not, these values will be the same as the initial dimensions.
-		 */
-		const { outputWidth, outputHeight } = (() => {
-			if (!aspect) {
-				return { outputWidth: initWidth, outputHeight: initHeight };
-			}
+		// /**
+		//  * If the aspect ratio is defined, the height will be calculated accordingly.
+		//  * If not, these values will be the same as the initial dimensions.
+		//  */
+		// const { outputWidth, outputHeight } = (() => {
+		// 	if (!aspect) {
+		// 		return { outputWidth: initWidth, outputHeight: initHeight };
+		// 	}
 
-			const outputWidth = Math.round(Math.min(initWidth, initHeight * aspect));
-			const outputHeight = Math.round(outputWidth / aspect);
+		// 	const outputWidth = Math.round(Math.min(initWidth, initHeight * aspect));
+		// 	const outputHeight = Math.round(outputWidth / aspect);
 
-			return { outputWidth, outputHeight };
-		})();
+		// 	return { outputWidth, outputHeight };
+		// })();
 
-		// TODO: add builder options here
+		// if (aspect) {
+		// 	urlBuilder = urlBuilder.height(outputHeight).width(outputWidth);
+		// }
 
-		if (aspect) {
-			urlBuilder = urlBuilder.height(outputHeight).width(outputWidth);
-		}
+		// /**
+		//  * Returns the srcset string for the image based on the available device sizes.
+		//  * @returns The srcset string.
+		//  */
+		// function getSrcset() {
+		// 	return (srcsetSizes || DEFAULT_IMAGE_SIZES)
+		// 		.map((w) => {
+		// 			urlBuilder = urlBuilder.width(w);
 
-		/**
-		 * Returns the srcset string for the image based on the available device sizes.
-		 * @returns The srcset string.
-		 */
-		function getSrcset() {
-			return (srcsetSizes || DEFAULT_IMAGE_SIZES)
-				.map((w) => {
-					urlBuilder = urlBuilder.width(w);
+		// 			/**
+		// 			 * If the aspect ratio is defined, the height will be calculated accordingly. We don't modify
+		// 			 * the width because it's being tracked to the specific srcset.
+		// 			 */
+		// 			if (aspect) {
+		// 				const newHeight = Math.round(w / aspect);
+		// 				urlBuilder = urlBuilder.height(newHeight);
+		// 			}
 
-					/**
-					 * If the aspect ratio is defined, the height will be calculated accordingly. We don't modify
-					 * the width because it's being tracked to the specific srcset.
-					 */
-					if (aspect) {
-						const newHeight = Math.round(w / aspect);
-						urlBuilder = urlBuilder.height(newHeight);
-					}
-
-					return `${urlBuilder.url()} ${Math.round(w)}w`;
-				})
-				.join(', ');
-		}
+		// 			return `${urlBuilder.url()} ${Math.round(w)}w`;
+		// 		})
+		// 		.join(', ');
+		// }
 
 		return {
-			src: urlBuilder.url(),
-			srcset: getSrcset(),
-			width: outputWidth,
-			height: outputHeight
+			src: urlBuilder.url()
+			// srcset: getSrcset(),
+			// width: outputWidth,
+			// height: outputHeight
 		};
 	} catch (e) {
 		console.error('Error building image props:', e);
