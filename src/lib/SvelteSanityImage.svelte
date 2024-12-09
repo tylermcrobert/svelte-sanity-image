@@ -4,14 +4,15 @@
 
 	type Props = SvelteSanityImageProps;
 
-	let { image, client, aspect, srcsetSizes, height, width, ...props }: Props = $props();
+	let { image, client, aspect, srcsetSizes, height, width, quality, ...props }: Props = $props();
 
 	let responsiveProps = $derived(
 		getImageProps(image, client, {
 			aspect,
 			srcsetSizes,
 			height,
-			width
+			width,
+			quality
 		})
 	);
 </script>

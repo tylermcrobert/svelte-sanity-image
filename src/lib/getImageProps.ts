@@ -32,7 +32,13 @@ type GetImagePropsOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetSizes
 export function getImageProps(
 	image: SanityImageSource,
 	client: SanityClientOrProjectDetails,
-	{ aspect, srcsetSizes, ...options }: GetImagePropsOptions = {}
+	{
+		width: userSetWidth,
+		height: userSetHeight,
+		aspect,
+		srcsetSizes,
+		...options
+	}: GetImagePropsOptions = {}
 ): ImageProps | EmptyImageProps {
 	try {
 		if (!image) {
@@ -45,7 +51,6 @@ export function getImageProps(
 			throw new Error('Sanity client not provided.');
 		}
 
-		const userSetWidth = options.width;
 		const urlBuilder = imageUrlBuilder(client).image(image).withOptions(options);
 
 		/**
@@ -70,67 +75,48 @@ export function getImageProps(
 		}
 
 		/**
-		 * Return the image + width+height
+		 * If the aspect ratio is defined, the height will be calculated accordingly.
+		 * If not, these values will be the same as the initial dimensions.
 		 */
-		if (options.width && options.height) {
+
+		const { outputWidth, outputHeight } = (() => {
+			/**
+			 * Return the user defined width + height
+			 */
+			if (userSetWidth && userSetHeight) {
+				return {
+					outputWidth: userSetWidth,
+					outputHeight: userSetHeight
+				};
+			}
+
+			const { width: assetSourceWidth, height: assetSourceHeight } = getImageDimensions(image);
+
+			if (!aspect) {
+				return {
+					outputWidth: assetSourceWidth,
+					outputHeight: assetSourceHeight
+				};
+			}
+
+			const outputWidth = Math.round(Math.min(assetSourceHeight, assetSourceHeight * aspect));
+			const outputHeight = Math.round(outputWidth / aspect);
+
 			return {
-				src: urlBuilder.url(),
-				width: options.width,
-				height: options.height,
-				srcset: getSrcset()
+				outputWidth,
+				outputHeight
 			};
-		}
-
-		// const initialDims = getImageDimensions(image);
-		// const { height: initHeight, width: initWidth } = initialDims;
-
-		// /**
-		//  * If the aspect ratio is defined, the height will be calculated accordingly.
-		//  * If not, these values will be the same as the initial dimensions.
-		//  */
-		// const { outputWidth, outputHeight } = (() => {
-		// 	if (!aspect) {
-		// 		return { outputWidth: initWidth, outputHeight: initHeight };
-		// 	}
-
-		// 	const outputWidth = Math.round(Math.min(initWidth, initHeight * aspect));
-		// 	const outputHeight = Math.round(outputWidth / aspect);
-
-		// 	return { outputWidth, outputHeight };
-		// })();
+		})();
 
 		// if (aspect) {
 		// 	urlBuilder = urlBuilder.height(outputHeight).width(outputWidth);
 		// }
 
-		// /**
-		//  * Returns the srcset string for the image based on the available device sizes.
-		//  * @returns The srcset string.
-		//  */
-		// function getSrcset() {
-		// 	return (srcsetSizes || DEFAULT_IMAGE_SIZES)
-		// 		.map((w) => {
-		// 			urlBuilder = urlBuilder.width(w);
-
-		// 			/**
-		// 			 * If the aspect ratio is defined, the height will be calculated accordingly. We don't modify
-		// 			 * the width because it's being tracked to the specific srcset.
-		// 			 */
-		// 			if (aspect) {
-		// 				const newHeight = Math.round(w / aspect);
-		// 				urlBuilder = urlBuilder.height(newHeight);
-		// 			}
-
-		// 			return `${urlBuilder.url()} ${Math.round(w)}w`;
-		// 		})
-		// 		.join(', ');
-		// }
-
 		return {
 			src: urlBuilder.url(),
-			srcset: getSrcset()
-			// width: outputWidth,
-			// height: outputHeight
+			srcset: getSrcset(),
+			width: outputWidth,
+			height: outputHeight
 		};
 	} catch (e) {
 		console.error('Error building image props:', e);
