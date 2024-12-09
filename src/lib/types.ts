@@ -20,17 +20,17 @@ export type SanityClientOrProjectDetails =
 	| SanityModernClientLike;
 
 /**
+ * The object key of the Sanity URL builder options
+ */
+type ValidBuilderOptionKey =
+	typeof VALID_BUILDER_OPTIONS extends Readonly<Set<infer T>> ? T : never;
+
+/**
  * Valid options that can be passed to the Sanity URL builder
  */
 export type ValidBuilderOptions = {
 	[key in ValidBuilderOptionKey]: ImageUrlBuilderOptions[key];
 };
-
-/**
- * The object key of the Sanity URL builder options
- */
-type ValidBuilderOptionKey =
-	typeof VALID_BUILDER_OPTIONS extends Readonly<Set<infer T>> ? T : never;
 
 /**
  * Props for the image component
@@ -48,4 +48,4 @@ export type SvelteSanityImageOptions = {
 
 export type SvelteSanityImageProps = SvelteSanityImageOptions &
 	ValidImageProps &
-	ValidBuilderOptions;
+	Partial<ValidBuilderOptions>;
