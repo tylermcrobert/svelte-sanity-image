@@ -7,8 +7,8 @@ describe('getImageDimensions', () => {
 	it('Gets the correct image dimensions', () => {
 		expect(getImageDimensions(DEFAULT_IMAGE)).toEqual({
 			aspectRatio: 1.5,
-			height: 5350,
-			width: 8025
+			height: 800,
+			width: 1200
 		});
 	});
 

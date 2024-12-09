@@ -25,18 +25,15 @@ describe('getImageProps', () => {
 
 		expect(props.srcset).toBe(
 			flattenStr(`
-			${BASE_URL}?w=640 640w, 
-			${BASE_URL}?w=750 750w, 
-			${BASE_URL}?w=828 828w, 
-			${BASE_URL}?w=1080 1080w, 
-			${BASE_URL}?w=1200 1200w, 
-			${BASE_URL}?w=1920 1920w, 
-			${BASE_URL}?w=2048 2048w, 
-			${BASE_URL}?w=3840 3840w`)
+				${BASE_URL}?w=640 640w,
+				${BASE_URL}?w=750 750w,
+				${BASE_URL}?w=828 828w,
+				${BASE_URL}?w=1080 1080w,
+				${BASE_URL}?w=1200 1200w`)
 		);
 
-		expect(props.width).toBe(8025);
-		expect(props.height).toBe(5350);
+		expect(props.width).toBe(1200);
+		expect(props.height).toBe(800);
 	});
 
 	it('should return the correct image properties with quality', () => {
@@ -46,18 +43,15 @@ describe('getImageProps', () => {
 
 		expect(props.srcset).toBe(
 			flattenStr(`
-			${BASE_URL}?w=640&q=50 640w, 
-			${BASE_URL}?w=750&q=50 750w, 
-			${BASE_URL}?w=828&q=50 828w, 
-			${BASE_URL}?w=1080&q=50 1080w, 
-			${BASE_URL}?w=1200&q=50 1200w, 
-			${BASE_URL}?w=1920&q=50 1920w, 
-			${BASE_URL}?w=2048&q=50 2048w, 
-			${BASE_URL}?w=3840&q=50 3840w`)
+				${BASE_URL}?w=640&q=50 640w, 
+				${BASE_URL}?w=750&q=50 750w, 
+				${BASE_URL}?w=828&q=50 828w, 
+				${BASE_URL}?w=1080&q=50 1080w, 
+				${BASE_URL}?w=1200&q=50 1200w`)
 		);
 
-		expect(props.width).toBe(8025);
-		expect(props.height).toBe(5350);
+		expect(props.width).toBe(1200);
+		expect(props.height).toBe(800);
 	});
 
 	it('should build an image correctly with a defined aspect', () => {

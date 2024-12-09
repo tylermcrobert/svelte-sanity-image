@@ -152,8 +152,8 @@ export function getImageProps(
 							.url()} ${breakpoint}w`;
 					}
 
-					if (aspect) {
-						const newHeight = Math.round(breakpoint / aspect);
+					if (requestedAspect) {
+						const newHeight = Math.round(breakpoint / requestedAspect);
 						return `${urlBuilder.height(newHeight).width(breakpoint).url()} ${breakpoint}w`;
 					}
 
