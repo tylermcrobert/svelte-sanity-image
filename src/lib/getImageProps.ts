@@ -49,13 +49,19 @@ export function getImageProps(
 			throw new Error('Sanity client not provided.');
 		}
 
-		let urlBuilder = imageUrlBuilder(client).image(image).withOptions(options);
+		const urlBuilder = imageUrlBuilder(client)
+			.image(image)
+			.withOptions({
+				width: userSetWidth,
+				height: userSetHeight,
+				...options
+			});
 
 		/**
-		 * 1. Get the output width and height for the image tag.
+		 * 1. Output width & height for img tag
 		 *
-		 * If the aspect ratio is defined, the height will be calculated accordingly.
-		 * If not, these values will be the same as the initial dimensions.
+		 * Gets the output width and height for the image tag. If the aspect ratio is defined, the height will be calculated accordingly. If not, these values will be the same as the initial dimensions.
+		 * TODO: calculate aspect ratio
 		 */
 		const { outputWidth, outputHeight } = (() => {
 			/** If user set width + height, just return those  */
@@ -112,15 +118,7 @@ export function getImageProps(
 		})();
 
 		/**
-		 * 2. Update urlbuilder
-		 *
-		 * Update the image builder's width and height with the calculated values above.
-		 */
-
-		urlBuilder = urlBuilder.height(outputHeight).width(outputWidth); // todo: only when nescessary
-
-		/**
-		 * 3. Srcset sizes
+		 * 2. Srcset sizes
 		 *
 		 * Build an image url for each size width, and combine into an srcset
 		 */
@@ -141,10 +139,14 @@ export function getImageProps(
 					const inherentAspect = outputWidth / outputHeight;
 					const aspect = requestedAspect || inherentAspect;
 
-					return `${urlBuilder
-						.height(Math.round(breakpoint / aspect))
-						.width(breakpoint)
-						.url()} ${breakpoint}w`;
+					if (userSetHeight) {
+						return `${urlBuilder
+							.height(Math.round(breakpoint / aspect))
+							.width(breakpoint)
+							.url()} ${breakpoint}w`;
+					}
+
+					return `${urlBuilder.width(breakpoint).url()} ${breakpoint}w`;
 				})
 				.join(', ');
 
