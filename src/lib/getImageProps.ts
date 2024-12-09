@@ -51,28 +51,7 @@ export function getImageProps(
 			throw new Error('Sanity client not provided.');
 		}
 
-		const urlBuilder = imageUrlBuilder(client).image(image).withOptions(options);
-
-		/**
-		 * Get "srcset"
-		 * @returns the "srcset" prop based on the current options
-		 */
-		function getSrcset() {
-			const srcset = (srcsetSizes || DEFAULT_IMAGE_SIZES)
-				// Filter out sizes that are larger than the image itself
-				.filter((srcSetWidth) => (userSetWidth ? srcSetWidth < userSetWidth : true))
-				// Get a url where the image's width is overrided to match the srcset width.
-				.map((srcSetWidth) => {
-					return `${urlBuilder.width(srcSetWidth).url()} ${Math.round(srcSetWidth)}w`;
-				})
-				.join(', ');
-
-			if (srcset !== '') {
-				return srcset;
-			}
-
-			return undefined;
-		}
+		let urlBuilder = imageUrlBuilder(client).image(image).withOptions(options);
 
 		/**
 		 * If the aspect ratio is defined, the height will be calculated accordingly.
@@ -81,7 +60,7 @@ export function getImageProps(
 
 		const { outputWidth, outputHeight } = (() => {
 			/**
-			 * Return the user defined width + height
+			 * if user's height and width are set, return the user defined width + height
 			 */
 			if (userSetWidth && userSetHeight) {
 				return {
@@ -90,31 +69,62 @@ export function getImageProps(
 				};
 			}
 
+			/**
+			 * If not, start building from original,
+			 */
+
 			const { width: assetSourceWidth, height: assetSourceHeight } = getImageDimensions(image);
 
-			if (!aspect) {
+			if (aspect) {
+				//TODO: change based on fit/crop/etc?
+				const outputWidth = Math.round(Math.min(assetSourceHeight, assetSourceHeight * aspect));
+				const outputHeight = Math.round(outputWidth / aspect);
+
 				return {
-					outputWidth: assetSourceWidth,
-					outputHeight: assetSourceHeight
+					outputWidth,
+					outputHeight
 				};
 			}
-
-			const outputWidth = Math.round(Math.min(assetSourceHeight, assetSourceHeight * aspect));
-			const outputHeight = Math.round(outputWidth / aspect);
-
 			return {
-				outputWidth,
-				outputHeight
+				outputWidth: assetSourceWidth,
+				outputHeight: assetSourceHeight
 			};
 		})();
 
-		// if (aspect) {
-		// 	urlBuilder = urlBuilder.height(outputHeight).width(outputWidth);
+		// TODO: conditionally
+		urlBuilder = urlBuilder.height(outputHeight).width(outputWidth);
+
+		// /**
+		//  * Get "srcset"
+		//  * @returns the "srcset" prop based on the current options
+		//  */
+		// function getSrcset() {
+		// 	const srcset = (srcsetSizes || DEFAULT_IMAGE_SIZES)
+		// 		// Filter out sizes that are larger than the image itself
+		// 		.filter((srcSetWidth) => (userSetWidth ? srcSetWidth < userSetWidth : true))
+		// 		// Get a url where the image's width is overrided to match the srcset width.
+		// 		.map((srcSetWidth) => {
+		// 			// if (userSetHeight && userSetWidth) {
+		// 			// 	return `${urlBuilder
+		// 			// 		.width(srcSetWidth)
+		// 			// 		.height(srcSetWidth / userSetHeight)
+		// 			// 		.url()} ${Math.round(srcSetWidth)}w`;
+		// 			// }
+
+		// 			return `${urlBuilder.width(srcSetWidth).url()} ${Math.round(srcSetWidth)}w`;
+		// 		})
+		// 		.join(', ');
+
+		// 	if (srcset !== '') {
+		// 		return srcset;
+		// 	}
+
+		// 	return undefined;
 		// }
 
 		return {
 			src: urlBuilder.url(),
-			srcset: getSrcset(),
+			// srcset: getSrcset(),
 			width: outputWidth,
 			height: outputHeight
 		};
