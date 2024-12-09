@@ -138,7 +138,6 @@ export function getImageProps(
 			/**
 			 * 3.2 if the image width will always be smaller than the smallest size, don't render an srcset at all
 			 */
-
 			if (!validSizes.length) {
 				return undefined;
 			}
