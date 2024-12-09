@@ -54,13 +54,15 @@ export function getImageProps(
 		let urlBuilder = imageUrlBuilder(client).image(image).withOptions(options);
 
 		/**
+		 * 1. Get the output width and height for the image tag.
+		 *
 		 * If the aspect ratio is defined, the height will be calculated accordingly.
 		 * If not, these values will be the same as the initial dimensions.
 		 */
 
 		const { outputWidth, outputHeight } = (() => {
 			/**
-			 * if user's height and width are set, return the user defined width + height
+			 * 1.1 if user's height and width are set, return the user defined width + height
 			 */
 			if (userSetWidth && userSetHeight) {
 				return {
@@ -70,11 +72,14 @@ export function getImageProps(
 			}
 
 			/**
-			 * If not, start building from original,
+			 * 1.2 If not, start building from original,
 			 */
 
 			const { width: assetSourceWidth, height: assetSourceHeight } = getImageDimensions(image);
 
+			/**
+			 * 1.3 if aspect is set, return based on that.
+			 */
 			if (aspect) {
 				//TODO: change based on fit/crop/etc?
 				const outputWidth = Math.round(Math.min(assetSourceHeight, assetSourceHeight * aspect));
@@ -85,46 +90,67 @@ export function getImageProps(
 					outputHeight
 				};
 			}
+
+			/**
+			 * 1.4, if not, return the dimensions identical to the source image.
+			 */
+
 			return {
 				outputWidth: assetSourceWidth,
 				outputHeight: assetSourceHeight
 			};
 		})();
 
-		// TODO: conditionally
-		urlBuilder = urlBuilder.height(outputHeight).width(outputWidth);
+		/**
+		 * 2. Update the image builder's width and height with the calculated values above.
+		 */
 
-		// /**
-		//  * Get "srcset"
-		//  * @returns the "srcset" prop based on the current options
-		//  */
-		// function getSrcset() {
-		// 	const srcset = (srcsetSizes || DEFAULT_IMAGE_SIZES)
-		// 		// Filter out sizes that are larger than the image itself
-		// 		.filter((srcSetWidth) => (userSetWidth ? srcSetWidth < userSetWidth : true))
-		// 		// Get a url where the image's width is overrided to match the srcset width.
-		// 		.map((srcSetWidth) => {
-		// 			// if (userSetHeight && userSetWidth) {
-		// 			// 	return `${urlBuilder
-		// 			// 		.width(srcSetWidth)
-		// 			// 		.height(srcSetWidth / userSetHeight)
-		// 			// 		.url()} ${Math.round(srcSetWidth)}w`;
-		// 			// }
+		urlBuilder = urlBuilder.height(outputHeight).width(outputWidth); // todo: only when nescessary
 
-		// 			return `${urlBuilder.width(srcSetWidth).url()} ${Math.round(srcSetWidth)}w`;
-		// 		})
-		// 		.join(', ');
+		/**
+		 * 3. Build an image url for each size width, and combine into an srcset
+		 */
+		const srcset = (() => {
+			const sizes = srcsetSizes || DEFAULT_IMAGE_SIZES;
 
-		// 	if (srcset !== '') {
-		// 		return srcset;
-		// 	}
+			/**
+			 * 3.1 if any of the srcsets are
+			 */
+			const validSizes = sizes.filter((srcSetWidth) =>
+				userSetWidth ? srcSetWidth < userSetWidth : true
+			);
 
-		// 	return undefined;
-		// }
+			/**
+			 * 3.2 if the image width will always be smaller than the smallest size, don't render an srcset at all
+			 */
+
+			if (!validSizes.length) {
+				return undefined;
+			}
+
+			/**
+			 * 3.3 Build srcset
+			 */
+
+			const srcset = validSizes
+				.map((srcSetWidth) => {
+					// if (userSetHeight && userSetWidth) {
+					// 	return `${urlBuilder
+					// 		.width(srcSetWidth)
+					// 		.height(srcSetWidth / userSetHeight)
+					// 		.url()} ${Math.round(srcSetWidth)}w`;
+					// }
+
+					return `${urlBuilder.width(srcSetWidth).url()} ${Math.round(srcSetWidth)}w`;
+				})
+				.join(', ');
+
+			return srcset;
+		})();
 
 		return {
 			src: urlBuilder.url(),
-			// srcset: getSrcset(),
+			srcset,
 			width: outputWidth,
 			height: outputHeight
 		};
