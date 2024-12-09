@@ -112,27 +112,30 @@ export function getImageProps(
 		})();
 
 		/**
-		 * 2. Update the image builder's width and height with the calculated values above.
+		 * 2. Update urlbuilder
+		 *
+		 * Update the image builder's width and height with the calculated values above.
 		 */
+
 		urlBuilder = urlBuilder.height(outputHeight).width(outputWidth); // todo: only when nescessary
 
 		/**
-		 * 3. Build an image url for each size width, and combine into an srcset
+		 * 3. Srcset sizes
+		 *
+		 * Build an image url for each size width, and combine into an srcset
 		 */
 		const srcset = (() => {
 			const sizes = srcsetSizes || DEFAULT_IMAGE_SIZES;
 
-			/**  if any of the srcsets are  */
-			const validSizes = sizes.filter((srcSetWidth) =>
-				userSetWidth ? srcSetWidth < userSetWidth : true
-			);
+			/** Only include sizes that are equal or smaller than the output width  */
+			const validSizes = sizes.filter((breakpoint) => breakpoint <= outputWidth);
 
-			/** if the image width will always be smaller than the smallest size, don't render an srcset at all */
+			/** If the image width will always be smaller than the smallest size, don't render an srcset at all */
 			if (!validSizes.length) {
 				return undefined;
 			}
 
-			/** 3.3 Build srcset */
+			/** Build srcset from breakpoints */
 			const srcset = validSizes
 				.map((breakpoint) => {
 					const inherentAspect = outputWidth / outputHeight;
