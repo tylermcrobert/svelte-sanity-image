@@ -7,7 +7,7 @@
 
 <div class="wrapper">
 	{#each data.images as { image, alt }}
-		<SvelteSanityImage {client} {image} {alt} sizes="25vw" format="jpg" />
+		<SvelteSanityImage {client} {image} {alt} aspect={1} sizes="25vw" />
 	{/each}
 </div>
 
