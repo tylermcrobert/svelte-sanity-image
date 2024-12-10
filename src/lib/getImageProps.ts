@@ -137,19 +137,19 @@ export function getImageProps(
 
 			return validBreakpoints
 				.map((breakpoint) => {
-					/** If the user selects a height, adjust the srcset to allow for the image to at least grow to that height */
-					if (customHeight) {
-						const calculatedHeight = Math.round(breakpoint / aspectRatio);
-						return urlBuilder.height(calculatedHeight).width(breakpoint).url();
-					}
-
-					/** If aspect is set, calculate output height */
+					// If aspect is set, calculate output height
 					if (customAspectRatio) {
 						const calculatedHeight = Math.round(breakpoint / customAspectRatio);
 						return urlBuilder.height(calculatedHeight).width(breakpoint).url();
 					}
 
-					/** Return default  */
+					// The height that the user selects must be included in srcset
+					if (customHeight && !customWidth) {
+						const calculatedHeight = Math.round(breakpoint / aspectRatio);
+						return urlBuilder.height(calculatedHeight).width(breakpoint).url();
+					}
+
+					// Default case
 					return urlBuilder.width(breakpoint).url();
 				})
 				.map((url, i) => `${url} ${validBreakpoints[i]}w`)
