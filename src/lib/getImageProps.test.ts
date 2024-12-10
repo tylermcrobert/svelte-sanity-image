@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { getImageProps } from '../getImageProps.js';
-import { client } from '../../sanity.js';
-import { BASE_URL, DEFAULT_IMAGE } from '../../constants.js';
+import { getImageProps } from './getImageProps.js';
+import { client } from '../sanity.js';
+import { BASE_URL, DEFAULT_IMAGE } from '../constants.js';
 
 function flattenStr(str: string) {
 	return str.replace(/\s+/g, ' ').trim();

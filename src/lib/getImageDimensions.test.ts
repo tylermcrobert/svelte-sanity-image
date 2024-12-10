@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest';
-import { getImageDimensions } from '../getImageDimensions.js';
-import { DEFAULT_IMAGE } from '../../constants.js';
+import { getImageDimensions } from './getImageDimensions.js';
+import { DEFAULT_IMAGE } from '../constants.js';
 
 describe('getImageDimensions', () => {
 	it('Gets the correct image dimensions', () => {
