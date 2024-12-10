@@ -116,17 +116,16 @@ export class ImagePropBuilder {
 	 */
 	private getValidBreakpoints() {
 		const breakpoints = this.options.srcsetSizes || DEFAULT_IMAGE_SIZES;
-		const customHeight = this.options.height;
+		const { width: customWidth, height: customHeight } = this.options;
+		const { aspect: outputAspect, width: outputWidth } = this.dimensions;
 
 		// Ensure that images with a custom height are included in breakpoints
-		if (customHeight && !this.options.width) {
-			return breakpoints.filter(
-				(breakpoint) => breakpoint <= customHeight * this.dimensions.aspect
-			);
+		if (customHeight && !customWidth) {
+			return breakpoints.filter((breakpoint) => breakpoint <= customHeight * outputAspect);
 		}
 
 		// Exclude breakpoints larger than the output width
-		return breakpoints.filter((breakpoint) => breakpoint <= this.dimensions.width);
+		return breakpoints.filter((breakpoint) => breakpoint <= outputWidth);
 	}
 
 	/**
@@ -146,10 +145,11 @@ export class ImagePropBuilder {
 	 */
 	private getSrc() {
 		let builder = this.getUrlBuilder();
+		const { width: outputWidth, height: outputHeight } = this.dimensions;
 
 		// If an aspect is set, rebuild the builder with the calculated dimensions
 		if (this.options.aspect) {
-			builder = builder.width(this.dimensions.width).height(this.dimensions.height);
+			builder = builder.width(outputWidth).height(outputHeight);
 		}
 
 		return builder.url();
