@@ -22,6 +22,7 @@ export class ImagePropBuilder {
 	dimensions: Dimensions; // Final dimensions
 	customDimensions: Partial<Dimensions>; // Custom dimensions provided by the user
 	originalDimensions: Dimensions; // Original dimensions of the image
+	validBreakpoints: number[];
 
 	/**
 	 * Constructor to initialize the ImagePropBuilder instance
@@ -71,6 +72,7 @@ export class ImagePropBuilder {
 
 		// Use default or provided srcset sizes
 		this.srcsetBreakpoints = srcsetSizes;
+		this.validBreakpoints = this.getValidBreakpoints();
 		this.srcset = this.getSrcset();
 	}
 
@@ -149,7 +151,7 @@ export class ImagePropBuilder {
 	 * @returns Srcset string or undefined
 	 */
 	private getSrcset() {
-		const breakpoints = this.getValidBreakpoints();
+		const breakpoints = this.validBreakpoints;
 
 		// If no valid breakpoints, do not include an srcset
 		if (!breakpoints.length) {
