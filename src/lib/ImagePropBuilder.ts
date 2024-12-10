@@ -23,9 +23,6 @@ export class ImagePropBuilder {
 	urlBuilder: ImageUrlBuilder; // Builder for Sanity image URLs
 	srcset: string | undefined; // Srcset string
 
-	allBreakpoints: number[]; // Array of breakpoints for srcset generation
-	validBreakpoints: number[];
-
 	dimensions: Dimensions; // Final dimensions
 
 	/**
@@ -56,8 +53,6 @@ export class ImagePropBuilder {
 		};
 
 		this.urlBuilder = this.getUrlBuilder();
-		this.allBreakpoints = options.srcsetSizes || DEFAULT_IMAGE_SIZES;
-		this.validBreakpoints = this.getValidBreakpoints();
 		this.srcset = this.getSrcset();
 	}
 
@@ -129,7 +124,7 @@ export class ImagePropBuilder {
 	 * @returns Array of valid breakpoints
 	 */
 	private getValidBreakpoints() {
-		const breakpoints = this.allBreakpoints;
+		const breakpoints = this.options.srcsetSizes || DEFAULT_IMAGE_SIZES;
 		const customHeight = this.options.height;
 
 		// Ensure that images with a custom height are included in breakpoints
@@ -148,7 +143,7 @@ export class ImagePropBuilder {
 	 * @returns Srcset string or undefined
 	 */
 	private getSrcset() {
-		const breakpoints = this.validBreakpoints;
+		const breakpoints = this.getValidBreakpoints();
 
 		// If no valid breakpoints, do not include an srcset
 		if (!breakpoints.length) {
