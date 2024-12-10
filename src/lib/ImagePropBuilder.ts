@@ -32,15 +32,12 @@ export class ImagePropBuilder {
 	constructor(
 		image: SanityImageSource,
 		client: SanityClientOrProjectDetails,
-		options: GetImagePropsOptions = {}
+		{ aspect, srcsetSizes = DEFAULT_IMAGE_SIZES, ...builderOptions }: GetImagePropsOptions = {}
 	) {
 		// Ensure the image and client are provided
 		if (!image || !client) {
 			throw new Error('Sanity image and client are required.');
 		}
-
-		// Extract custom options
-		const { aspect, srcsetSizes, ...builderOptions } = options;
 
 		// Initialize custom dimensions
 		this.customDimensions = {
@@ -48,12 +45,6 @@ export class ImagePropBuilder {
 			width: builderOptions.width,
 			height: builderOptions.height
 		};
-
-		// Use default or provided srcset sizes
-		this.srcsetBreakpoints = srcsetSizes || DEFAULT_IMAGE_SIZES;
-
-		// Initialize the URL builder with the image and client
-		this.urlBuilder = imageUrlBuilder(client).image(image).withOptions(builderOptions);
 
 		// Get original image dimensions
 		const originalDims = getImageDimensions(image);
@@ -71,12 +62,15 @@ export class ImagePropBuilder {
 			aspectRatio: calculatedDims.outputWidth / calculatedDims.outputHeight
 		};
 
+		// Initialize the URL builder with the image and client
 		// Update URL builder with dimensions if a custom aspect ratio is specified
+		this.urlBuilder = imageUrlBuilder(client).image(image).withOptions(builderOptions);
 		if (this.customDimensions.aspectRatio) {
 			this.urlBuilder = this.urlBuilder.width(this.dimensions.width).height(this.dimensions.height);
 		}
 
-		// Generate the srcset string
+		// Use default or provided srcset sizes
+		this.srcsetBreakpoints = srcsetSizes;
 		this.srcset = this.getSrcset();
 	}
 
