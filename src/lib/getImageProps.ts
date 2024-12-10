@@ -146,6 +146,8 @@ export function getImageProps(
 		 */
 
 		const srcset = (() => {
+			if (!breakpoints.length) return undefined; //TODO: add tests
+
 			const srcset = breakpoints
 				.map((breakpoint) => {
 					if (userSetHeight) {
