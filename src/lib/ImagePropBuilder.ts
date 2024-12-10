@@ -6,25 +6,22 @@ import imageUrlBuilder from '@sanity/image-url';
 import { DEFAULT_IMAGE_SIZES } from './constants.js';
 import { getImageDimensions } from './getImageDimensions.js';
 
-// Class to build image properties and srcset for Sanity images
+type Dimensions = {
+	width: number;
+	height: number;
+	aspectRatio: number;
+};
+
+/**
+ * Class that takes in props from the SvelteSanityImage component
+ */
 export class ImagePropBuilder {
 	urlBuilder: ImageUrlBuilder; // Builder for Sanity image URLs
 	srcsetBreakpoints: number[]; // Array of breakpoints for srcset generation
-
 	srcset: string | undefined; // Srcset string
-	width: number; // Final width of the image
-	height: number; // Final height of the image
-	aspectRatio: number; // Final aspect ratio of the image
-
-	// Custom dimensions provided by the user
-	customWidth: number | undefined;
-	customHeight: number | undefined;
-	customAspectRatio: number | undefined;
-
-	// Original dimensions of the image
-	originalHeight: number;
-	originalWidth: number;
-	originalAspectRatio: number;
+	dimensions: Dimensions; // Final dimensions
+	customDimensions: Partial<Dimensions>; // Custom dimensions provided by the user
+	originalDimensions: Dimensions; // Original dimensions of the image
 
 	/**
 	 * Constructor to initialize the ImagePropBuilder instance
@@ -45,10 +42,12 @@ export class ImagePropBuilder {
 		// Extract custom options
 		const { aspect, srcsetSizes, ...builderOptions } = options;
 
-		// Set custom aspect ratio, width, and height
-		this.customAspectRatio = aspect;
-		this.customWidth = builderOptions.width;
-		this.customHeight = builderOptions.height;
+		// Initialize custom dimensions
+		this.customDimensions = {
+			aspectRatio: aspect,
+			width: builderOptions.width,
+			height: builderOptions.height
+		};
 
 		// Use default or provided srcset sizes
 		this.srcsetBreakpoints = srcsetSizes || DEFAULT_IMAGE_SIZES;
@@ -58,19 +57,23 @@ export class ImagePropBuilder {
 
 		// Get original image dimensions
 		const originalDims = getImageDimensions(image);
-		this.originalWidth = originalDims.width;
-		this.originalHeight = originalDims.height;
-		this.originalAspectRatio = originalDims.width / originalDims.height;
+		this.originalDimensions = {
+			width: originalDims.width,
+			height: originalDims.height,
+			aspectRatio: originalDims.width / originalDims.height
+		};
 
 		// Calculate output dimensions based on provided options
 		const calculatedDims = this.calculateOutputDimensions();
-		this.width = calculatedDims.outputWidth;
-		this.height = calculatedDims.outputHeight;
-		this.aspectRatio = calculatedDims.outputWidth / calculatedDims.outputHeight;
+		this.dimensions = {
+			width: calculatedDims.outputWidth,
+			height: calculatedDims.outputHeight,
+			aspectRatio: calculatedDims.outputWidth / calculatedDims.outputHeight
+		};
 
 		// Update URL builder with dimensions if a custom aspect ratio is specified
-		if (this.customAspectRatio) {
-			this.urlBuilder = this.urlBuilder.width(this.width).height(this.height);
+		if (this.customDimensions.aspectRatio) {
+			this.urlBuilder = this.urlBuilder.width(this.dimensions.width).height(this.dimensions.height);
 		}
 
 		// Generate the srcset string
@@ -83,21 +86,21 @@ export class ImagePropBuilder {
 	 */
 	private calculateOutputDimensions() {
 		// If explicit dimensions are provided, use them
-		if (this.customWidth && this.customHeight) {
+		if (this.customDimensions.width && this.customDimensions.height) {
 			return {
-				outputWidth: this.customWidth,
-				outputHeight: this.customHeight
+				outputWidth: this.customDimensions.width,
+				outputHeight: this.customDimensions.height
 			};
 		}
 
 		// Handle cases where aspect ratio is specified
-		if (this.customAspectRatio) {
+		if (this.customDimensions.aspectRatio) {
 			const calculatedHeight = Math.min(
-				this.originalHeight,
-				this.originalWidth / this.customAspectRatio
+				this.originalDimensions.height,
+				this.originalDimensions.width / this.customDimensions.aspectRatio
 			);
 			return {
-				outputWidth: Math.round(calculatedHeight * this.customAspectRatio),
+				outputWidth: Math.round(calculatedHeight * this.customDimensions.aspectRatio),
 				outputHeight: Math.round(calculatedHeight)
 			};
 		}
@@ -106,25 +109,25 @@ export class ImagePropBuilder {
 		// ...
 
 		// Calculate dimensions based on custom height
-		if (this.customHeight) {
+		if (this.customDimensions.height) {
 			return {
-				outputWidth: Math.round(this.customHeight * this.originalAspectRatio),
-				outputHeight: this.customHeight
+				outputWidth: Math.round(this.customDimensions.height * this.originalDimensions.aspectRatio),
+				outputHeight: this.customDimensions.height
 			};
 		}
 
 		// Calculate dimensions based on custom width
-		if (this.customWidth) {
+		if (this.customDimensions.width) {
 			return {
-				outputWidth: this.customWidth,
-				outputHeight: Math.round(this.customWidth / this.originalAspectRatio)
+				outputWidth: this.customDimensions.width,
+				outputHeight: Math.round(this.customDimensions.width / this.originalDimensions.aspectRatio)
 			};
 		}
 
 		// Default to original dimensions if no custom dimensions are provided
 		return {
-			outputWidth: this.originalWidth,
-			outputHeight: this.originalHeight
+			outputWidth: this.originalDimensions.width,
+			outputHeight: this.originalDimensions.height
 		};
 	}
 
@@ -134,15 +137,17 @@ export class ImagePropBuilder {
 	 */
 	private getValidBreakpoints() {
 		const breakpoints = this.srcsetBreakpoints;
-		const customHeight = this.customHeight;
+		const customHeight = this.customDimensions.height;
 
-		// Ensure that images with a custom height is included in breakpoints
-		if (customHeight && !this.customWidth) {
-			return breakpoints.filter((breakpoint) => breakpoint <= customHeight * this.aspectRatio);
+		// Ensure that images with a custom height are included in breakpoints
+		if (customHeight && !this.customDimensions.width) {
+			return breakpoints.filter(
+				(breakpoint) => breakpoint <= customHeight * this.dimensions.aspectRatio
+			);
 		}
 
 		// Exclude breakpoints larger than the output width
-		return breakpoints.filter((breakpoint) => breakpoint <= this.width);
+		return breakpoints.filter((breakpoint) => breakpoint <= this.dimensions.width);
 	}
 
 	/**
@@ -161,14 +166,14 @@ export class ImagePropBuilder {
 		return breakpoints
 			.map((breakpoint) => {
 				// Calculate height based on aspect ratio if specified
-				if (this.customAspectRatio) {
-					const calculatedHeight = Math.round(breakpoint / this.customAspectRatio);
+				if (this.customDimensions.aspectRatio) {
+					const calculatedHeight = Math.round(breakpoint / this.customDimensions.aspectRatio);
 					return this.urlBuilder.height(calculatedHeight).width(breakpoint).url();
 				}
 
 				// Calculate the widths for a requested custom height
-				if (this.customHeight && !this.customWidth) {
-					const calculatedHeight = Math.round(breakpoint / this.aspectRatio);
+				if (this.customDimensions.height && !this.customDimensions.width) {
+					const calculatedHeight = Math.round(breakpoint / this.dimensions.aspectRatio);
 					return this.urlBuilder.height(calculatedHeight).width(breakpoint).url();
 				}
 

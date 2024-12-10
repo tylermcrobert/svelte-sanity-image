@@ -37,8 +37,8 @@ export function getImageProps(
 		return {
 			src: builder.urlBuilder.url(),
 			srcset: builder.srcset,
-			width: builder.width,
-			height: builder.height
+			width: builder.dimensions.width,
+			height: builder.dimensions.height
 		};
 	} catch (error) {
 		console.error(error);
