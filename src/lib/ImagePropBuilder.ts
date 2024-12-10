@@ -166,14 +166,11 @@ export class ImagePropBuilder {
 		return breakpoints
 			.map((breakpoint) => {
 				// Calculate height based on aspect ratio if specified
-				if (this.customDimensions.aspectRatio) {
-					const calculatedHeight = Math.round(breakpoint / this.customDimensions.aspectRatio);
-					return this.urlBuilder.height(calculatedHeight).width(breakpoint).url();
-				}
+				if (this.customDimensions.aspectRatio || this.customDimensions.height) {
+					const calculatedHeight = Math.round(
+						breakpoint / (this.customDimensions.aspectRatio || this.dimensions.aspectRatio)
+					);
 
-				// Calculate the widths for a requested custom height
-				if (this.customDimensions.height && !this.customDimensions.width) {
-					const calculatedHeight = Math.round(breakpoint / this.dimensions.aspectRatio);
 					return this.urlBuilder.height(calculatedHeight).width(breakpoint).url();
 				}
 
