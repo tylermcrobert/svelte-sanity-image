@@ -39,15 +39,19 @@ export function getImageProps(
 		...builderOptions
 	}: GetImagePropsOptions = {}
 ): ImageProps | EmptyImageProps {
+	if (!image) {
+		throw new Error('Sanity image not provided.');
+	}
+
+	if (!client) {
+		throw new Error('Sanity client or project details not provided.');
+	}
+
+	if (customWidth && customHeight && customAspectRatio) {
+		throw new Error('Cannot provide an aspect ratio when width & height are provided.');
+	}
+
 	try {
-		if (!image) {
-			throw new Error('No image provided.');
-		}
-
-		if (!client) {
-			throw new Error('Sanity client not provided.');
-		}
-
 		let urlBuilder = imageUrlBuilder(client)
 			.image(image)
 			.withOptions({

@@ -10,12 +10,22 @@ function flattenStr(str: string) {
 describe('getImageProps', () => {
 	const image = DEFAULT_IMAGE;
 
-	it('throws an error when the client is not provided', () => {
-		// TODO
+	it('trows an error when the image is not provided', () => {
+		// @ts-expect-error testing
+		expect(() => getImageProps(undefined, undefined)).toThrowError('Sanity image not provided.');
 	});
 
-	it('trows an error when the image is not provided', () => {
-		// TODO
+	it('throws an error when the client is not provided', () => {
+		// @ts-expect-error testing
+		expect(() => getImageProps(image, undefined)).toThrowError(
+			'Sanity client or project details not provided.'
+		);
+	});
+
+	it('throws an error when width, height, and aspect are all defined.', () => {
+		expect(() =>
+			getImageProps(image, client, { height: 1200, width: 1200, aspect: 0.75 })
+		).toThrowError('Cannot provide an aspect ratio when width & height are provided.');
 	});
 
 	it('should return the correct image properties with base implementation', () => {
@@ -72,10 +82,6 @@ describe('getImageProps', () => {
 				${BASE_URL}?rect=600,0,1200,1600&w=1080&h=1440 1080w, 
 				${BASE_URL}?rect=600,0,1200,1600&w=1200&h=1600 1200w`)
 		);
-	});
-
-	it('throws an error when width, height, and aspect are all defined.', () => {
-		// TODO
 	});
 
 	it('Handles DPR correctly', () => {
