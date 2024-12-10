@@ -35,7 +35,7 @@ export function getImageProps(
 		const builder = new ImagePropBuilder(image, client, options);
 
 		return {
-			src: builder.urlBuilder.url(),
+			src: builder.src,
 			srcset: builder.srcset,
 			width: builder.dimensions.width,
 			height: builder.dimensions.height

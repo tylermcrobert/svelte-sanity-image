@@ -1,5 +1,3 @@
-// Import required types and modules
-import type { ImageUrlBuilder } from '@sanity/image-url/lib/types/builder.js';
 import type { GetImagePropsOptions } from './getImageProps.js';
 import type { SanityClientOrProjectDetails, SanityImageSource } from './types.js';
 import imageUrlBuilder from '@sanity/image-url';
@@ -20,9 +18,8 @@ export class ImagePropBuilder {
 	image: SanityImageSource;
 	client: SanityClientOrProjectDetails;
 
-	urlBuilder: ImageUrlBuilder; // Builder for Sanity image URLs
 	srcset: string | undefined; // Srcset string
-
+	src: string;
 	dimensions: Dimensions; // Final dimensions
 
 	/**
@@ -52,17 +49,8 @@ export class ImagePropBuilder {
 			aspect: calculatedDims.width / calculatedDims.height
 		};
 
-		this.urlBuilder = this.getUrlBuilder();
 		this.srcset = this.getSrcset();
-	}
-
-	private getUrlBuilder() {
-		let urlBuilder = imageUrlBuilder(this.client).image(this.image).withOptions(this.options);
-		if (this.options.aspect) {
-			urlBuilder = urlBuilder.width(this.dimensions.width).height(this.dimensions.height);
-		}
-
-		return urlBuilder;
+		this.src = this.getUrlBuilder().url();
 	}
 
 	/**
@@ -138,6 +126,15 @@ export class ImagePropBuilder {
 		return breakpoints.filter((breakpoint) => breakpoint <= this.dimensions.width);
 	}
 
+	private getUrlBuilder() {
+		let urlBuilder = imageUrlBuilder(this.client).image(this.image).withOptions(this.options);
+		if (this.options.aspect) {
+			urlBuilder = urlBuilder.width(this.dimensions.width).height(this.dimensions.height);
+		}
+
+		return urlBuilder;
+	}
+
 	/**
 	 * Generate the srcset string for the image
 	 * @returns Srcset string or undefined
@@ -153,7 +150,7 @@ export class ImagePropBuilder {
 		// Map each breakpoint to a URL and combine into a srcset string
 		return breakpoints
 			.map((breakpoint) => {
-				let builder = this.urlBuilder.width(breakpoint);
+				let builder = this.getUrlBuilder().width(breakpoint);
 
 				// Calculate height based on aspect ratio if specified
 				const needsCustomHeight = this.options.aspect || this.options.height;
