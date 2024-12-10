@@ -68,11 +68,8 @@ export function getImageProps(
 				};
 			}
 
-			const {
-				width: originalWidth,
-				height: originalHeight,
-				aspectRatio: originalAspectRatio
-			} = getImageDimensions(image);
+			const { width: originalWidth, height: originalHeight } = getImageDimensions(image);
+			const originalAspectRatio = originalWidth / originalHeight;
 
 			if (customWidth) {
 				// Calculate height based on provided width
