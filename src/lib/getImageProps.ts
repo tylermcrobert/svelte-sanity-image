@@ -51,126 +51,115 @@ export function getImageProps(
 		throw new Error('Cannot provide an aspect ratio when width & height are provided.');
 	}
 
-	try {
-		let urlBuilder = imageUrlBuilder(client)
-			.image(image)
-			.withOptions({
-				width: customWidth,
-				height: customHeight,
-				...builderOptions
-			});
+	let urlBuilder = imageUrlBuilder(client)
+		.image(image)
+		.withOptions({
+			width: customWidth,
+			height: customHeight,
+			...builderOptions
+		});
 
-		/**
-		 * Calculate output dimensions for the image.
-		 */
-		const { outputWidth, outputHeight } = (() => {
-			if (customWidth && customHeight) {
-				// Explicit dimensions provided
-				return {
-					outputWidth: customWidth,
-					outputHeight: customHeight
-				};
-			}
-
-			const { width: originalWidth, height: originalHeight } = getImageDimensions(image);
-			const originalAspectRatio = originalWidth / originalHeight;
-
-			if (customWidth) {
-				// Calculate height based on provided width
-				return {
-					outputWidth: customWidth,
-					outputHeight: Math.round(customWidth / originalAspectRatio)
-				};
-			}
-
-			if (customHeight) {
-				// Calculate width based on provided height
-				return {
-					outputWidth: Math.round(customHeight * originalAspectRatio),
-					outputHeight: customHeight
-				};
-			}
-
-			if (customAspectRatio) {
-				// Calculate dimensions based on custom aspect ratio
-				const calculatedHeight = Math.min(originalHeight, originalWidth / customAspectRatio);
-				return {
-					outputWidth: Math.round(calculatedHeight * customAspectRatio),
-					outputHeight: Math.round(calculatedHeight)
-				};
-			}
-
-			// Default to original dimensions
+	/**
+	 * Calculate output dimensions for the image.
+	 */
+	const { outputWidth, outputHeight } = (() => {
+		if (customWidth && customHeight) {
+			// Explicit dimensions provided
 			return {
-				outputWidth: originalWidth,
-				outputHeight: originalHeight
+				outputWidth: customWidth,
+				outputHeight: customHeight
 			};
-		})();
-
-		const aspectRatio = customAspectRatio || outputWidth / outputHeight;
-
-		if (customAspectRatio) {
-			urlBuilder = urlBuilder.width(outputWidth).height(outputHeight);
 		}
 
-		/**
-		 * Determine breakpoints for srcset.
-		 */
-		const validBreakpoints = (() => {
-			const breakpoints = srcsetSizes || DEFAULT_IMAGE_SIZES;
+		const { width: originalWidth, height: originalHeight } = getImageDimensions(image);
+		const originalAspectRatio = originalWidth / originalHeight;
 
-			if (customHeight) {
-				// Ensure breakpoints align with the height
-				return breakpoints.filter((breakpoint) => breakpoint <= customHeight * aspectRatio);
-			}
+		if (customWidth) {
+			// Calculate height based on provided width
+			return {
+				outputWidth: customWidth,
+				outputHeight: Math.round(customWidth / originalAspectRatio)
+			};
+		}
 
-			// Exclude breakpoints larger than the output width
-			return breakpoints.filter((breakpoint) => breakpoint <= outputWidth);
-		})();
+		if (customHeight) {
+			// Calculate width based on provided height
+			return {
+				outputWidth: Math.round(customHeight * originalAspectRatio),
+				outputHeight: customHeight
+			};
+		}
 
-		/**
-		 * Build srcset
-		 *
-		 * Build an image url for each size width, and combine into an srcset
-		 */
-		const srcset = (() => {
-			if (!validBreakpoints.length) return undefined;
+		if (customAspectRatio) {
+			// Calculate dimensions based on custom aspect ratio
+			const calculatedHeight = Math.min(originalHeight, originalWidth / customAspectRatio);
+			return {
+				outputWidth: Math.round(calculatedHeight * customAspectRatio),
+				outputHeight: Math.round(calculatedHeight)
+			};
+		}
 
-			return validBreakpoints
-				.map((breakpoint) => {
-					// If aspect is set, calculate output height
-					if (customAspectRatio) {
-						const calculatedHeight = Math.round(breakpoint / customAspectRatio);
-						return urlBuilder.height(calculatedHeight).width(breakpoint).url();
-					}
-
-					// The height that the user selects must be included in srcset
-					if (customHeight && !customWidth) {
-						const calculatedHeight = Math.round(breakpoint / aspectRatio);
-						return urlBuilder.height(calculatedHeight).width(breakpoint).url();
-					}
-
-					// Default case
-					return urlBuilder.width(breakpoint).url();
-				})
-				.map((url, i) => `${url} ${validBreakpoints[i]}w`)
-				.join(', ');
-		})();
-
+		// Default to original dimensions
 		return {
-			src: urlBuilder.url(),
-			srcset,
-			width: outputWidth,
-			height: outputHeight
+			outputWidth: originalWidth,
+			outputHeight: originalHeight
 		};
-	} catch (error) {
-		console.error('Error building image props:', error);
+	})();
 
-		return {
-			src: undefined,
-			srcset: undefined,
-			width: undefined,
-			height: undefined
-		};
+	const aspectRatio = customAspectRatio || outputWidth / outputHeight;
+
+	if (customAspectRatio) {
+		urlBuilder = urlBuilder.width(outputWidth).height(outputHeight);
 	}
+
+	/**
+	 * Determine breakpoints for srcset.
+	 */
+	const validBreakpoints = (() => {
+		const breakpoints = srcsetSizes || DEFAULT_IMAGE_SIZES;
+
+		if (customHeight) {
+			// Ensure breakpoints align with the height
+			return breakpoints.filter((breakpoint) => breakpoint <= customHeight * aspectRatio);
+		}
+
+		// Exclude breakpoints larger than the output width
+		return breakpoints.filter((breakpoint) => breakpoint <= outputWidth);
+	})();
+
+	/**
+	 * Build srcset
+	 *
+	 * Build an image url for each size width, and combine into an srcset
+	 */
+	const srcset = (() => {
+		if (!validBreakpoints.length) return undefined;
+
+		return validBreakpoints
+			.map((breakpoint) => {
+				// If aspect is set, calculate output height
+				if (customAspectRatio) {
+					const calculatedHeight = Math.round(breakpoint / customAspectRatio);
+					return urlBuilder.height(calculatedHeight).width(breakpoint).url();
+				}
+
+				// The height that the user selects must be included in srcset
+				if (customHeight && !customWidth) {
+					const calculatedHeight = Math.round(breakpoint / aspectRatio);
+					return urlBuilder.height(calculatedHeight).width(breakpoint).url();
+				}
+
+				// Default case
+				return urlBuilder.width(breakpoint).url();
+			})
+			.map((url, i) => `${url} ${validBreakpoints[i]}w`)
+			.join(', ');
+	})();
+
+	return {
+		src: urlBuilder.url(),
+		srcset,
+		width: outputWidth,
+		height: outputHeight
+	};
 }

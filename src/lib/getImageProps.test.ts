@@ -10,6 +10,8 @@ function flattenStr(str: string) {
 describe('getImageProps', () => {
 	const image = DEFAULT_IMAGE;
 
+	// Undefined params
+
 	it('trows an error when the image is not provided', () => {
 		// @ts-expect-error testing
 		expect(() => getImageProps(undefined, undefined)).toThrowError('Sanity image not provided.');
@@ -21,6 +23,21 @@ describe('getImageProps', () => {
 			'Sanity client or project details not provided.'
 		);
 	});
+
+	// Invalid params
+
+	it('throws an error when an invalid image is provided.', () => {
+		expect(() => getImageProps('image', client)).toThrowError(
+			'Invalid asset _ref provided: "image"'
+		);
+	});
+
+	it('throws an error when an invalid client is provided.', () => {
+		// @ts-expect-error testing
+		expect(() => getImageProps(image, 'client')).toThrowError();
+	});
+
+	// Invalid Options
 
 	it('throws an error when width, height, and aspect are all defined.', () => {
 		expect(() =>
