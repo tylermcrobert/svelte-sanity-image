@@ -42,11 +42,12 @@ export class ImagePropBuilder {
 		this.options = options;
 		this.client = client;
 
-		const calculatedDims = this.calculateImageDimensions();
+		const { width, height } = this.calculateImageDimensions();
 
 		this.dimensions = {
-			...calculatedDims,
-			aspect: calculatedDims.width / calculatedDims.height
+			width,
+			height,
+			aspect: width / height
 		};
 
 		this.srcset = this.getSrcset();
