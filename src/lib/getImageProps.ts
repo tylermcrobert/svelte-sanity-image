@@ -128,19 +128,35 @@ export function getImageProps(
 		 *
 		 * Build an image url for each size width, and combine into an srcset
 		 */
+
 		const srcset = (() => {
-			const sizes = srcsetSizes || DEFAULT_IMAGE_SIZES;
+			/**
+			 * Get breakpoints
+			 *
+			 * Don't include breakpoints where the breakpoint is larger than the width.
+			 * If the user has set a height, make sure that the width can grow to be
+			 */
+			let breakpoints = srcsetSizes || DEFAULT_IMAGE_SIZES;
+			const aspect = requestedAspect || outputWidth / outputHeight;
 
-			/** Only include sizes that are equal or smaller than the output width  */
-			const validSizes = sizes.filter((breakpoint) => breakpoint <= outputWidth);
-
-			/** If the image width will always be smaller than the smallest size, don't render an srcset at all */
-			if (!validSizes.length) {
-				return undefined;
+			if (userSetHeight) {
+				/** if user sets height, set breakpoints so that the width will always grow to the height */
+				breakpoints = breakpoints.filter((breakpoint) => breakpoint <= userSetHeight * aspect);
+			} else {
+				/** Don't render widths that are wider than the selected width */
+				breakpoints = breakpoints.filter((breakpoint) => breakpoint <= outputWidth);
 			}
 
-			/** Build srcset from breakpoints */
-			const srcset = validSizes
+			if (!breakpoints.length) return;
+
+			/**
+			 * 2. Get breakpoints
+			 *
+			 * Don't include breakpoints where the breakpoint is larger than the width.
+			 * If the user has set a height, make sure that the width can grow to be
+			 */
+
+			const srcset = breakpoints
 				.map((breakpoint) => {
 					const inherentAspect = outputWidth / outputHeight;
 					const aspect = requestedAspect || inherentAspect;

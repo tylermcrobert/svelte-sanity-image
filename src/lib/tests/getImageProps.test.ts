@@ -22,6 +22,8 @@ describe('getImageProps', () => {
 		const props = getImageProps(image, client);
 
 		expect(props.src).toBe(BASE_URL);
+		expect(props.width).toBe(2400);
+		expect(props.height).toBe(1600);
 
 		expect(props.srcset).toBe(
 			flattenStr(`
@@ -33,15 +35,14 @@ describe('getImageProps', () => {
 				${BASE_URL}?w=1920 1920w, 
 				${BASE_URL}?w=2048 2048w`)
 		);
-
-		expect(props.width).toBe(2400);
-		expect(props.height).toBe(1600);
 	});
 
 	it('should return the correct image properties with quality', () => {
 		const props = getImageProps(image, client, { quality: 50 });
 
 		expect(props.src).toBe(`${BASE_URL}?q=50`);
+		expect(props.width).toBe(2400);
+		expect(props.height).toBe(1600);
 
 		expect(props.srcset).toBe(
 			flattenStr(`
@@ -54,15 +55,14 @@ describe('getImageProps', () => {
 				${BASE_URL}?w=2048&q=50 2048w
 			`)
 		);
-
-		expect(props.width).toBe(2400);
-		expect(props.height).toBe(1600);
 	});
 
 	it('should build an image correctly with a defined aspect (Portrait)', () => {
 		const props = getImageProps(image, client, { aspect: 0.75 });
 
 		expect(props.src).toBe(`${BASE_URL}?rect=600,0,1200,1600&w=1200&h=1600`);
+		expect(props.width).toBe(1200);
+		expect(props.height).toBe(1600);
 
 		expect(props.srcset).toBe(
 			flattenStr(`
@@ -72,9 +72,6 @@ describe('getImageProps', () => {
 				${BASE_URL}?rect=600,0,1200,1600&w=1080&h=1440 1080w, 
 				${BASE_URL}?rect=600,0,1200,1600&w=1200&h=1600 1200w`)
 		);
-
-		expect(props.width).toBe(1200);
-		expect(props.height).toBe(1600);
 	});
 
 	it('throws an error when width, height, and aspect are all defined.', () => {
