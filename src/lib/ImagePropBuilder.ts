@@ -65,40 +65,39 @@ export class ImagePropBuilder {
 	private calculateImageDimensions() {
 		const originalDims = getImageDimensions(this.image);
 		const originalAspect = originalDims.width / originalDims.height;
+		const { width, height, aspect } = this.options;
 
 		// If explicit dimensions are provided, use them
-		if (this.options.width && this.options.height) {
+		if (width && height) {
 			return {
-				width: this.options.width,
-				height: this.options.height
+				width: width,
+				height: height
 			};
 		}
 
 		// Handle cases where aspect ratio is specified
-		if (this.options.aspect) {
-			const calculatedHeight = Math.min(
-				originalDims.height,
-				originalDims.width / this.options.aspect
-			);
+		if (aspect) {
+			const calculatedHeight = Math.min(originalDims.height, originalDims.width / aspect);
+
 			return {
-				width: Math.round(calculatedHeight * this.options.aspect),
+				width: Math.round(calculatedHeight * aspect),
 				height: Math.round(calculatedHeight)
 			};
 		}
 
 		// Calculate dimensions based on custom height
-		if (this.options.height) {
+		if (height) {
 			return {
-				width: Math.round(this.options.height * originalAspect),
-				height: this.options.height
+				width: Math.round(height * originalAspect),
+				height: height
 			};
 		}
 
 		// Calculate dimensions based on custom width
-		if (this.options.width) {
+		if (width) {
 			return {
-				width: this.options.width,
-				height: Math.round(this.options.width / originalAspect)
+				width: width,
+				height: Math.round(width / originalAspect)
 			};
 		}
 
