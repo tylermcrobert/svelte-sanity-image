@@ -11,8 +11,8 @@ describe('getDimsFromId', () => {
 	});
 
 	it('Throws an error if the asset _ref is invalid', () => {
-		expect(() => getAssetDimensionsFromRefString('')).toThrowError(
-			'Invalid asset _ref provided: ""'
+		expect(() => getAssetDimensionsFromRefString('foo')).toThrowError(
+			'Invalid input: asset "foo" is invalid'
 		);
 	});
 
