@@ -42,7 +42,7 @@ export class ImagePropBuilder {
 		this.options = options;
 		this.client = client;
 
-		const calculatedDims = this.calculateOutputDimensions();
+		const calculatedDims = this.calculateImageDimensions();
 
 		this.dimensions = {
 			...calculatedDims,
@@ -50,14 +50,18 @@ export class ImagePropBuilder {
 		};
 
 		this.srcset = this.getSrcset();
-		this.src = this.getUrlBuilder().url();
+		this.src = this.getSrc();
 	}
 
 	/**
 	 * Calculate the output dimensions based on custom and original dimensions
+	 *
+	 * @description Lorme ipsum dolor sit maet
 	 * @returns Object containing output width and height
+	 *
+	 * @todo Handle use cases where width + aspect or height + aspect are set
 	 */
-	private calculateOutputDimensions() {
+	private calculateImageDimensions() {
 		const originalDims = getImageDimensions(this.image);
 		const originalAspect = originalDims.width / originalDims.height;
 
@@ -80,9 +84,6 @@ export class ImagePropBuilder {
 				height: Math.round(calculatedHeight)
 			};
 		}
-
-		// TODO: handle aspect + width, aspect + height
-		// ...
 
 		// Calculate dimensions based on custom height
 		if (this.options.height) {
@@ -108,7 +109,9 @@ export class ImagePropBuilder {
 	}
 
 	/**
-	 * Get valid breakpoints for the srcset, ensuring they don't exceed image dimensions
+	 * Get valid breakpoints for the srcset,
+	 *
+	 * @description This filters out unnessesary breakpoints
 	 * @returns Array of valid breakpoints
 	 */
 	private getValidBreakpoints() {
@@ -126,19 +129,36 @@ export class ImagePropBuilder {
 		return breakpoints.filter((breakpoint) => breakpoint <= this.dimensions.width);
 	}
 
+	/**
+	 * Get configured Sanity Image URL Builder
+
+	 * @returns Initalized URL Builder with input config
+	 */
 	private getUrlBuilder() {
-		let urlBuilder = imageUrlBuilder(this.client).image(this.image).withOptions(this.options);
+		return imageUrlBuilder(this.client).image(this.image).withOptions(this.options);
+	}
+
+	/**
+	 * Gets a valid image Src
+	 *
+	 * @description Intercepts the default builder config with a width and height if the user has defined an aspect ratio
+	 * @returns Proper image src
+	 */
+	private getSrc() {
+		let builder = this.getUrlBuilder();
 
 		// If an aspect is set, rebuild the builder with the calculated dimensions
 		if (this.options.aspect) {
-			urlBuilder = urlBuilder.width(this.dimensions.width).height(this.dimensions.height);
+			builder = builder.width(this.dimensions.width).height(this.dimensions.height);
 		}
 
-		return urlBuilder;
+		return builder.url();
 	}
 
 	/**
 	 * Generate the srcset string for the image
+	 *
+	 * @description TODO
 	 * @returns Srcset string or undefined
 	 */
 	private getSrcset() {
