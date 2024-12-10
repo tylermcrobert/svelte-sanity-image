@@ -58,9 +58,11 @@ export function getImageProps(
 			});
 
 		/**
-		 * 1. Output width & height for img tag
+		 * Output width & height for img tag
 		 *
-		 * Gets the output width and height for the image tag. If the aspect ratio is defined, the height will be calculated accordingly. If not, these values will be the same as the initial dimensions.
+		 * Gets the output width and height for the image tag. If the aspect ratio is defined, the
+		 * height will be calculated accordingly. If not, these values will be the same as the
+		 * initial dimensions.
 		 */
 		const { outputWidth, outputHeight } = (() => {
 			/** If user set width + height, just return those  */
@@ -127,7 +129,6 @@ export function getImageProps(
 		 * Don't include breakpoints where the breakpoint is larger than the width.
 		 * If the user has set a height, make sure that the width can grow to be
 		 */
-
 		const breakpoints = (() => {
 			const breakpoints = srcsetSizes || DEFAULT_IMAGE_SIZES;
 
@@ -141,25 +142,28 @@ export function getImageProps(
 		})();
 
 		/**
-		 * 2. Srcset sizes
+		 * Build srcset
+		 *
 		 * Build an image url for each size width, and combine into an srcset
 		 */
-
 		const srcset = (() => {
 			if (!breakpoints.length) return undefined;
 
 			return breakpoints
 				.map((breakpoint) => {
+					/** If the user selects a height, adjust the srcset to allow for the image to at least grow to that height */
 					if (userSetHeight) {
 						const calculatedHeight = Math.round(breakpoint / aspect);
 						return urlBuilder.height(calculatedHeight).width(breakpoint).url();
 					}
 
+					/** If aspect is set, calculate output height */
 					if (userSetAspect) {
 						const calculatedHeight = Math.round(breakpoint / userSetAspect);
 						return urlBuilder.height(calculatedHeight).width(breakpoint).url();
 					}
 
+					/** Return default  */
 					return urlBuilder.width(breakpoint).url();
 				})
 				.map((url, i) => `${url} ${breakpoints[i]}w`)
