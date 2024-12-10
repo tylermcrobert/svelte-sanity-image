@@ -29,6 +29,10 @@
 		<h2>Height: 1000</h2>
 		<SvelteSanityImage {client} image={TEST_IMAGE} height={1000} sizes="25vw" />
 	</div>
+	<div>
+		<h2>Width: 1000</h2>
+		<SvelteSanityImage {client} image={TEST_IMAGE} width={1000} sizes="25vw" />
+	</div>
 </div>
 
 <hr style="margin: 100px 0" />
