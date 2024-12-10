@@ -128,6 +128,8 @@ export class ImagePropBuilder {
 
 	private getUrlBuilder() {
 		let urlBuilder = imageUrlBuilder(this.client).image(this.image).withOptions(this.options);
+
+		// If an aspect is set, rebuild the builder with the calculated dimensions
 		if (this.options.aspect) {
 			urlBuilder = urlBuilder.width(this.dimensions.width).height(this.dimensions.height);
 		}
