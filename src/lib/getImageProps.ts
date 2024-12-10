@@ -35,7 +35,7 @@ export function getImageProps(
 	{
 		width: userSetWidth,
 		height: userSetHeight,
-		aspect: requestedAspect,
+		aspect: userSetAspect,
 		srcsetSizes,
 		...options
 	}: GetImagePropsOptions = {}
@@ -61,7 +61,6 @@ export function getImageProps(
 		 * 1. Output width & height for img tag
 		 *
 		 * Gets the output width and height for the image tag. If the aspect ratio is defined, the height will be calculated accordingly. If not, these values will be the same as the initial dimensions.
-		 * TODO: calculate aspect ratio
 		 */
 		const { outputWidth, outputHeight } = (() => {
 			/** If user set width + height, just return those  */
@@ -76,39 +75,36 @@ export function getImageProps(
 			const {
 				width: assetSourceWidth,
 				height: assetSourceHeight,
-				aspectRatio
+				aspectRatio: assetSourceAspect
 			} = getImageDimensions(image);
 
 			/** If user set width, return with calculated height */
 			if (userSetWidth) {
 				return {
 					outputWidth: userSetWidth,
-					outputHeight: Math.round(userSetWidth / aspectRatio)
+					outputHeight: Math.round(userSetWidth / assetSourceAspect)
 				};
 			}
 
 			/** If user set height, return with calculated width */
 			if (userSetHeight) {
 				return {
-					outputWidth: Math.round(userSetHeight * aspectRatio),
+					outputWidth: Math.round(userSetHeight * assetSourceAspect),
 					outputHeight: userSetHeight
 				};
 			}
 
-			/**
-			 * 1.3 if aspect is set, return based on that.
-			 */
+			/** if aspect is set, return based on that. */
+			if (userSetAspect) {
+				// TODO: change based on fit/crop/etc?
+				// TODO: doc
 
-			if (requestedAspect) {
-				//TODO: change based on fit/crop/etc?
-				const outputWidth = Math.round(
-					Math.min(assetSourceHeight, assetSourceHeight * requestedAspect)
-				);
-				const outputHeight = Math.round(outputWidth / requestedAspect);
+				const smallerHeight = Math.min(assetSourceHeight, assetSourceHeight * userSetAspect);
+				const outputWidth = Math.round(smallerHeight);
 
 				return {
 					outputWidth,
-					outputHeight
+					outputHeight: Math.round(outputWidth / userSetAspect)
 				};
 			}
 
@@ -119,7 +115,9 @@ export function getImageProps(
 			};
 		})();
 
-		if (requestedAspect) {
+		const aspect = userSetAspect || outputWidth / outputHeight;
+
+		if (userSetAspect) {
 			urlBuilder = urlBuilder.width(outputWidth).height(outputHeight);
 		}
 
@@ -132,7 +130,6 @@ export function getImageProps(
 
 		const breakpoints = (() => {
 			const breakpoints = srcsetSizes || DEFAULT_IMAGE_SIZES;
-			const aspect = requestedAspect || outputWidth / outputHeight;
 
 			if (userSetHeight) {
 				/** if user sets height, set breakpoints so that the width will always grow to the height */
@@ -151,9 +148,6 @@ export function getImageProps(
 		const srcset = (() => {
 			const srcset = breakpoints
 				.map((breakpoint) => {
-					const inherentAspect = outputWidth / outputHeight;
-					const aspect = requestedAspect || inherentAspect;
-
 					if (userSetHeight) {
 						return `${urlBuilder
 							.height(Math.round(breakpoint / aspect))
@@ -161,8 +155,8 @@ export function getImageProps(
 							.url()} ${breakpoint}w`;
 					}
 
-					if (requestedAspect) {
-						const newHeight = Math.round(breakpoint / requestedAspect);
+					if (userSetAspect) {
+						const newHeight = Math.round(breakpoint / userSetAspect);
 						return `${urlBuilder.height(newHeight).width(breakpoint).url()} ${breakpoint}w`;
 					}
 
