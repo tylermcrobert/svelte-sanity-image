@@ -124,38 +124,31 @@ export function getImageProps(
 		}
 
 		/**
-		 * 2. Srcset sizes
+		 * Get breakpoints
 		 *
-		 * Build an image url for each size width, and combine into an srcset
+		 * Don't include breakpoints where the breakpoint is larger than the width.
+		 * If the user has set a height, make sure that the width can grow to be
 		 */
 
-		const srcset = (() => {
-			/**
-			 * Get breakpoints
-			 *
-			 * Don't include breakpoints where the breakpoint is larger than the width.
-			 * If the user has set a height, make sure that the width can grow to be
-			 */
-			let breakpoints = srcsetSizes || DEFAULT_IMAGE_SIZES;
+		const breakpoints = (() => {
+			const breakpoints = srcsetSizes || DEFAULT_IMAGE_SIZES;
 			const aspect = requestedAspect || outputWidth / outputHeight;
 
 			if (userSetHeight) {
 				/** if user sets height, set breakpoints so that the width will always grow to the height */
-				breakpoints = breakpoints.filter((breakpoint) => breakpoint <= userSetHeight * aspect);
-			} else {
-				/** Don't render widths that are wider than the selected width */
-				breakpoints = breakpoints.filter((breakpoint) => breakpoint <= outputWidth);
+				return breakpoints.filter((breakpoint) => breakpoint <= userSetHeight * aspect);
 			}
 
-			if (!breakpoints.length) return;
+			/** Don't render widths that are wider than the selected width */
+			return breakpoints.filter((breakpoint) => breakpoint <= outputWidth);
+		})();
 
-			/**
-			 * 2. Get breakpoints
-			 *
-			 * Don't include breakpoints where the breakpoint is larger than the width.
-			 * If the user has set a height, make sure that the width can grow to be
-			 */
+		/**
+		 * 2. Srcset sizes
+		 * Build an image url for each size width, and combine into an srcset
+		 */
 
+		const srcset = (() => {
 			const srcset = breakpoints
 				.map((breakpoint) => {
 					const inherentAspect = outputWidth / outputHeight;
