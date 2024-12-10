@@ -1,13 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { TEST_IMAGE_REF_ID } from '../constants.js';
-import { getAssetDimensionsFromRefString } from './getAssetDimensionsFromRefString.js';
+import { getAssetDimensionsFromRefString } from '$lib/getAssetDimensionsFromRefString.js';
 
 describe('getDimsFromId', () => {
 	it('Extracts the correct dimensions from the asset _ref', () => {
 		expect(getAssetDimensionsFromRefString(TEST_IMAGE_REF_ID)).toEqual({
 			width: 2400,
-			height: 1600,
-			aspectRatio: 1.5
+			height: 1600
 		});
 	});
 

@@ -6,7 +6,6 @@ import { DEFAULT_IMAGE } from '../constants.js';
 describe('getImageDimensions', () => {
 	it('Gets the correct image dimensions', () => {
 		expect(getImageDimensions(DEFAULT_IMAGE)).toEqual({
-			aspectRatio: 1.5,
 			height: 1600,
 			width: 2400
 		});
