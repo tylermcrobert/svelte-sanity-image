@@ -146,27 +146,24 @@ export function getImageProps(
 		 */
 
 		const srcset = (() => {
-			if (!breakpoints.length) return undefined; //TODO: add tests
+			if (!breakpoints.length) return undefined;
 
-			const srcset = breakpoints
+			return breakpoints
 				.map((breakpoint) => {
 					if (userSetHeight) {
-						return `${urlBuilder
-							.height(Math.round(breakpoint / aspect))
-							.width(breakpoint)
-							.url()} ${breakpoint}w`;
+						const calculatedHeight = Math.round(breakpoint / aspect);
+						return urlBuilder.height(calculatedHeight).width(breakpoint).url();
 					}
 
 					if (userSetAspect) {
-						const newHeight = Math.round(breakpoint / userSetAspect);
-						return `${urlBuilder.height(newHeight).width(breakpoint).url()} ${breakpoint}w`;
+						const calculatedHeight = Math.round(breakpoint / userSetAspect);
+						return urlBuilder.height(calculatedHeight).width(breakpoint).url();
 					}
 
-					return `${urlBuilder.width(breakpoint).url()} ${breakpoint}w`;
+					return urlBuilder.width(breakpoint).url();
 				})
+				.map((url, i) => `${url} ${breakpoints[i]}w`)
 				.join(', ');
-
-			return srcset;
 		})();
 
 		/**
