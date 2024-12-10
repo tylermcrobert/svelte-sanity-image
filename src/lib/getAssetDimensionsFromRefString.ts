@@ -11,7 +11,7 @@ export function getAssetDimensionsFromRefString(ref: string): ImageDimensions {
 	const dimensionsStr = ref.split('-')[2];
 
 	if (!dimensionsStr) {
-		throw new Error(`Invalid asset _ref provided: "${ref}"`);
+		throw new Error(`Invalid input: asset "${ref}" is invalid`);
 	}
 
 	const [width, height] = dimensionsStr.split('x').map(Number);

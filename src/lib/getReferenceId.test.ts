@@ -43,7 +43,7 @@ describe('getReferenceId', () => {
 
 	it('Throws an error if the image input is empty', () => {
 		expect(() => getReferenceId(undefined as any)).toThrowError(
-			'"image" is empty. Cannot get _ref or _id.'
+			'Invalid input: image is empty. Cannot get _ref or _id.'
 		);
 	});
 
@@ -52,7 +52,7 @@ describe('getReferenceId', () => {
 			foo: 'bar'
 		};
 		expect(() => getReferenceId(image as any)).toThrowError(
-			'"image" is malformed. Cannot get _ref or _id.'
+			'Invalid input: image is malformed. Cannot get _ref or _id.'
 		);
 	});
 });

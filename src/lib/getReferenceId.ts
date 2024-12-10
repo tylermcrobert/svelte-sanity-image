@@ -7,7 +7,7 @@ import type { SanityImageSource } from './types.js';
  */
 export function getReferenceId(image: SanityImageSource): string {
 	if (!image) {
-		throw new Error('input "image" is empty. Cannot get _ref or _id. ');
+		throw new Error('Invalid input: image is empty. Cannot get _ref or _id. ');
 	}
 
 	if (typeof image === 'string') {
@@ -26,5 +26,5 @@ export function getReferenceId(image: SanityImageSource): string {
 		return image?._id;
 	}
 
-	throw new Error('input "image" is malformed. Cannot get _ref or _id.');
+	throw new Error('Invalid input: image is malformed. Cannot get _ref or _id.');
 }
