@@ -165,18 +165,15 @@ export class ImagePropBuilder {
 		// Map each breakpoint to a URL and combine into a srcset string
 		return breakpoints
 			.map((breakpoint) => {
+				let builder = this.urlBuilder.width(breakpoint);
+
 				// Calculate height based on aspect ratio if specified
 				const needsCustomHeight = this.customDimensions.aspectRatio || this.customDimensions.height;
-
 				if (needsCustomHeight) {
-					return this.urlBuilder
-						.height(Math.round(breakpoint / this.dimensions.aspectRatio))
-						.width(breakpoint)
-						.url();
+					builder = builder.height(Math.round(breakpoint / this.dimensions.aspectRatio));
 				}
 
-				// Default case
-				return this.urlBuilder.width(breakpoint).url();
+				return builder.url();
 			})
 			.map((url, i) => `${url} ${breakpoints[i]}w`)
 			.join(', ');
