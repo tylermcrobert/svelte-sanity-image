@@ -1,6 +1,3 @@
-// TODO: Allow passing in custom builder from component props?
-// TODO: Check to make sure getSrcSet isn't unnescessarily upscaling images when handling aspect
-
 import imageUrlBuilder from '@sanity/image-url';
 import { getImageDimensions } from './getImageDimensions.js';
 import { DEFAULT_IMAGE_SIZES } from './constants.js';
@@ -26,23 +23,25 @@ type GetImagePropsOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetSizes
 /**
  * Retrieves the image properties based on the provided options.
  *
- * @param options - The options for retrieving the image properties. Corresponds to the props of the SvelteSanityImage component.
+ * @param image - The Sanity image source.
+ * @param client - The Sanity client or project details.
+ * @param options - The options for retrieving the image properties.
  * @returns The image properties including the source URL, source set, width, and height.
  */
 export function getImageProps(
 	image: SanityImageSource,
 	client: SanityClientOrProjectDetails,
 	{
-		width: userSetWidth,
-		height: userSetHeight,
-		aspect: userSetAspect,
+		width: customWidth,
+		height: customHeight,
+		aspect: customAspectRatio,
 		srcsetSizes,
-		...options
+		...builderOptions
 	}: GetImagePropsOptions = {}
 ): ImageProps | EmptyImageProps {
 	try {
 		if (!image) {
-			throw new Error('No input "image" provided');
+			throw new Error('No image provided.');
 		}
 
 		if (!client) {
@@ -52,92 +51,79 @@ export function getImageProps(
 		let urlBuilder = imageUrlBuilder(client)
 			.image(image)
 			.withOptions({
-				width: userSetWidth,
-				height: userSetHeight,
-				...options
+				width: customWidth,
+				height: customHeight,
+				...builderOptions
 			});
 
 		/**
-		 * Output width & height for img tag
-		 *
-		 * Gets the output width and height for the image tag. If the aspect ratio is defined, the
-		 * height will be calculated accordingly. If not, these values will be the same as the
-		 * initial dimensions.
+		 * Calculate output dimensions for the image.
 		 */
 		const { outputWidth, outputHeight } = (() => {
-			/** If user set width + height, just return those  */
-			if (userSetWidth && userSetHeight) {
+			if (customWidth && customHeight) {
+				// Explicit dimensions provided
 				return {
-					outputWidth: userSetWidth,
-					outputHeight: userSetHeight
+					outputWidth: customWidth,
+					outputHeight: customHeight
 				};
 			}
 
-			/** Get original image dimension  */
 			const {
-				width: assetSourceWidth,
-				height: assetSourceHeight,
-				aspectRatio: assetSourceAspect
+				width: originalWidth,
+				height: originalHeight,
+				aspectRatio: originalAspectRatio
 			} = getImageDimensions(image);
 
-			/** If user set width, return with calculated height */
-			if (userSetWidth) {
+			if (customWidth) {
+				// Calculate height based on provided width
 				return {
-					outputWidth: userSetWidth,
-					outputHeight: Math.round(userSetWidth / assetSourceAspect)
+					outputWidth: customWidth,
+					outputHeight: Math.round(customWidth / originalAspectRatio)
 				};
 			}
 
-			/** If user set height, return with calculated width */
-			if (userSetHeight) {
+			if (customHeight) {
+				// Calculate width based on provided height
 				return {
-					outputWidth: Math.round(userSetHeight * assetSourceAspect),
-					outputHeight: userSetHeight
+					outputWidth: Math.round(customHeight * originalAspectRatio),
+					outputHeight: customHeight
 				};
 			}
 
-			/** if aspect is set, return based on that. */
-			if (userSetAspect) {
-				// TODO: change based on fit/crop/etc?
-				// TODO: doc
-
-				const smallerHeight = Math.min(assetSourceHeight, assetSourceHeight * userSetAspect);
-				const outputWidth = Math.round(smallerHeight);
-
+			if (customAspectRatio) {
+				// Calculate dimensions based on custom aspect ratio
+				const calculatedHeight = Math.min(originalHeight, originalWidth / customAspectRatio);
 				return {
-					outputWidth,
-					outputHeight: Math.round(outputWidth / userSetAspect)
+					outputWidth: Math.round(calculatedHeight * customAspectRatio),
+					outputHeight: Math.round(calculatedHeight)
 				};
 			}
 
-			/** If no user set widths, heights, or aspect ratios defined, return original asset size */
+			// Default to original dimensions
 			return {
-				outputWidth: assetSourceWidth,
-				outputHeight: assetSourceHeight
+				outputWidth: originalWidth,
+				outputHeight: originalHeight
 			};
 		})();
 
-		const aspect = userSetAspect || outputWidth / outputHeight;
+		const aspectRatio = customAspectRatio || outputWidth / outputHeight;
 
-		if (userSetAspect) {
+		if (customAspectRatio) {
 			urlBuilder = urlBuilder.width(outputWidth).height(outputHeight);
 		}
 
 		/**
-		 * Get breakpoints
-		 *
-		 * Don't include breakpoints where the breakpoint is larger than the width.
-		 * If the user has set a height, make sure that the width can grow to be
+		 * Determine breakpoints for srcset.
 		 */
-		const breakpoints = (() => {
+		const validBreakpoints = (() => {
 			const breakpoints = srcsetSizes || DEFAULT_IMAGE_SIZES;
 
-			if (userSetHeight) {
-				/** if user sets height, set breakpoints so that the width will always grow to the height */
-				return breakpoints.filter((breakpoint) => breakpoint <= userSetHeight * aspect);
+			if (customHeight) {
+				// Ensure breakpoints align with the height
+				return breakpoints.filter((breakpoint) => breakpoint <= customHeight * aspectRatio);
 			}
 
-			/** Don't render widths that are wider than the selected width */
+			// Exclude breakpoints larger than the output width
 			return breakpoints.filter((breakpoint) => breakpoint <= outputWidth);
 		})();
 
@@ -147,40 +133,37 @@ export function getImageProps(
 		 * Build an image url for each size width, and combine into an srcset
 		 */
 		const srcset = (() => {
-			if (!breakpoints.length) return undefined;
+			if (!validBreakpoints.length) return undefined;
 
-			return breakpoints
+			return validBreakpoints
 				.map((breakpoint) => {
 					/** If the user selects a height, adjust the srcset to allow for the image to at least grow to that height */
-					if (userSetHeight) {
-						const calculatedHeight = Math.round(breakpoint / aspect);
+					if (customHeight) {
+						const calculatedHeight = Math.round(breakpoint / aspectRatio);
 						return urlBuilder.height(calculatedHeight).width(breakpoint).url();
 					}
 
 					/** If aspect is set, calculate output height */
-					if (userSetAspect) {
-						const calculatedHeight = Math.round(breakpoint / userSetAspect);
+					if (customAspectRatio) {
+						const calculatedHeight = Math.round(breakpoint / customAspectRatio);
 						return urlBuilder.height(calculatedHeight).width(breakpoint).url();
 					}
 
 					/** Return default  */
 					return urlBuilder.width(breakpoint).url();
 				})
-				.map((url, i) => `${url} ${breakpoints[i]}w`)
+				.map((url, i) => `${url} ${validBreakpoints[i]}w`)
 				.join(', ');
 		})();
 
-		/**
-		 * 4. Return values
-		 */
 		return {
 			src: urlBuilder.url(),
 			srcset,
 			width: outputWidth,
 			height: outputHeight
 		};
-	} catch (e) {
-		console.error('Error building image props:', e);
+	} catch (error) {
+		console.error('Error building image props:', error);
 
 		return {
 			src: undefined,
