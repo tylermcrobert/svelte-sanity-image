@@ -1,12 +1,9 @@
 import type { SanityClientOrProjectDetails, SanityImageSource } from './types.js';
-import { ImagePropBuilder, type ImagePropBuilderOptions } from './ImagePropBuilder.js';
-
-type ImageProps = {
-	src: string;
-	width: number;
-	height: number;
-	srcset: string | undefined;
-};
+import {
+	ImagePropBuilder,
+	type ImagePropBuilderOptions,
+	type ImageProps
+} from './ImagePropBuilder.js';
 
 type EmptyImageProps = Record<keyof ImageProps, undefined>;
 
@@ -25,13 +22,7 @@ export function getImageProps(
 ): ImageProps | EmptyImageProps {
 	try {
 		const builder = new ImagePropBuilder(image, client, options);
-
-		return {
-			src: builder.src,
-			srcset: builder.srcset,
-			width: builder.dimensions.width,
-			height: builder.dimensions.height
-		};
+		return builder.props;
 	} catch (error) {
 		console.error(error);
 
