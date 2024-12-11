@@ -59,8 +59,6 @@ export class ImagePropBuilder {
 	 *
 	 * @description Lorme ipsum dolor sit maet
 	 * @returns Object containing output width and height
-	 *
-	 * @todo Handle use cases where width + aspect or height + aspect are set
 	 */
 	private calculateImageDimensions() {
 		const { width: originalWidth, height: originalHeight } = getImageDimensions(this.image);
@@ -170,7 +168,7 @@ export class ImagePropBuilder {
 	/**
 	 * Generate the srcset string for the image
 	 *
-	 * @description TODO
+	 * @description At its most basic, it just creates a width identical to the breakpoint. If there's an aspect or custom height, adjust the height as well.
 	 * @returns Srcset string or undefined
 	 */
 	private getSrcset() {
