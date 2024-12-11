@@ -57,7 +57,6 @@ export class ImagePropBuilder {
 	/**
 	 * Calculate the output dimensions based on custom and original dimensions
 	 *
-	 * @description Lorme ipsum dolor sit maet
 	 * @returns Object containing output width and height
 	 */
 	private calculateImageDimensions() {
@@ -93,8 +92,8 @@ export class ImagePropBuilder {
 
 		if (aspect) {
 			return {
-				width: Math.round(originalHeight * aspect),
-				height: Math.round(originalHeight)
+				width: Math.round(originalWidth),
+				height: Math.round(originalHeight * aspect)
 			};
 		}
 
