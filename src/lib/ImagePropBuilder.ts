@@ -31,9 +31,9 @@ export class ImagePropBuilder {
 		height: number;
 		aspect: number;
 	};
+	private srcset: string | undefined;
+	private src: string;
 
-	srcset: string | undefined;
-	src: string;
 	props: ImageProps;
 
 	/**
@@ -112,7 +112,7 @@ export class ImagePropBuilder {
 
 		if (aspect) {
 			return {
-				width: Math.round(originalWidth),
+				width: originalWidth,
 				height: Math.round(originalHeight * aspect)
 			};
 		}

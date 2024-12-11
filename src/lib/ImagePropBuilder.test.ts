@@ -9,11 +9,11 @@ function flattenStr(str: string) {
 
 describe('getImageProps', () => {
 	it('Correctly renders with base implementation', () => {
-		const props = new ImagePropBuilder(DEFAULT_IMAGE, client);
+		const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client);
 
+		expect(props.width).toBe(2400);
+		expect(props.height).toBe(1600);
 		expect(props.src).toBe(BASE_URL);
-		expect(props.dimensions.width).toBe(2400);
-		expect(props.dimensions.height).toBe(1600);
 		expect(props.srcset).toBe(
 			flattenStr(`
 					${BASE_URL}?w=640 640w, 
@@ -28,11 +28,11 @@ describe('getImageProps', () => {
 	});
 
 	it('Correctly renders with quality prop', () => {
-		const props = new ImagePropBuilder(DEFAULT_IMAGE, client, { quality: 50 });
+		const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { quality: 50 });
 
+		expect(props.width).toBe(2400);
+		expect(props.height).toBe(1600);
 		expect(props.src).toBe(`${BASE_URL}?q=50`);
-		expect(props.dimensions.width).toBe(2400);
-		expect(props.dimensions.height).toBe(1600);
 		expect(props.srcset).toBe(
 			flattenStr(`
 					${BASE_URL}?w=640&q=50 640w, 
@@ -48,11 +48,11 @@ describe('getImageProps', () => {
 
 	describe('Aspect Ratios', () => {
 		it('Correctly renders portrait aspect', () => {
-			const props = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 0.75 });
+			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 0.75 });
 
+			expect(props.width).toBe(1200);
+			expect(props.height).toBe(1600);
 			expect(props.src).toBe(`${BASE_URL}?rect=600,0,1200,1600&w=1200&h=1600`);
-			expect(props.dimensions.width).toBe(1200);
-			expect(props.dimensions.height).toBe(1600);
 			expect(props.srcset).toBe(
 				flattenStr(`
 					${BASE_URL}?rect=600,0,1200,1600&w=640&h=853 640w, 
@@ -65,11 +65,11 @@ describe('getImageProps', () => {
 		});
 
 		it('Correctly renders landscape aspect', () => {
-			const props = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1.25 });
+			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1.25 });
 
+			expect(props.width).toBe(2000);
+			expect(props.height).toBe(1600);
 			expect(props.src).toBe(`${BASE_URL}?rect=200,0,2000,1600&w=2000&h=1600`);
-			expect(props.dimensions.width).toBe(2000);
-			expect(props.dimensions.height).toBe(1600);
 			expect(props.srcset).toBe(
 				flattenStr(`
 						${BASE_URL}?rect=200,0,2000,1600&w=640&h=512 640w,
@@ -83,11 +83,11 @@ describe('getImageProps', () => {
 		});
 
 		it('Correctly renders square aspect', () => {
-			const props = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1 });
+			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1 });
 
 			expect(props.src).toBe(`${BASE_URL}?rect=400,0,1600,1600&w=1600&h=1600`);
-			expect(props.dimensions.width).toBe(1600);
-			expect(props.dimensions.height).toBe(1600);
+			expect(props.width).toBe(1600);
+			expect(props.height).toBe(1600);
 			expect(props.srcset).toBe(
 				flattenStr(`
 						${BASE_URL}?rect=400,0,1600,1600&w=640&h=640 640w,
@@ -99,10 +99,10 @@ describe('getImageProps', () => {
 		});
 
 		it('Correctly renders Aspect + Width', () => {
-			const props = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1.5, width: 800 });
+			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1.5, width: 800 });
 
-			expect(props.dimensions.width).toBe(800);
-			expect(props.dimensions.height).toBe(533);
+			expect(props.width).toBe(800);
+			expect(props.height).toBe(533);
 			expect(props.src).toBe(`${BASE_URL}?rect=0,1,2400,1599&w=800&h=533`);
 			expect(props.srcset).toBe(
 				flattenStr(`
@@ -113,10 +113,10 @@ describe('getImageProps', () => {
 		});
 
 		it('Correctly renders Aspect + Height', () => {
-			const props = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1.5, height: 600 });
+			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1.5, height: 600 });
 
-			expect(props.dimensions.width).toBe(900);
-			expect(props.dimensions.height).toBe(600);
+			expect(props.width).toBe(900);
+			expect(props.height).toBe(600);
 			expect(props.src).toBe(`${BASE_URL}?w=900&h=600`);
 			expect(props.srcset).toBe(
 				flattenStr(`
