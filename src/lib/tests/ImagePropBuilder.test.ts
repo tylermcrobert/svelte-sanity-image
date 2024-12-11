@@ -48,42 +48,42 @@ describe('getImageProps', () => {
 
 	describe('Aspect Ratios', () => {
 		it('Correctly renders portrait aspect', () => {
-			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 0.75 });
+			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 2 / 3 });
 
 			expect(props.width).toBe(2400);
-			expect(props.height).toBe(1800);
-			expect(props.src).toBe(`${BASE_URL}?rect=134,0,2133,1600&w=2400&h=1800`);
+			expect(props.height).toBe(3600);
+			expect(props.src).toBe(`${BASE_URL}?rect=667,0,1067,1600&w=2400&h=3600`);
 
 			expect(props.srcset).toBe(
 				flattenStr(`
-					${BASE_URL}?rect=134,0,2133,1600&w=640&h=480 640w, 
-					${BASE_URL}?rect=135,0,2131,1600&w=750&h=563 750w, 
-					${BASE_URL}?rect=134,0,2133,1600&w=828&h=621 828w, 
-					${BASE_URL}?rect=134,0,2133,1600&w=1080&h=810 1080w, 
-					${BASE_URL}?rect=134,0,2133,1600&w=1200&h=900 1200w,
-					${BASE_URL}?rect=134,0,2133,1600&w=1920&h=1440 1920w,
-					${BASE_URL}?rect=134,0,2133,1600&w=2048&h=1536 2048w
+					${BASE_URL}?rect=667,0,1067,1600&w=640&h=960 640w, 
+					${BASE_URL}?rect=667,0,1067,1600&w=750&h=1125 750w, 
+					${BASE_URL}?rect=667,0,1067,1600&w=828&h=1242 828w, 
+					${BASE_URL}?rect=667,0,1067,1600&w=1080&h=1620 1080w, 
+					${BASE_URL}?rect=667,0,1067,1600&w=1200&h=1800 1200w, 
+					${BASE_URL}?rect=667,0,1067,1600&w=1920&h=2880 1920w, 
+					${BASE_URL}?rect=667,0,1067,1600&w=2048&h=3072 2048w
 				`)
 			);
 		});
 
 		it('Correctly renders landscape aspect', () => {
-			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1.25 });
+			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 3 / 2 });
 
 			expect(props.width).toBe(2400);
-			expect(props.height).toBe(3000);
-			expect(props.src).toBe(`${BASE_URL}?rect=560,0,1280,1600&w=2400&h=3000`);
+			expect(props.height).toBe(1600);
+			expect(props.src).toBe(`${BASE_URL}?w=2400&h=1600`);
 
 			expect(props.srcset).toBe(
-				flattenStr(`
-					${BASE_URL}?rect=560,0,1280,1600&w=640&h=800 640w, 
-					${BASE_URL}?rect=561,0,1279,1600&w=750&h=938 750w, 
-					${BASE_URL}?rect=560,0,1280,1600&w=828&h=1035 828w, 
-					${BASE_URL}?rect=560,0,1280,1600&w=1080&h=1350 1080w, 
-					${BASE_URL}?rect=560,0,1280,1600&w=1200&h=1500 1200w, 
-					${BASE_URL}?rect=560,0,1280,1600&w=1920&h=2400 1920w, 
-					${BASE_URL}?rect=560,0,1280,1600&w=2048&h=2560 2048w
-				`)
+				flattenStr(
+					`${BASE_URL}?rect=1,0,2398,1600&w=640&h=427 640w, 
+					${BASE_URL}?w=750&h=500 750w, 
+					${BASE_URL}?w=828&h=552 828w, 
+					${BASE_URL}?w=1080&h=720 1080w, 
+					${BASE_URL}?w=1200&h=800 1200w, 
+					${BASE_URL}?w=1920&h=1280 1920w, 
+					${BASE_URL}?w=2048&h=1365 2048w`
+				)
 			);
 		});
 
@@ -107,7 +107,7 @@ describe('getImageProps', () => {
 		});
 
 		it('Correctly renders Aspect + Width', () => {
-			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1.5, width: 800 });
+			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 3 / 2, width: 800 });
 
 			expect(props.width).toBe(800);
 			expect(props.height).toBe(533);
@@ -121,7 +121,7 @@ describe('getImageProps', () => {
 		});
 
 		it('Correctly renders Aspect + Height', () => {
-			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1.5, height: 600 });
+			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 3 / 2, height: 600 });
 
 			expect(props.width).toBe(900);
 			expect(props.height).toBe(600);
