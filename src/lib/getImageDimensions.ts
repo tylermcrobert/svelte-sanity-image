@@ -7,10 +7,10 @@ export type ImageDimensions = {
 
 /**
  * Extracts the reference ID from a Sanity image source.
- * @param image - The Sanity image source.
- * @returns The reference ID or `undefined` if it cannot be extracted.
+ * @param {SanityImageSource} image - The Sanity image source.
+ * @returns {string} The reference ID or `undefined` if it cannot be extracted.
  */
-export function getReferenceId(image: SanityImageSource): string {
+export function getAssetStringFromImageSource(image: SanityImageSource): string {
 	if (!image) {
 		throw new Error('Invalid input: image is empty. Cannot get _ref or _id. ');
 	}
@@ -41,17 +41,17 @@ export function getReferenceId(image: SanityImageSource): string {
  * @returns {ImageDimensions} The image dimensions and aspect ratio.
  * @throws {Error} If the reference string is invalid.
  */
-export function getAssetDimensionsFromRefString(ref: string): ImageDimensions {
-	const dimensionsStr = ref.split('-')[2];
+export function getAssetDimensionsFromRefString(assetStr: string): ImageDimensions {
+	const dimensionsStr = assetStr.split('-')[2];
 
 	if (!dimensionsStr) {
-		throw new Error(`Invalid input: asset "${ref}" is invalid`);
+		throw new Error(`Invalid input: asset "${assetStr}" is invalid`);
 	}
 
 	const [width, height] = dimensionsStr.split('x').map(Number);
 
 	if (!width || !height || isNaN(width) || isNaN(height)) {
-		throw new Error(`Invalid dimensions in _ref string: "${ref}"`);
+		throw new Error(`Invalid dimensions in _ref string: "${assetStr}"`);
 	}
 
 	return { width, height };
@@ -65,9 +65,8 @@ export function getAssetDimensionsFromRefString(ref: string): ImageDimensions {
  * @throws {Error} If the image object is invalid.
  */
 export function getImageDimensions(image: SanityImageSource): ImageDimensions {
-	const refId = getReferenceId(image);
-
-	const baseDims = getAssetDimensionsFromRefString(refId);
+	const assetStr = getAssetStringFromImageSource(image);
+	const baseDims = getAssetDimensionsFromRefString(assetStr);
 	const crop = (image as SanityImageObject).crop;
 
 	if (!crop) {

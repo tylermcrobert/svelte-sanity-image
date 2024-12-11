@@ -3,14 +3,14 @@ import { describe, it, expect } from 'vitest';
 import {
 	getAssetDimensionsFromRefString,
 	getImageDimensions,
-	getReferenceId
+	getAssetStringFromImageSource
 } from './getImageDimensions.js';
 import { BASE_URL, DEFAULT_IMAGE, TEST_IMAGE_REF_ID } from '../constants.js';
 
 describe('getReferenceId', () => {
 	it('Returns the correct reference ID for a string image', () => {
 		const image = BASE_URL;
-		expect(getReferenceId(image)).toEqual(image);
+		expect(getAssetStringFromImageSource(image)).toEqual(image);
 	});
 
 	it('Returns the correct _id for an image with asset property', () => {
@@ -19,35 +19,35 @@ describe('getReferenceId', () => {
 				_id: TEST_IMAGE_REF_ID
 			}
 		};
-		expect(getReferenceId(image)).toEqual(image.asset._id);
+		expect(getAssetStringFromImageSource(image)).toEqual(TEST_IMAGE_REF_ID);
 	});
 
 	it('Returns the correct _ref for an image with asset property', () => {
-		const image = {
+		const INPUT = {
 			asset: {
 				_ref: TEST_IMAGE_REF_ID
 			}
 		};
-		expect(getReferenceId(image)).toEqual(image.asset._ref);
+		expect(getAssetStringFromImageSource(INPUT)).toEqual(TEST_IMAGE_REF_ID);
 	});
 
 	it('Returns the correct reference ID for an image with _ref property', () => {
-		const image = {
+		const INPUT = {
 			_ref: TEST_IMAGE_REF_ID
 		};
-		expect(getReferenceId(image)).toEqual(image._ref);
+		expect(getAssetStringFromImageSource(INPUT)).toEqual(INPUT._ref);
 	});
 
 	it('Returns the correct reference ID for an image with _id property', () => {
-		const image = {
+		const INPUT = {
 			_id: 'image-id'
 		};
-		expect(getReferenceId(image)).toEqual(image._id);
+		expect(getAssetStringFromImageSource(INPUT)).toEqual(INPUT._id);
 	});
 
 	it('Throws an error if the image input is empty', () => {
 		// @ts-expect-error testing
-		expect(() => getReferenceId(undefined)).toThrowError(
+		expect(() => getAssetStringFromImageSource(undefined)).toThrowError(
 			'Invalid input: image is empty. Cannot get _ref or _id.'
 		);
 	});
@@ -57,7 +57,7 @@ describe('getReferenceId', () => {
 			foo: 'bar'
 		};
 
-		expect(() => getReferenceId(invalidImage)).toThrowError(
+		expect(() => getAssetStringFromImageSource(invalidImage)).toThrowError(
 			'Invalid input: image is malformed. Cannot get _ref or _id.'
 		);
 	});
