@@ -1,58 +1,73 @@
 # create-svelte
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+A Svelte component for creating responsive, optimized images from Sanity.io. Powered by the [Sanity Image Builder](https://www.sanity.io/docs/image-url) under the hood, it simplifies responsive image handling and layout shift prevention in your Svelte projects.
 
-Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
+<!-- **Demo:** [svelte-sanity-image.netlify.app](https://svelte-sanity-image.netlify.app/) -->
 
-## Creating a project
+## ✨ Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Prevents layout shifts by setting image dimensions automatically.
+- Creates `srcset` attributes for responsive images out of the box.
+- Supports custom aspect ratios.
+- Provides control of native `<img />` attributes.
+- Available preloading of images with the `preload` prop.
+- Fully typed with TypeScript support and unit-tested for reliability.
 
-```bash
-# create a new project in the current directory
-npx sv create
+## 📦 Installation
 
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Install the package via npm:
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+npm install @tylermcrobert/svelte-sanity-image
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+## 🚀 Quick Start
 
-## Building
+A minimal example of using `svelte-sanity-image`:
 
-To build your library:
-
-```bash
-npm run package
+```svelte
+<SanityImage
+	{client}
+	{image}
+	sizes="(max-width: 768px) 50vw, 100vw"
+	alt="The Beatles crossing Abbey Road in London."
+/>
 ```
 
-To create a production version of your showcase app:
+This component extends the standard `<img />` element, so you can use any native attributes or events.
 
-```bash
-npm run build
-```
+## ⚙️ Component Props
 
-You can preview the production build with `npm run preview`.
+| Property            | Type           | Description                                                                                                                                                | Required |
+| ------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `client`            | Object         | A configured Sanity client.                                                                                                                                | Yes      |
+| `image`             | Object         | Image data returned from Sanity API.                                                                                                                       | Yes      |
+| `alt`               | String         | Descriptive alt text for accessibility.                                                                                                                    | Yes      |
+| `sizes`             | String \| null | A responsive image size string ([MDN reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes)). Set to null to bypass responsivity. | Yes      |
+| `aspect`            | Number         | Enforces an aspect ratio on the image.                                                                                                                     | –        |
+| `preload`           | Boolean        | Adds a `<link rel="preload" />` in `<svelte:head>` for prioritized loading.                                                                                | –        |
+| `srcsetBreakpoints` | string[]       | Overrides the default breakpoints for `srcset`. Defaults to `640, 750, 828, 1080, 1200, 1920, 2048, 3840`.                                                 | –        |
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+### Optimization Defaults
 
-## Publishing
+This package makes similar default optimizations as [Next/Image](https://nextjs.org/docs/app/api-reference/components/image).
+
+| Property     | Value  | Description                                                                                                                |
+| ------------ | ------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `loading`    | `lazy` | Defers loading of images until they are near the viewport.                                                                 |
+| `autoFormat` | `true` | Automatically return an image in in the most optimized format supported by the browser as determined by its Accept header. |
+| `quality`    | `75`   | Set automatically to 75 by Sanity`s internal image transformations                                                         |
+
+### Supported Sanity transformations:
+
+`svelte-sanity-image` supports the following [Image Transformations](https://www.sanity.io/docs/image-urls):
+
+`blur`, `bg`, `dpr`, `width`, `height`, `quality`, `sharpen`, `format`, `invert`, `download`, `flipHorizontal`, `flipVertical`, `saturation`, and `frame`.
+
+## 🤝 Contributing
 
 Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
 
-To publish your library to [npm](https://www.npmjs.com):
+## 📜 License
 
-```bash
-npm publish
-```
+MIT License © 2024 Tyler McRobert
