@@ -40,7 +40,7 @@ This component extends the standard `<img />` element, so you can use any native
 
 | Property            | Type           | Description                                                                                                                                                | Required |
 | ------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `client`            | Object         | A configured Sanity client.                                                                                                                                | Yes      |
+| `client`            | Object         | A configured Sanity client or project details.                                                                                                             | Yes      |
 | `image`             | Object         | Image data returned from Sanity API.                                                                                                                       | Yes      |
 | `alt`               | String         | Descriptive alt text for accessibility.                                                                                                                    | Yes      |
 | `sizes`             | String \| null | A responsive image size string ([MDN reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes)). Set to null to bypass responsivity. | Yes      |
