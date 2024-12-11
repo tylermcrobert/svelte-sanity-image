@@ -36,12 +36,13 @@ export type ValidBuilderOptions = {
  * Props for the image component
  */
 
-type ValidImageProps = Omit<HTMLImgAttributes, 'src' | 'srcset'>;
+type ValidImageProps = Omit<HTMLImgAttributes, 'src' | 'srcset' | 'alt'>;
 
 export type SvelteSanityImageOptions = {
 	image: SanityImageSource;
 	sizes: string | null;
 	client: SanityClientOrProjectDetails;
+	alt: string;
 	aspect?: number;
 	srcsetBreakpoints?: number[];
 	preload?: boolean;
