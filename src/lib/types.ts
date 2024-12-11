@@ -30,13 +30,11 @@ type ValidBuilderOptionKey =
  */
 export type ValidBuilderOptions = {
 	[key in ValidBuilderOptionKey]: ImageUrlBuilderOptions[key];
-};
+} & Pick<ImageUrlBuilderOptions, 'auto'>;
 
 /**
  * Props for the image component
  */
-
-type ValidImageProps = Omit<HTMLImgAttributes, 'src' | 'srcset' | 'alt'>;
 
 export type SvelteSanityImageOptions = {
 	image: SanityImageSource;
@@ -46,8 +44,11 @@ export type SvelteSanityImageOptions = {
 	aspect?: number;
 	srcsetBreakpoints?: number[];
 	preload?: boolean;
+	autoFormat?: boolean;
 };
 
+type ValidImgElementProps = Omit<HTMLImgAttributes, 'src' | 'srcset' | 'alt'>;
+
 export type SvelteSanityImageProps = SvelteSanityImageOptions &
-	ValidImageProps &
+	ValidImgElementProps &
 	Partial<ValidBuilderOptions>;
