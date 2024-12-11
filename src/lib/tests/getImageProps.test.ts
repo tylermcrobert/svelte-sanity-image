@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { getImageProps } from './getImageProps.js';
-import { DEFAULT_IMAGE } from '../constants.js';
-import { client } from '../sanity.js';
+import { getImageProps } from '../getImageProps.js';
+import { DEFAULT_IMAGE } from '../../constants.js';
+import { client } from '../../sanity.js';
 
 describe('getImageProps', () => {
 	let consoleSpy: ReturnType<typeof vi.spyOn>;
