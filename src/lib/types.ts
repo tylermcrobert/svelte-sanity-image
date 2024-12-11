@@ -40,7 +40,7 @@ export type SvelteSanityImageOptions = {
 	image: SanityImageSource;
 	sizes: string | null;
 	client: SanityClientOrProjectDetails;
-	alt: string;
+	alt: string | null;
 	aspect?: number;
 	srcsetBreakpoints?: number[];
 	preload?: boolean;
