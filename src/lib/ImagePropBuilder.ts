@@ -8,10 +8,11 @@ import imageUrlBuilder from '@sanity/image-url';
 import { DEFAULT_SRCSET_BREAKPOINTS } from './constants.js';
 import { getImageDimensions } from './getImageDimensions.js';
 
-type Dimensions = {
+export type ImageProps = {
+	src: string;
 	width: number;
 	height: number;
-	aspect: number;
+	srcset: string | undefined;
 };
 
 export type ImagePropBuilderOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetBreakpoints'> &
@@ -25,9 +26,15 @@ export class ImagePropBuilder {
 	image: SanityImageSource;
 	client: SanityClientOrProjectDetails;
 
-	srcset: string | undefined; // Srcset string
+	private dimensions: {
+		width: number;
+		height: number;
+		aspect: number;
+	};
+
+	srcset: string | undefined;
 	src: string;
-	dimensions: Dimensions; // Final dimensions
+	props: ImageProps;
 
 	/**
 	 * Constructor to initialize the ImagePropBuilder instance
@@ -40,7 +47,6 @@ export class ImagePropBuilder {
 		client: SanityClientOrProjectDetails,
 		options: ImagePropBuilderOptions = {}
 	) {
-		// Ensure the image and client are provided
 		if (!image || !client) {
 			throw new Error('Sanity image and client are required.');
 		}
@@ -59,6 +65,13 @@ export class ImagePropBuilder {
 
 		this.srcset = this.getSrcset();
 		this.src = this.getSrc();
+
+		this.props = {
+			width,
+			height,
+			src: this.src,
+			srcset: this.srcset
+		};
 	}
 
 	/**
