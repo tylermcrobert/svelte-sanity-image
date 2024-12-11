@@ -46,6 +46,7 @@ describe('getReferenceId', () => {
 	});
 
 	it('Throws an error if the image input is empty', () => {
+		// @ts-expect-error testing
 		expect(() => getAssetStringFromImageSource(undefined)).toThrowError(
 			'Invalid input: image is empty. Cannot get _ref or _id.'
 		);
