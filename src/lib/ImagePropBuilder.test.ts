@@ -50,16 +50,19 @@ describe('getImageProps', () => {
 		it('Correctly renders portrait aspect', () => {
 			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 0.75 });
 
-			expect(props.width).toBe(1200);
-			expect(props.height).toBe(1600);
-			expect(props.src).toBe(`${BASE_URL}?rect=600,0,1200,1600&w=1200&h=1600`);
+			expect(props.width).toBe(2400);
+			expect(props.height).toBe(1800);
+			expect(props.src).toBe(`${BASE_URL}?rect=134,0,2133,1600&w=2400&h=1800`);
+
 			expect(props.srcset).toBe(
 				flattenStr(`
-					${BASE_URL}?rect=600,0,1200,1600&w=640&h=853 640w, 
-					${BASE_URL}?rect=600,0,1200,1600&w=750&h=1000 750w, 
-					${BASE_URL}?rect=600,0,1200,1600&w=828&h=1104 828w, 
-					${BASE_URL}?rect=600,0,1200,1600&w=1080&h=1440 1080w, 
-					${BASE_URL}?rect=600,0,1200,1600&w=1200&h=1600 1200w
+					${BASE_URL}?rect=134,0,2133,1600&w=640&h=480 640w, 
+					${BASE_URL}?rect=135,0,2131,1600&w=750&h=563 750w, 
+					${BASE_URL}?rect=134,0,2133,1600&w=828&h=621 828w, 
+					${BASE_URL}?rect=134,0,2133,1600&w=1080&h=810 1080w, 
+					${BASE_URL}?rect=134,0,2133,1600&w=1200&h=900 1200w,
+					${BASE_URL}?rect=134,0,2133,1600&w=1920&h=1440 1920w,
+					${BASE_URL}?rect=134,0,2133,1600&w=2048&h=1536 2048w
 				`)
 			);
 		});
@@ -67,34 +70,39 @@ describe('getImageProps', () => {
 		it('Correctly renders landscape aspect', () => {
 			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1.25 });
 
-			expect(props.width).toBe(2000);
-			expect(props.height).toBe(1600);
-			expect(props.src).toBe(`${BASE_URL}?rect=200,0,2000,1600&w=2000&h=1600`);
+			expect(props.width).toBe(2400);
+			expect(props.height).toBe(3000);
+			expect(props.src).toBe(`${BASE_URL}?rect=560,0,1280,1600&w=2400&h=3000`);
+
 			expect(props.srcset).toBe(
 				flattenStr(`
-						${BASE_URL}?rect=200,0,2000,1600&w=640&h=512 640w,
-						${BASE_URL}?rect=200,0,2000,1600&w=750&h=600 750w, 
-						${BASE_URL}?rect=200,0,2001,1600&w=828&h=662 828w, 
-						${BASE_URL}?rect=200,0,2000,1600&w=1080&h=864 1080w, 
-						${BASE_URL}?rect=200,0,2000,1600&w=1200&h=960 1200w, 
-						${BASE_URL}?rect=200,0,2000,1600&w=1920&h=1536 1920w
-					`)
+					${BASE_URL}?rect=560,0,1280,1600&w=640&h=800 640w, 
+					${BASE_URL}?rect=561,0,1279,1600&w=750&h=938 750w, 
+					${BASE_URL}?rect=560,0,1280,1600&w=828&h=1035 828w, 
+					${BASE_URL}?rect=560,0,1280,1600&w=1080&h=1350 1080w, 
+					${BASE_URL}?rect=560,0,1280,1600&w=1200&h=1500 1200w, 
+					${BASE_URL}?rect=560,0,1280,1600&w=1920&h=2400 1e920w, 
+					${BASE_URL}?rect=560,0,1280,1600&w=2048&h=2560 2048w
+				`)
 			);
 		});
 
 		it('Correctly renders square aspect', () => {
 			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 1 });
 
-			expect(props.src).toBe(`${BASE_URL}?rect=400,0,1600,1600&w=1600&h=1600`);
-			expect(props.width).toBe(1600);
-			expect(props.height).toBe(1600);
+			expect(props.width).toBe(2400);
+			expect(props.height).toBe(2400);
+			expect(props.src).toBe(`${BASE_URL}?rect=400,0,1600,1600&w=2400&h=2400`);
 			expect(props.srcset).toBe(
 				flattenStr(`
-						${BASE_URL}?rect=400,0,1600,1600&w=640&h=640 640w,
-						${BASE_URL}?rect=400,0,1600,1600&w=750&h=750 750w, 
-						${BASE_URL}?rect=400,0,1600,1600&w=828&h=828 828w, 
-						${BASE_URL}?rect=400,0,1600,1600&w=1080&h=1080 1080w, 
-						${BASE_URL}?rect=400,0,1600,1600&w=1200&h=1200 1200w`)
+					${BASE_URL}?rect=400,0,1600,1600&w=640&h=640 640w, 
+					${BASE_URL}?rect=400,0,1600,1600&w=750&h=750 750w, 
+					${BASE_URL}?rect=400,0,1600,1600&w=828&h=828 828w, 
+					${BASE_URL}?rect=400,0,1600,1600&w=1080&h=1080 1080w, 
+					${BASE_URL}?rect=400,0,1600,1600&w=1200&h=1200 1200w, 
+					${BASE_URL}?rect=400,0,1600,1600&w=1920&h=1920 1920w, 
+					${BASE_URL}?rect=400,0,1600,1600&w=2048&h=2048 2048w
+				`)
 			);
 		});
 

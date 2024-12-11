@@ -113,7 +113,7 @@ export class ImagePropBuilder {
 		if (aspect) {
 			return {
 				width: originalWidth,
-				height: Math.round(originalHeight * aspect)
+				height: Math.round(originalWidth * aspect)
 			};
 		}
 
