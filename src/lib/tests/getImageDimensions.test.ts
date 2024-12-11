@@ -4,8 +4,8 @@ import {
 	getAssetDimensionsFromRefString,
 	getImageDimensions,
 	getAssetStringFromImageSource
-} from './getImageDimensions.js';
-import { BASE_URL, DEFAULT_IMAGE, TEST_IMAGE_REF_ID } from '../constants.js';
+} from '../getImageDimensions.js';
+import { BASE_URL, DEFAULT_IMAGE, TEST_IMAGE_REF_ID } from '../../constants.js';
 
 describe('getReferenceId', () => {
 	it('Returns the correct _id for an image with asset property', () => {
@@ -46,7 +46,6 @@ describe('getReferenceId', () => {
 	});
 
 	it('Throws an error if the image input is empty', () => {
-		// @ts-expect-error testing
 		expect(() => getAssetStringFromImageSource(undefined)).toThrowError(
 			'Invalid input: image is empty. Cannot get _ref or _id.'
 		);
