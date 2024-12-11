@@ -1,5 +1,9 @@
-import type { GetImagePropsOptions } from './getImageProps.js';
-import type { SanityClientOrProjectDetails, SanityImageSource } from './types.js';
+import type {
+	SanityClientOrProjectDetails,
+	SanityImageSource,
+	SvelteSanityImageProps,
+	ValidSanityBuilderOptions
+} from './types.js';
 import imageUrlBuilder from '@sanity/image-url';
 import { DEFAULT_SRCSET_BREAKPOINTS } from './constants.js';
 import { getImageDimensions } from './getImageDimensions.js';
@@ -10,11 +14,14 @@ type Dimensions = {
 	aspect: number;
 };
 
+export type ImagePropBuilderOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetBreakpoints'> &
+	Partial<ValidSanityBuilderOptions>;
+
 /**
  * Class that takes in props from the SvelteSanityImage component
  */
 export class ImagePropBuilder {
-	options: GetImagePropsOptions;
+	options: ImagePropBuilderOptions;
 	image: SanityImageSource;
 	client: SanityClientOrProjectDetails;
 
@@ -31,7 +38,7 @@ export class ImagePropBuilder {
 	constructor(
 		image: SanityImageSource,
 		client: SanityClientOrProjectDetails,
-		options: GetImagePropsOptions = {}
+		options: ImagePropBuilderOptions = {}
 	) {
 		// Ensure the image and client are provided
 		if (!image || !client) {
