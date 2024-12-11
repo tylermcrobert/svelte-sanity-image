@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { SvelteSanityImageProps } from './../lib/types.ts';
 	import { client } from '../sanity.js';
 	import SvelteSanityImage from '../lib/SvelteSanityImage.svelte';
 	import { TEST_IMAGE_REF_ID } from '../constants.js';
@@ -6,33 +7,37 @@
 	let { data } = $props();
 
 	const TEST_IMAGE = { _ref: TEST_IMAGE_REF_ID };
+
+	let items: {
+		title: string;
+		props: Omit<SvelteSanityImageProps, 'client' | 'sizes' | 'alt' | 'image'>;
+	}[] = [
+		{ title: 'base', props: {} },
+		{ title: 'Aspect: 0.75', props: { aspect: 0.75 } },
+		{ title: 'Aspect: 1.0', props: { aspect: 1 } },
+		{ title: 'Aspect: 1.5', props: { aspect: 1.5 } },
+		{ title: 'Height: 1000px', props: { height: 1000 } },
+		{ title: 'Width: 1000px', props: { width: 1000 } },
+		{ title: 'Width: 400px, Aspect: 0.75', props: { width: 400, aspect: 0.75 } },
+		{ title: 'Width: 400px, Aspect: 0.75', props: { height: 400, aspect: 0.75 } },
+		{ title: 'Auto Format: true', props: { autoFormat: true } },
+		{ title: 'DPR: 1', props: { dpr: 1 } },
+		{ title: 'Blur: 100', props: { blur: 100 } },
+		{ title: 'Saturation: -100', props: { saturation: -100 } },
+		{ title: 'Sharpen: 100', props: { sharpen: 100 } },
+		{ title: 'Invert: true', props: { invert: true } },
+		{ title: 'Format: jpg, Quality: 10', props: { format: 'jpg', quality: 10 } },
+		{ title: 'Download: true', props: { download: true } }
+	];
 </script>
 
 <div class="wrapper">
-	<div>
-		<h2>Base</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" sizes="25vw" />
-	</div>
-	<div>
-		<h2>Aspect: 0.75</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" aspect={0.75} sizes="25vw" />
-	</div>
-	<div>
-		<h2>Aspect: 1</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" aspect={1} sizes="25vw" />
-	</div>
-	<div>
-		<h2>Aspect: 1.25</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" aspect={1.25} sizes="25vw" />
-	</div>
-	<div>
-		<h2>Height: 1000</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" height={1000} sizes="25vw" />
-	</div>
-	<div>
-		<h2>Width: 1000</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" width={1000} sizes="25vw" />
-	</div>
+	{#each items as { props, title }}
+		<div>
+			<h2>{title}</h2>
+			<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" sizes="25vw" {...props} />
+		</div>
+	{/each}
 </div>
 
 <hr style="margin: 100px 0" />
