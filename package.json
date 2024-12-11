@@ -32,7 +32,8 @@
 		}
 	},
 	"peerDependencies": {
-		"svelte": "^5.0.0"
+		"svelte": "^5.0.0",
+		"@sanity/image-url": "^1.1.0"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.3",

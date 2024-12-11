@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+dependencies:
+  '@sanity/image-url':
+    specifier: ^1.1.0
+    version: 1.1.0
+
 devDependencies:
   '@eslint/compat':
     specifier: ^1.2.3
@@ -806,6 +811,11 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@sanity/image-url@1.1.0:
+    resolution: {integrity: sha512-JHumVRxzzaZAJyOimntdukA9TjjzsJiaiq/uUBdTknMLCNvtM6KQ5OCp6W5fIdY78uyFxtQjz+MPXwK8WBIxWg==}
+    engines: {node: '>=10.0.0'}
+    dev: false
 
   /@sveltejs/adapter-auto@3.3.1(@sveltejs/kit@2.10.1):
     resolution: {integrity: sha512-5Sc7WAxYdL6q9j/+D0jJKjGREGlfIevDyHSQ2eNETHcB1TKlQWHcAo8AS8H1QdjNvSXpvOwNjykDUHPEAyGgdQ==}
