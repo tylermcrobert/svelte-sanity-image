@@ -8,11 +8,6 @@ import {
 import { BASE_URL, DEFAULT_IMAGE, TEST_IMAGE_REF_ID } from '../constants.js';
 
 describe('getReferenceId', () => {
-	it('Returns the correct reference ID for a string image', () => {
-		const image = BASE_URL;
-		expect(getAssetStringFromImageSource(image)).toEqual(image);
-	});
-
 	it('Returns the correct _id for an image with asset property', () => {
 		const image = {
 			asset: {
@@ -35,14 +30,19 @@ describe('getReferenceId', () => {
 		const INPUT = {
 			_ref: TEST_IMAGE_REF_ID
 		};
-		expect(getAssetStringFromImageSource(INPUT)).toEqual(INPUT._ref);
+		expect(getAssetStringFromImageSource(INPUT)).toEqual(TEST_IMAGE_REF_ID);
 	});
 
 	it('Returns the correct reference ID for an image with _id property', () => {
 		const INPUT = {
-			_id: 'image-id'
+			_id: TEST_IMAGE_REF_ID
 		};
-		expect(getAssetStringFromImageSource(INPUT)).toEqual(INPUT._id);
+		expect(getAssetStringFromImageSource(INPUT)).toEqual(TEST_IMAGE_REF_ID);
+	});
+
+	it('Returns the correct reference ID for a string image', () => {
+		const INPUT_URL = BASE_URL;
+		expect(getAssetStringFromImageSource(INPUT_URL)).toEqual(INPUT_URL);
 	});
 
 	it('Throws an error if the image input is empty', () => {
