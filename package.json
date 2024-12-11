@@ -1,6 +1,6 @@
 {
 	"name": "svelte-sanity-image",
-	"version": "0.2.0-next.0",
+	"version": "0.4.0-next.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
