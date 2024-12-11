@@ -2,7 +2,7 @@ import type {
 	SanityClientOrProjectDetails,
 	SanityImageSource,
 	SvelteSanityImageProps,
-	ValidBuilderOptions
+	ValidSanityBuilderOptions
 } from './types.js';
 import { ImagePropBuilder } from './ImagePropBuilder.js';
 
@@ -16,7 +16,7 @@ type ImageProps = {
 type EmptyImageProps = Record<keyof ImageProps, undefined>;
 
 export type GetImagePropsOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetBreakpoints'> &
-	Partial<ValidBuilderOptions>;
+	Partial<ValidSanityBuilderOptions>;
 
 /**
  * Retrieves the image properties based on the provided options.
