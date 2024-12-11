@@ -11,27 +11,27 @@
 <div class="wrapper">
 	<div>
 		<h2>Base</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} sizes="25vw" />
+		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" sizes="25vw" />
 	</div>
 	<div>
 		<h2>Aspect: 0.75</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} aspect={0.75} sizes="25vw" />
+		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" aspect={0.75} sizes="25vw" />
 	</div>
 	<div>
 		<h2>Aspect: 1</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} aspect={1} sizes="25vw" />
+		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" aspect={1} sizes="25vw" />
 	</div>
 	<div>
 		<h2>Aspect: 1.25</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} aspect={1.25} sizes="25vw" />
+		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" aspect={1.25} sizes="25vw" />
 	</div>
 	<div>
 		<h2>Height: 1000</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} height={1000} sizes="25vw" />
+		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" height={1000} sizes="25vw" />
 	</div>
 	<div>
 		<h2>Width: 1000</h2>
-		<SvelteSanityImage {client} image={TEST_IMAGE} width={1000} sizes="25vw" />
+		<SvelteSanityImage {client} image={TEST_IMAGE} alt="test image" width={1000} sizes="25vw" />
 	</div>
 </div>
 
