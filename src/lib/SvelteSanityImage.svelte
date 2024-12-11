@@ -9,23 +9,45 @@
 		client,
 		aspect,
 		srcsetBreakpoints,
-		height,
-		width,
-		quality,
-		blur,
-		format,
-		preload,
-		sizes,
 		loading,
+		sizes,
+		preload,
+		autoFormat = true,
+
+		// Sanity urlBuilder props
+		blur,
+		bg,
+		dpr,
+		width,
+		height,
+		quality,
+		sharpen,
+		format,
+		invert,
+		download,
+		flipHorizontal,
+		flipVertical,
+		saturation,
+		frame,
 		...props
 	}: Props = $props();
 
 	let builderOptions: ValidBuilderOptions = {
-		quality,
+		auto: autoFormat ? 'format' : undefined,
+		blur,
+		bg,
+		dpr,
 		width,
 		height,
-		blur,
-		format
+		quality,
+		sharpen,
+		format,
+		invert,
+		download,
+		flipHorizontal,
+		flipVertical,
+		saturation,
+		frame
 	};
 
 	let generatedProps = $derived(

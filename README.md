@@ -64,11 +64,13 @@ This component extends the standard `<img />` element, so you can use any native
 />
 ```
 
-## 🛠 Optimizations
+## 🛠 Optimization Defaults
 
-| Property  | Value  | Description                                                                   |
-| --------- | ------ | ----------------------------------------------------------------------------- |
-| `loading` | `lazy` | Defers loading of images until they are near the viewport (default behavior). |
+| Property     | Value  | Description                                                                                                                |
+| ------------ | ------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `loading`    | `lazy` | Defers loading of images until they are near the viewport.                                                                 |
+| `autoFormat` | `true` | Automatically return an image in in the most optimized format supported by the browser as determined by its Accept header. |
+| `quality`    | `75`   | Set automatically to 75 by Sanity's internal image transformations                                                         |
 
 ## 🤝 Contributing
 
