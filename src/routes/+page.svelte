@@ -1,74 +1,62 @@
 <script lang="ts">
-	import { client } from '../sanity';
-	import Image from '$lib';
+	import { client } from '../sanity.js';
+	import SvelteSanityImage from '../lib/SvelteSanityImage.svelte';
+	import { TEST_IMAGE_REF_ID } from '../constants.js';
 
-	export let data;
+	let { data } = $props();
 
-	console.log(data);
+	const TEST_IMAGE = { _ref: TEST_IMAGE_REF_ID };
 </script>
 
-<hr />
-
-<h2>Raw:</h2>
-<div class="images">
-	{#each data.raw as { image, alt }}
-		<Image {image} {client} {alt} sizes="100px" />
-	{/each}
+<div class="wrapper">
+	<div>
+		<h2>Base</h2>
+		<SvelteSanityImage {client} image={TEST_IMAGE} sizes="25vw" />
+	</div>
+	<div>
+		<h2>Aspect: 0.75</h2>
+		<SvelteSanityImage {client} image={TEST_IMAGE} aspect={0.75} sizes="25vw" />
+	</div>
+	<div>
+		<h2>Aspect: 1</h2>
+		<SvelteSanityImage {client} image={TEST_IMAGE} aspect={1} sizes="25vw" />
+	</div>
+	<div>
+		<h2>Aspect: 1.25</h2>
+		<SvelteSanityImage {client} image={TEST_IMAGE} aspect={1.25} sizes="25vw" />
+	</div>
+	<div>
+		<h2>Height: 1000</h2>
+		<SvelteSanityImage {client} image={TEST_IMAGE} height={1000} sizes="25vw" />
+	</div>
+	<div>
+		<h2>Width: 1000</h2>
+		<SvelteSanityImage {client} image={TEST_IMAGE} width={1000} sizes="25vw" />
+	</div>
 </div>
 
-<hr />
+<hr style="margin: 100px 0" />
 
-<h2>Refs:</h2>
-
-<div class="images">
-	{#each data.refs as { image, alt }}
-		<Image {image} {client} {alt} sizes="100px" />
-	{/each}
-</div>
-
-<hr />
-
-<h2>Expanded:</h2>
-
-<div class="images">
-	{#each data.extended as { image, alt }}
-		<Image {image} {client} {alt} sizes="100px" />
-	{/each}
-</div>
-
-<hr />
-
-<h2>Aspect Square:</h2>
-
-<div class="images">
-	{#each data.raw as { image, alt }}
-		<Image {image} {client} {alt} sizes="100px" aspect={1} />
-	{/each}
-</div>
-
-<hr />
-
-<h2>Aspect landscape:</h2>
-
-<div class="images">
-	{#each data.raw as { image, alt }}
-		<Image {image} {client} {alt} sizes="100px" aspect={1.5} />
-	{/each}
-</div>
-
-<hr />
-
-<h2>Aspect Portrait:</h2>
-
-<div class="images">
-	{#each data.raw as { image, alt }}
-		<Image {image} {client} {alt} sizes="100px" aspect={0.8} />
+<div class="wrapper">
+	{#each data.images as { image, alt }}
+		<SvelteSanityImage {client} {image} {alt} sizes="25vw" />
 	{/each}
 </div>
 
 <style>
-	.images :global(img) {
-		width: 100px;
+	.wrapper {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		align-items: flex-start;
+		gap: 8px;
+	}
+
+	.wrapper :global(img) {
+		width: 100%;
 		height: auto;
+	}
+
+	h2 {
+		font-size: 1.2rem;
 	}
 </style>

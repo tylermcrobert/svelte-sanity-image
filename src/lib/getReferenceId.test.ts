@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest';
-import { getReferenceId } from '../getImageDimensions';
-import { BASE_URL, DEFAULT_REF_ID } from './constants';
+import { BASE_URL, TEST_IMAGE_REF_ID } from '../constants.js';
+import { getReferenceId } from '$lib/getReferenceId.js';
 
 describe('getReferenceId', () => {
 	it('Returns the correct reference ID for a string image', () => {
@@ -12,7 +12,7 @@ describe('getReferenceId', () => {
 	it('Returns the correct _id for an image with asset property', () => {
 		const image = {
 			asset: {
-				_id: DEFAULT_REF_ID
+				_id: TEST_IMAGE_REF_ID
 			}
 		};
 		expect(getReferenceId(image)).toEqual(image.asset._id);
@@ -21,7 +21,7 @@ describe('getReferenceId', () => {
 	it('Returns the correct _ref for an image with asset property', () => {
 		const image = {
 			asset: {
-				_ref: DEFAULT_REF_ID
+				_ref: TEST_IMAGE_REF_ID
 			}
 		};
 		expect(getReferenceId(image)).toEqual(image.asset._ref);
@@ -29,7 +29,7 @@ describe('getReferenceId', () => {
 
 	it('Returns the correct reference ID for an image with _ref property', () => {
 		const image = {
-			_ref: DEFAULT_REF_ID
+			_ref: TEST_IMAGE_REF_ID
 		};
 		expect(getReferenceId(image)).toEqual(image._ref);
 	});
@@ -43,7 +43,7 @@ describe('getReferenceId', () => {
 
 	it('Throws an error if the image input is empty', () => {
 		expect(() => getReferenceId(undefined as any)).toThrowError(
-			'"image" is empty. Cannot get _ref or _id.'
+			'Invalid input: image is empty. Cannot get _ref or _id.'
 		);
 	});
 
@@ -52,7 +52,7 @@ describe('getReferenceId', () => {
 			foo: 'bar'
 		};
 		expect(() => getReferenceId(image as any)).toThrowError(
-			'"image" is malformed. Cannot get _ref or _id.'
+			'Invalid input: image is malformed. Cannot get _ref or _id.'
 		);
 	});
 });

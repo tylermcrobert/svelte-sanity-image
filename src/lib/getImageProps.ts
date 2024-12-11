@@ -1,119 +1,47 @@
-// TODO: Allow passing in custom builder from component props?
-// TODO: Check to make sure getSrcSet isn't unnescessarily upscaling images when handling aspect
-
-import imageUrlBuilder from '@sanity/image-url';
-import { getImageDimensions } from './getImageDimensions';
-import { DEFAULT_IMAGE_SIZES } from './constants';
-import type { SvelteSanityImageProps } from './types';
-
-type PropsToInclude =
-	| 'client'
-	| 'image'
-	| 'quality'
-	| 'autoFormat'
-	| 'aspect'
-	| 'srcsetSizes';
+import type {
+	SanityClientOrProjectDetails,
+	SanityImageSource,
+	SvelteSanityImageProps,
+	ValidBuilderOptions
+} from './types.js';
+import { ImagePropBuilder } from './ImagePropBuilder.js';
 
 type ImageProps = {
 	src: string;
-	srcset: string;
 	width: number;
 	height: number;
+	srcset: string | undefined;
 };
 
-type EmptyImageProps = {
-	src: undefined;
-	srcset: undefined;
-	width: undefined;
-	height: undefined;
-};
+type EmptyImageProps = Record<keyof ImageProps, undefined>;
+
+export type GetImagePropsOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetBreakpoints'> &
+	Partial<ValidBuilderOptions>;
 
 /**
  * Retrieves the image properties based on the provided options.
  *
- * @param options - The options for retrieving the image properties. Corresponds to the props of the SvelteSanityImage component.
+ * @param image - The Sanity image source.
+ * @param client - The Sanity client or project details.
+ * @param options - The options for retrieving the image properties.
  * @returns The image properties including the source URL, source set, width, and height.
  */
-export function getImageProps({
-	image,
-	client,
-	quality,
-	autoFormat,
-	aspect,
-	srcsetSizes
-}: Pick<SvelteSanityImageProps, PropsToInclude>): ImageProps | EmptyImageProps {
-	let urlBuilder = imageUrlBuilder(client).image(image);
-
-	/**
-	 * Returns the srcset string for the image based on the available device sizes.
-	 * @returns The srcset string.
-	 */
-	function getSrcset() {
-		return (srcsetSizes || DEFAULT_IMAGE_SIZES)
-			.map((w) => {
-				urlBuilder = urlBuilder.width(w);
-
-				/**
-				 * If the aspect ratio is defined, the height will be calculated accordingly. We don't modify
-				 * the width because it's being tracked to the specific srcset.
-				 */
-				if (aspect) {
-					const newHeight = Math.round(w / aspect);
-					urlBuilder = urlBuilder.height(newHeight);
-				}
-
-				return `${urlBuilder.url()} ${Math.round(w)}w`;
-			})
-			.join(', ');
-	}
-
+export function getImageProps(
+	image: SanityImageSource,
+	client: SanityClientOrProjectDetails,
+	options: GetImagePropsOptions = {}
+): ImageProps | EmptyImageProps {
 	try {
-		if (!image) {
-			throw new Error('No input "image" provided');
-		}
-
-		const initialDims = getImageDimensions(image);
-		const { height: initHeight, width: initWidth } = initialDims;
-
-		/**
-		 * If the aspect ratio is defined, the height will be calculated accordingly.
-		 * If not, these values will be the same as the initial dimensions.
-		 */
-		const { outputWidth, outputHeight } = (() => {
-			if (!aspect) {
-				return { outputWidth: initWidth, outputHeight: initHeight };
-			}
-
-			const outputWidth = Math.round(Math.min(initWidth, initHeight * aspect));
-			const outputHeight = Math.round(outputWidth / aspect);
-
-			return { outputWidth, outputHeight };
-		})();
-
-		if (autoFormat) {
-			urlBuilder = urlBuilder.auto('format');
-		}
-
-		/**
-		 * Default quality is 75 in Sanity internally so no need to set it if
-		 * the value is 75
-		 */
-		if (quality && quality !== 75) {
-			urlBuilder = urlBuilder.quality(quality);
-		}
-
-		if (aspect) {
-			urlBuilder = urlBuilder.height(outputHeight).width(outputWidth);
-		}
+		const builder = new ImagePropBuilder(image, client, options);
 
 		return {
-			src: urlBuilder.url(),
-			srcset: getSrcset(),
-			width: outputWidth,
-			height: outputHeight
+			src: builder.src,
+			srcset: builder.srcset,
+			width: builder.dimensions.width,
+			height: builder.dimensions.height
 		};
-	} catch (e) {
-		console.error('Error building image props:', e);
+	} catch (error) {
+		console.error(error);
 
 		return {
 			src: undefined,

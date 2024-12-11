@@ -1,87 +1,80 @@
 # svelte-sanity-image
 
-A Svelte component that allows you to easily create responsive images from images stored in Sanity.io. This is powered by the [Sanity Image Builder](https://www.sanity.io/docs/image-url) under the hood. Package Inspired by [next-sanity-image](https://github.com/lorenzodejong/next-sanity-image).
+A Svelte component for creating responsive, optimized images from Sanity.io. Powered by the [Sanity Image Builder](https://www.sanity.io/docs/image-url) under the hood, it simplifies responsive image handling and layout shift prevention in your Svelte projects.
 
-:warning: This package is under active development and could introduce breaking changes.
+**Demo:** [svelte-sanity-image.netlify.app](https://svelte-sanity-image.netlify.app/)
 
-See the demo [here](https://svelte-sanity-image.netlify.app/)
+## ✨ Features
 
-### Features of this package:
+- Prevents layout shifts by setting image dimensions automatically.
+- Creates `srcset` attributes for responsive images out of the box.
+- Supports custom aspect ratios.
+- Provides control of native `<img />` attributes.
+- Available preloading of images with the `preload` prop.
+- Fully typed with TypeScript support and unit-tested for reliability.
 
-- Creates a set of responsive image sizes.
-- Automatically sets width and height of image tag to prevent layout shifts.
-- Allows for defining a custom aspect ratio.
-- Allows passing all standard `HTMLImageElement` props to component.
-- Defaults with configurable performance benefits like lazy loading, auto formatting to `webp`, and quality.
-- Allows for image preloading in `svelte:head` with the `priority` prop.
-- Provides helpful errors for malformed or empty image sources.
-- Includes helpful utility functions for working with sanity image image asset sources.
-- Fully typed and exposes relevant types.
+## 📦 Installation
 
-## 📦&ensp;Installation
+Install the package via npm:
 
-```
+```bash
 npm install @tylermcrobert/svelte-sanity-image
 ```
 
-## 🚀&ensp;Usage
+## 🚀 Quick Start
 
-Start by creating a GROQ query to fetch a Sanity document containing an image.
-
-<p><code>routes/+page.ts</code></p>
-
-```typescript
-import type { SanityImageObject } from '@tylermcrobert/svelte-sanity-image'; // Optional typing
-
-export async function load() {
-  const imageQuery = `*[_type == 'yourDoc'][0].yourImage`;
-  const image: SanityImageObject = await client.fetch(imageQuery);
-
-  return { image };
-}
-```
-
-Next, supply the `SanityImage` component with the image from Sanity along with your configured sanity client.
-
-<p><code>routes/+page.ts</code></p>
+A minimal example of using `svelte-sanity-image`:
 
 ```svelte
 <SanityImage
-  {client}
-  {image}
-  sizes="(max-width: 600px) 480px, 800px"
-  alt="The Beatles crossing Abbey Road in London."
+	{client}
+	{image}
+	sizes="(max-width: 768px) 50vw, 100vw"
+	alt="The Beatles crossing Abbey Road in London."
 />
 ```
 
-This represents a basic implementation of the component.
-Usage is similar to a standard `<img />` tag, but instead takes a `image` and a `client`. For more details on those and other configuration options, refer to the props table.
+## ⚙️ Component Props
 
-## ⚙️&ensp;Component Props
+| Property            | Type           | Description                                                                                                                                                | Required |
+| ------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `client`            | Object         | A configured Sanity client.                                                                                                                                | Yes      |
+| `image`             | Object         | Image data returned from Sanity API.                                                                                                                       | Yes      |
+| `alt`               | String         | Descriptive alt text for accessibility.                                                                                                                    | Yes      |
+| `sizes`             | String \| null | A responsive image size string ([MDN reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes)). Set to null to bypass responsivity. | Yes      |
+| `aspect`            | Number         | Enforces an aspect ratio on the image.                                                                                                                     | –        |
+| `preload`           | Boolean        | Adds a `<link rel="preload" />` in `<svelte:head>` for prioritized loading.                                                                                | –        |
+| `srcsetBreakpoints` | string[]       | Overrides the default breakpoints for `srcset`. Defaults to `640, 750, 828, 1080, 1200, 1920, 2048, 3840`.                                                 | –        |
 
-| Property     | Type           | Description                                                                                                                                                         | Required |
-| ------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `client`     | Object         | A configured Sanity client.                                                                                                                                         | Yes      |
-| `image`      | Object         | Image data returned from sanity API.                                                                                                                                | Yes      |
-| `alt`        | String \| null | Descriptive alt text for image accessibility.                                                                                                                       | Yes      |
-| `sizes`      | String         | A responsive image size string. Read more about that in the [MDN image reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes).             | Yes      |
-| `quality`    | Number         | Quality 0-100. Specify the compression quality (where applicable). Defaults are 75 for JPG and WebP per [Sanity's defaults](https://www.sanity.io/docs/image-urls). | –        |
-| `loading`    | String \| null | Set the browser’s native lazy loading attribute. Available options are `"lazy"`, `"eager"`, or `null`. Defaults to `"lazy"`.                                        | –        |
-| `autoFormat` | Boolean        | Uses webp format if browser supports it. Defaults to `true`                                                                                                         | –        |
-| `aspect`     | Number         | Enforces an aspect ratio on the image.                                                                                                                              | –        |
-| `onLoad`     | Function       | Runs on image load and provides an event object                                                                                                                     |          |
+## 🔧 Usage
 
-## 🧰&ensp;Utilities
+This component extends the standard `<img />` element, so you can use any native attributes or events like `loading="lazy"` and `onload`.
 
-- `getReferenceId` - Supplies the reference ID from any valid GROQ image asset result
-- `getDimsFromRefString` - Pulls out the original image dimensions from a reference ID.
-- `getImageDimensions` - Takes a GROQ image source and extracts the dimensions (including if the image is cropped within sanity.)
+### Example with All Props
 
-## 🤝&ensp;Contributing
+```svelte
+<SanityImage
+	{client}
+	{image}
+	sizes="(max-width: 768px) 50vw, 100vw"
+	alt="The Beatles crossing Abbey Road in London."
+	aspect={16 / 9}
+	preload
+	srcsetBreakpoints={[320, 480, 1024]}
+/>
+```
+
+## 🛠 Optimizations
+
+| Property  | Value  | Description                                                                   |
+| --------- | ------ | ----------------------------------------------------------------------------- |
+| `loading` | `lazy` | Defers loading of images until they are near the viewport (default behavior). |
+
+## 🤝 Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
 
-## 📜&ensp;License
+## 📜 License
 
-Copyright ©2023 Tyler McRobert. Available under the [MIT License](https://choosealicense.com/licenses/mit/).
+MIT License © 2024 Tyler McRobert
