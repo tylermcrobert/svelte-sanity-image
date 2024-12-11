@@ -30,7 +30,7 @@ type ValidBuilderOptionKey =
  */
 export type ValidBuilderOptions = {
 	[key in ValidBuilderOptionKey]: ImageUrlBuilderOptions[key];
-} & Pick<ImageUrlBuilderOptions, 'auto'>;
+};
 
 /**
  * Props for the image component
