@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SvelteSanityImageProps, ValidBuilderOptions } from './types.js';
+	import type { SvelteSanityImageProps, ValidSanityBuilderOptions } from './types.js';
 	import { getImageProps } from './getImageProps.js';
 
 	type Props = SvelteSanityImageProps;
@@ -32,7 +32,7 @@
 		...props
 	}: Props = $props();
 
-	let builderOptions: ValidBuilderOptions = {
+	let builderOptions: ValidSanityBuilderOptions = {
 		auto: autoFormat ? 'format' : undefined,
 		blur,
 		bg,

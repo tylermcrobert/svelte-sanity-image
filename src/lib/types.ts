@@ -22,14 +22,14 @@ export type SanityClientOrProjectDetails =
 /**
  * The object key of the Sanity URL builder options
  */
-type ValidBuilderOptionKey =
+type ValidSanityBuilderOptionKey =
 	typeof VALID_BUILDER_OPTIONS extends Readonly<Set<infer T>> ? T : never;
 
 /**
  * Valid options that can be passed to the Sanity URL builder
  */
-export type ValidBuilderOptions = {
-	[key in ValidBuilderOptionKey]: ImageUrlBuilderOptions[key];
+export type ValidSanityBuilderOptions = {
+	[key in ValidSanityBuilderOptionKey]: ImageUrlBuilderOptions[key];
 };
 
 /**
@@ -51,4 +51,4 @@ type ValidImgElementProps = Omit<HTMLImgAttributes, 'src' | 'srcset' | 'alt'>;
 
 export type SvelteSanityImageProps = SvelteSanityImageOptions &
 	ValidImgElementProps &
-	Partial<ValidBuilderOptions>;
+	Partial<ValidSanityBuilderOptions>;
