@@ -158,6 +158,29 @@ describe('getImageProps', () => {
 			});
 		});
 
+		it('Correcetly renders Aspect + Width', () => {
+			const props = getImageProps(DEFAULT_IMAGE, client, { aspect: 1.5, width: 800 });
+
+			expect(props.width).toBe(800);
+			expect(props.height).toBe(533);
+		});
+
+		it('Correcetly renders Aspect + Height', () => {
+			const props = getImageProps(DEFAULT_IMAGE, client, { aspect: 1.5, height: 400 });
+
+			expect(props.width).toBe(600);
+			expect(props.height).toBe(400);
+		});
+
+		it('Correcetly renders Aspect + Height', () => {
+			const props = getImageProps(DEFAULT_IMAGE, client, { aspect: 1.5, height: 400, width: 400 });
+
+			expect(props.src).toBe(undefined);
+			expect(props.width).toBe(undefined);
+			expect(props.height).toBe(undefined);
+			expect(props.srcset).toBe(undefined);
+		});
+
 		it('handles DPR correctly', () => {
 			// TODO: Add DPR handling logic
 		});

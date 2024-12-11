@@ -63,9 +63,13 @@ export class ImagePropBuilder {
 	 * @todo Handle use cases where width + aspect or height + aspect are set
 	 */
 	private calculateImageDimensions() {
-		const originalDims = getImageDimensions(this.image);
-		const originalAspect = originalDims.width / originalDims.height;
+		const { width: originalWidth, height: originalHeight } = getImageDimensions(this.image);
 		const { width, height, aspect } = this.options;
+		const originalAspect = originalWidth / originalHeight;
+
+		if (width && height && aspect) {
+			throw new Error('Cannot define width, height, and aspect');
+		}
 
 		// If explicit dimensions are provided, use them
 		if (width && height) {
@@ -75,17 +79,27 @@ export class ImagePropBuilder {
 			};
 		}
 
-		// Handle cases where aspect ratio is specified
-		if (aspect) {
-			const calculatedHeight = Math.min(originalDims.height, originalDims.width / aspect);
-
+		if (aspect && width) {
 			return {
-				width: Math.round(calculatedHeight * aspect),
-				height: Math.round(calculatedHeight)
+				width: width,
+				height: Math.round(width / aspect)
 			};
 		}
 
-		// Calculate dimensions based on custom height
+		if (aspect && height) {
+			return {
+				width: height * aspect,
+				height: height
+			};
+		}
+
+		if (aspect) {
+			return {
+				width: Math.round(originalHeight * aspect),
+				height: Math.round(originalHeight)
+			};
+		}
+
 		if (height) {
 			return {
 				width: Math.round(height * originalAspect),
@@ -93,7 +107,6 @@ export class ImagePropBuilder {
 			};
 		}
 
-		// Calculate dimensions based on custom width
 		if (width) {
 			return {
 				width: width,
@@ -101,10 +114,9 @@ export class ImagePropBuilder {
 			};
 		}
 
-		// Default to original dimensions if no custom dimensions are provided
 		return {
-			width: originalDims.width,
-			height: originalDims.height
+			width: originalWidth,
+			height: originalHeight
 		};
 	}
 
