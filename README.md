@@ -2,7 +2,7 @@
 
 A Svelte component for creating responsive, optimized images from Sanity.io. Powered by the [Sanity Image Builder](https://www.sanity.io/docs/image-url) under the hood, it simplifies responsive image handling and layout shift prevention in your Svelte projects.
 
-**Demo:** [svelte-sanity-image.netlify.app](https://svelte-sanity-image.netlify.app/)
+<!-- **Demo:** [svelte-sanity-image.netlify.app](https://svelte-sanity-image.netlify.app/) -->
 
 ## ✨ Features
 
@@ -34,6 +34,8 @@ A minimal example of using `svelte-sanity-image`:
 />
 ```
 
+This component extends the standard `<img />` element, so you can use any native attributes or events.
+
 ## ⚙️ Component Props
 
 | Property            | Type           | Description                                                                                                                                                | Required |
@@ -46,31 +48,21 @@ A minimal example of using `svelte-sanity-image`:
 | `preload`           | Boolean        | Adds a `<link rel="preload" />` in `<svelte:head>` for prioritized loading.                                                                                | –        |
 | `srcsetBreakpoints` | string[]       | Overrides the default breakpoints for `srcset`. Defaults to `640, 750, 828, 1080, 1200, 1920, 2048, 3840`.                                                 | –        |
 
-## 🔧 Usage
+### Optimization Defaults
 
-This component extends the standard `<img />` element, so you can use any native attributes or events like `loading="lazy"` and `onload`.
-
-### Example with All Props
-
-```svelte
-<SanityImage
-	{client}
-	{image}
-	sizes="(max-width: 768px) 50vw, 100vw"
-	alt="The Beatles crossing Abbey Road in London."
-	aspect={16 / 9}
-	preload
-	srcsetBreakpoints={[320, 480, 1024]}
-/>
-```
-
-## 🛠 Optimization Defaults
+This package makes similar default optimizations as [Next/Image](https://nextjs.org/docs/app/api-reference/components/image).
 
 | Property     | Value  | Description                                                                                                                |
 | ------------ | ------ | -------------------------------------------------------------------------------------------------------------------------- |
 | `loading`    | `lazy` | Defers loading of images until they are near the viewport.                                                                 |
 | `autoFormat` | `true` | Automatically return an image in in the most optimized format supported by the browser as determined by its Accept header. |
-| `quality`    | `75`   | Set automatically to 75 by Sanity's internal image transformations                                                         |
+| `quality`    | `75`   | Set automatically to 75 by Sanity`s internal image transformations                                                         |
+
+### Supported Sanity transformations:
+
+`svelte-sanity-image` supports the following [Image Transformations](https://www.sanity.io/docs/image-urls):
+
+`blur`, `bg`, `dpr`, `width`, `height`, `quality`, `sharpen`, `format`, `invert`, `download`, `flipHorizontal`, `flipVertical`, `saturation`, and `frame`.
 
 ## 🤝 Contributing
 
