@@ -40,10 +40,11 @@ type ValidImageProps = Omit<HTMLImgAttributes, 'src' | 'srcset'>;
 
 export type SvelteSanityImageOptions = {
 	image: SanityImageSource;
-	sizes: string;
+	sizes: string | null;
 	client: SanityClientOrProjectDetails;
 	aspect?: number;
-	srcsetSizes?: number[];
+	srcsetBreakpoints?: number[];
+	preload?: boolean;
 };
 
 export type SvelteSanityImageProps = SvelteSanityImageOptions &

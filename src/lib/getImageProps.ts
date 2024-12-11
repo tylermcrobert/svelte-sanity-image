@@ -15,7 +15,7 @@ type ImageProps = {
 
 type EmptyImageProps = Record<keyof ImageProps, undefined>;
 
-export type GetImagePropsOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetSizes'> &
+export type GetImagePropsOptions = Pick<SvelteSanityImageProps, 'aspect' | 'srcsetBreakpoints'> &
 	Partial<ValidBuilderOptions>;
 
 /**

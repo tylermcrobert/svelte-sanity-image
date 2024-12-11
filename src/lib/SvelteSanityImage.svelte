@@ -8,12 +8,15 @@
 		image,
 		client,
 		aspect,
-		srcsetSizes,
+		srcsetBreakpoints,
 		height,
 		width,
 		quality,
 		blur,
 		format,
+		preload,
+		sizes,
+		loading,
 		...props
 	}: Props = $props();
 
@@ -28,10 +31,29 @@
 	let generatedProps = $derived(
 		getImageProps(image, client, {
 			aspect,
-			srcsetSizes,
+			srcsetBreakpoints,
 			...builderOptions
 		})
 	);
 </script>
 
-<img {...props} {...generatedProps} />
+<svelte:head>
+	{#if preload}
+		<link
+			rel="preload"
+			as="image"
+			href={generatedProps.src}
+			imagesrcset={generatedProps.srcset}
+			imagesizes={sizes}
+			fetchpriority="high"
+		/>
+	{/if}
+</svelte:head>
+
+<img
+	{...props}
+	{...generatedProps}
+	{sizes}
+	loading={preload ? 'eager' : loading || 'lazy'}
+	srcset={sizes !== null ? generatedProps.srcset : undefined}
+/>

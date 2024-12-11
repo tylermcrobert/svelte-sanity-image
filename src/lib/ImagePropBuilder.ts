@@ -1,7 +1,7 @@
 import type { GetImagePropsOptions } from './getImageProps.js';
 import type { SanityClientOrProjectDetails, SanityImageSource } from './types.js';
 import imageUrlBuilder from '@sanity/image-url';
-import { DEFAULT_IMAGE_SIZES } from './constants.js';
+import { DEFAULT_SRCSET_BREAKPOINTS } from './constants.js';
 import { getImageDimensions } from './getImageDimensions.js';
 
 type Dimensions = {
@@ -125,7 +125,7 @@ export class ImagePropBuilder {
 	 * @returns Array of valid breakpoints
 	 */
 	private getValidBreakpoints() {
-		const breakpoints = this.options.srcsetSizes || DEFAULT_IMAGE_SIZES;
+		const breakpoints = this.options.srcsetBreakpoints || DEFAULT_SRCSET_BREAKPOINTS;
 		const { width: customWidth, height: customHeight } = this.options;
 		const { aspect: outputAspect, width: outputWidth } = this.dimensions;
 

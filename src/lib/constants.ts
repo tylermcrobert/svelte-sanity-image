@@ -7,7 +7,7 @@
  *
  * https://nextjs.org/docs/pages/api-reference/components/image#imagesizes
  */
-export const DEFAULT_IMAGE_SIZES = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
+export const DEFAULT_SRCSET_BREAKPOINTS = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
 
 export const VALID_BUILDER_OPTIONS = new Set([
 	'blur',
