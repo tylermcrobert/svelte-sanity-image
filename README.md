@@ -36,6 +36,46 @@ A minimal example of using `svelte-sanity-image`:
 
 This component extends the standard `<img />` element, so you can use any native attributes or events.
 
+An example of creating a wrapper component:
+
+```svelte
+<script lang="ts">
+	import { client } from '$lib/sanity';
+	import Image, { type SvelteSanityImageProps } from '@tylermcrobert/svelte-sanity-image';
+
+	type ImageProps = Omit<SvelteSanityImageProps, 'client'> & {
+		aboveTheFold: boolean;
+	};
+
+	let { aboveTheFold, ...props }: ImageProps = $props();
+</script>
+
+<Image
+	{...props}
+	{client}
+	quality={80}
+	loading={aboveTheFold ? 'eager' : 'lazy'}
+	fetchpriority={aboveTheFold ? 'high' : undefined}
+/>
+```
+
+An example of using getImageProps:
+
+```svelte
+<script lang="ts">
+	import { client } from '$lib/sanity';
+	import Image, { type getImageProps } from '@tylermcrobert/svelte-sanity-image';
+
+	type ImageProps = { image: SanityImageSource };
+
+	let { image }: ImageProps = $props();
+
+	let imageProps = $derived(getImageProps(client, image, { quality: 80 }));
+</script>
+
+<img {...imageProps} />
+```
+
 ## ⚙️ Component Props
 
 | Property            | Type           | Description                                                                                                                                                | Required |
