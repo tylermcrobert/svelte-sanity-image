@@ -36,7 +36,7 @@ A minimal example of using `svelte-sanity-image`:
 
 This component extends the standard `<img />` element, so you can use any native attributes or events.
 
-An example of creating a wrapper component:
+An example creating a wrapper component:
 
 ```svelte
 <script lang="ts">
@@ -59,7 +59,7 @@ An example of creating a wrapper component:
 />
 ```
 
-An example of using getImageProps:
+An example using getImageProps:
 
 ```svelte
 <script lang="ts">
