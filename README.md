@@ -1,4 +1,4 @@
-# create-svelte
+# svelte-sanity-image
 
 A Svelte component for creating responsive, optimized images from Sanity.io. Powered by the [Sanity Image Builder](https://www.sanity.io/docs/image-url) under the hood, it simplifies responsive image handling and layout shift prevention in your Svelte projects.
 
