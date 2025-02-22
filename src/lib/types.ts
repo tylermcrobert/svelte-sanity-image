@@ -1,34 +1,54 @@
-import type { HTMLImgAttributes } from 'svelte/elements';
 import type {
 	SanityClientLike,
 	SanityModernClientLike,
 	SanityProjectDetails,
-	SanityImageSource
+	SanityImageSource,
+	ImageUrlBuilderOptions
 } from '@sanity/image-url/lib/types/types.d.ts';
+import { VALID_BUILDER_OPTIONS } from './constants.js';
+import type { HTMLImgAttributes } from 'svelte/elements';
 
 /**
  * Sanity client or project details
  */
 
-type SanityClientOrProjectDetails =
+export { type SanityImageSource };
+
+export type SanityClientOrProjectDetails =
 	| SanityClientLike
 	| SanityProjectDetails
 	| SanityModernClientLike;
 
-type EventCallback = (event: { target: HTMLImageElement }) => void;
+/**
+ * The object key of the Sanity URL builder options
+ */
+type ValidSanityBuilderOptionKey =
+	typeof VALID_BUILDER_OPTIONS extends Readonly<Set<infer T>> ? T : never;
+
+/**
+ * Valid options that can be passed to the Sanity URL builder
+ */
+export type ValidSanityBuilderOptions = {
+	[key in ValidSanityBuilderOptionKey]: ImageUrlBuilderOptions[key];
+};
 
 /**
  * Props for the image component
  */
 
-export type SvelteSanityImageProps = {
+export type SvelteSanityImageOptions = {
 	image: SanityImageSource;
-	sizes: string;
+	sizes: string | null;
 	client: SanityClientOrProjectDetails;
 	alt: string | null;
-	quality?: number;
 	aspect?: number;
-	onLoad?: EventCallback;
+	srcsetBreakpoints?: number[];
+	preload?: boolean;
 	autoFormat?: boolean;
-	srcsetSizes?: number[];
-} & HTMLImgAttributes;
+};
+
+type ValidImgElementProps = Omit<HTMLImgAttributes, 'src' | 'srcset' | 'alt'>;
+
+export type SvelteSanityImageProps = SvelteSanityImageOptions &
+	ValidImgElementProps &
+	Partial<ValidSanityBuilderOptions>;

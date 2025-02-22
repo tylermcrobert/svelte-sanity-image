@@ -1,55 +1,71 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { getImageProps } from './getImageProps';
-	import type { SvelteSanityImageProps as Props } from './types';
+	import type { SvelteSanityImageProps, ValidSanityBuilderOptions } from './types.js';
+	import { getImageProps } from './getImageProps.js';
 
-	type $$Props = Props;
+	type Props = SvelteSanityImageProps;
 
-	export let image: Props['image'];
-	export let alt: Props['alt'];
-	export let client: Props['client'];
-	export let sizes: Props['sizes'];
-	export let quality: Props['quality'] = undefined;
-	export let aspect: Props['aspect'] = undefined;
-	export let autoFormat: Props['autoFormat'] = true;
-	export let srcsetSizes: Props['srcsetSizes'] = undefined;
-	export let onLoad: Props['onLoad'] = undefined;
-	export let loading: Props['loading'] = 'lazy';
-	export let fetchpriority: Props['fetchpriority'] = undefined;
-
-	let node: HTMLImageElement;
-
-	$: isPriority = fetchpriority === 'high';
-
-	/**
-	 * Generates transformed image properties
-	 * based on the provided parameters.
-	 */
-	$: transformedProps = getImageProps({
-		client,
+	let {
 		image,
-		quality,
+		client,
 		aspect,
-		autoFormat,
-		srcsetSizes
-	});
+		srcsetBreakpoints,
+		loading,
+		sizes,
+		preload,
+		autoFormat = true,
 
-	function handleLoad() {
-		if (onLoad) onLoad({ target: node });
-	}
+		// Sanity urlBuilder props
+		blur,
+		bg,
+		dpr,
+		width,
+		height,
+		quality,
+		sharpen,
+		format,
+		invert,
+		download,
+		flipHorizontal,
+		flipVertical,
+		saturation,
+		frame,
+		...props
+	}: Props = $props();
 
-	onMount(() => {
-		const isLoaded = node.complete && node.naturalHeight !== 0;
-		if (isLoaded) handleLoad();
-	});
+	let builderOptions: ValidSanityBuilderOptions = {
+		auto: autoFormat ? 'format' : undefined,
+		blur,
+		bg,
+		dpr,
+		width,
+		height,
+		quality,
+		sharpen,
+		format,
+		invert,
+		download,
+		flipHorizontal,
+		flipVertical,
+		saturation,
+		frame
+	};
+
+	let generatedProps = $derived(
+		getImageProps(image, client, {
+			aspect,
+			srcsetBreakpoints,
+			...builderOptions
+		})
+	);
 </script>
 
 <svelte:head>
-	{#if isPriority}
+	{#if preload}
 		<link
 			rel="preload"
 			as="image"
-			imagesrcset={transformedProps.srcset}
+			href={generatedProps.src}
+			imagesrcset={generatedProps.srcset}
 			imagesizes={sizes}
 			fetchpriority="high"
 		/>
@@ -57,12 +73,9 @@
 </svelte:head>
 
 <img
-	{...$$restProps}
-	{...transformedProps}
-	{alt}
+	{...props}
+	{...generatedProps}
 	{sizes}
-	{fetchpriority}
-	loading={isPriority ? 'eager' : loading}
-	bind:this={node}
-	on:load={handleLoad}
+	loading={preload ? 'eager' : loading || 'lazy'}
+	srcset={sizes !== null ? generatedProps.srcset : undefined}
 />
