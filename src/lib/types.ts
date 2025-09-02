@@ -5,14 +5,13 @@ import type {
 	SanityImageSource,
 	ImageUrlBuilderOptions
 } from '@sanity/image-url/lib/types/types.d.ts';
+export type * from '@sanity/image-url/lib/types/types.d.ts';
 import { VALID_BUILDER_OPTIONS } from './constants.js';
 import type { HTMLImgAttributes } from 'svelte/elements';
 
 /**
  * Sanity client or project details
  */
-
-export { type SanityImageSource };
 
 export type SanityClientOrProjectDetails =
 	| SanityClientLike
