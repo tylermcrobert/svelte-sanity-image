@@ -106,6 +106,29 @@ describe('getImageProps', () => {
 			);
 		});
 
+		it('Correctly renders square aspect with fit=crop and crop=entropy', () => {
+			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, {
+				aspect: 1,
+				fit: 'crop',
+				crop: 'entropy'
+			});
+
+			expect(props.width).toBe(2400);
+			expect(props.height).toBe(2400);
+			expect(props.src).toBe(`${BASE_URL}?w=2400&h=2400&fit=crop&crop=entropy`);
+			expect(props.srcset).toBe(
+				flattenStr(`
+					${BASE_URL}?w=640&h=640&fit=crop&crop=entropy 640w, 
+					${BASE_URL}?w=750&h=750&fit=crop&crop=entropy 750w, 
+					${BASE_URL}?w=828&h=828&fit=crop&crop=entropy 828w, 
+					${BASE_URL}?w=1080&h=1080&fit=crop&crop=entropy 1080w, 
+					${BASE_URL}?w=1200&h=1200&fit=crop&crop=entropy 1200w, 
+					${BASE_URL}?w=1920&h=1920&fit=crop&crop=entropy 1920w, 
+					${BASE_URL}?w=2048&h=2048&fit=crop&crop=entropy 2048w
+				`)
+			);
+		});
+
 		it('Correctly renders Aspect + Width', () => {
 			const { props } = new ImagePropBuilder(DEFAULT_IMAGE, client, { aspect: 3 / 2, width: 800 });
 

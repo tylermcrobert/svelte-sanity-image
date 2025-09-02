@@ -29,6 +29,8 @@
 		flipVertical,
 		saturation,
 		frame,
+		crop,
+		fit,
 		...props
 	}: Props = $props();
 
@@ -47,7 +49,9 @@
 		flipHorizontal,
 		flipVertical,
 		saturation,
-		frame
+		frame,
+		crop,
+		fit
 	};
 
 	let generatedProps = $derived(
