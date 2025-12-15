@@ -4,7 +4,7 @@ import type {
 	SvelteSanityImageProps,
 	ValidSanityBuilderOptions
 } from './types.js';
-import imageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 import { DEFAULT_SRCSET_BREAKPOINTS } from './constants.js';
 import { getImageDimensions } from './getImageDimensions.js';
 
@@ -163,7 +163,7 @@ export class ImagePropBuilder {
 	 * @returns Initalized URL Builder with input config
 	 */
 	private getUrlBuilder() {
-		return imageUrlBuilder(this.client).image(this.image).withOptions(this.options);
+		return createImageUrlBuilder(this.client).image(this.image).withOptions(this.options);
 	}
 
 	/**

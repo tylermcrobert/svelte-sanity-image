@@ -1,4 +1,4 @@
-import type { SanityImageSource, SanityImageObject } from '@sanity/image-url/lib/types/types.d.ts';
+import type { SanityImageSource, SanityImageObject } from '@sanity/image-url';
 
 export type ImageDimensions = {
 	width: number;

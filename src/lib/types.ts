@@ -4,8 +4,8 @@ import type {
 	SanityProjectDetails,
 	SanityImageSource,
 	ImageUrlBuilderOptions
-} from '@sanity/image-url/lib/types/types.d.ts';
-export type * from '@sanity/image-url/lib/types/types.d.ts';
+} from '@sanity/image-url';
+export type * from '@sanity/image-url';
 import { VALID_BUILDER_OPTIONS } from './constants.js';
 import type { HTMLImgAttributes } from 'svelte/elements';
 
