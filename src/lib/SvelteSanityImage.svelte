@@ -34,7 +34,7 @@
 		...props
 	}: Props = $props();
 
-	let builderOptions: ValidSanityBuilderOptions = {
+	let builderOptions: ValidSanityBuilderOptions = $derived({
 		auto: autoFormat ? 'format' : undefined,
 		blur,
 		bg,
@@ -52,7 +52,7 @@
 		frame,
 		crop,
 		fit
-	};
+	});
 
 	let generatedProps = $derived(
 		getImageProps(image, client, {
